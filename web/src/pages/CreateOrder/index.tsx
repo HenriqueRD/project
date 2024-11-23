@@ -3,9 +3,11 @@ import Header from '../../components/Header'
 import style from './styles.module.css'
 import CardItem from '../../components/CardItem'
 import Button from '../../components/Button'
-import { Check, Minus, PipeWrench, Plus } from '@phosphor-icons/react'
+import { Check, Minus, Plus } from '@phosphor-icons/react'
 import { ItemProps, ProductProps } from '../../types'
 import Tag from '../../components/Tag'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 const products = [
   {
@@ -40,28 +42,38 @@ const products = [
   },
 ]
 
-export default function CreateRequest() {
+export default function CreateOrder() {
 
+  const nav = useNavigate()
   const [ productCurrent, setProductCurrent ] = useState<ProductProps>({} as any)
+  const [ productNameCurrent, setProductNameCurrent ] = useState(productCurrent.name)
   const [ itemsSelected, setItemsSelected ] = useState<ItemProps[]>([])
   const [ amount, setAmount ] = useState(0)
   const [ service, setService ] = useState("local")
   const [ description, setDescription ] = useState("")
 
+  function handlePlaceOrder(event : FormEvent) {
+    event.preventDefault()
+  }
+
   function handleSearchItem(event : FormEvent) {
     event.preventDefault()
-
   }
 
   function handleAddItem(event : FormEvent) {
     event.preventDefault()
-    if (!productCurrent.name || amount === 0) return 
+    if (!productCurrent.name || amount === 0) {
+      toast.error("Selecione um Item!")
+      return
+    }  
     setItemsSelected([...itemsSelected, {
       amount,
       description,
       total: productCurrent.price * amount,
       product: productCurrent
     }])
+    toast.success("Item adicionado!")
+    setProductNameCurrent("")
     setAmount(0)
     setDescription("")
     setProductCurrent({} as any)
@@ -73,24 +85,31 @@ export default function CreateRequest() {
   }
 
   function handleAddAmount() {
+    if(amount < 0) { setAmount(0); return }
     setAmount(amount + 1)
   }
 
   function handleRemoveAmount() {
-    if(amount  <= 0) return
+    if(amount <= 0) { setAmount(0); return }
     setAmount(amount - 1)
   }
 
   return (
     <>
       <Header />
-      <main id={style.createRequest}>
+      <main id={style.createOrder}>
         <div className="container">
           <div className="content">
             <div className={style.contentForm}>
               <div className={style.twoForms}>
-                <form className={style.formRequest}>
-                  <h3>Novo Pedido</h3>          
+                <form onSubmit={handlePlaceOrder} className={style.formRequest}>
+                  <div className={style.formRequestHeader}>
+                    <h3>Novo Pedido</h3>
+                    <div>
+                      <Button onClick={() => nav("/")} title='Cancelar Pedido' type='button' text='Cancelar' variant='danger'/>
+                      <Button title='Realizar Pedido' type="submit" text='Realizar Pedido' variant='success'/>
+                    </div>  
+                  </div>
                   <div className={style.twoInput}>
                     <div className={style.box}>
                       <label htmlFor="client">Cliente</label>
@@ -114,13 +133,13 @@ export default function CreateRequest() {
                   <div className={style.twoInput}>
                     <div className={style.box}>
                       <label htmlFor="">Nome do Produto</label>
-                      <input type="text" placeholder='Escolher Produto' value={productCurrent.name} readOnly/>
+                      <input type="text" placeholder='Escolher Produto' value={productNameCurrent} readOnly disabled/>
                     </div>
                     <div className={style.box}>
                       <label htmlFor="amount">Quantidade*</label>
                       <div className={style.addAmount}>
                         <Button onClick={handleRemoveAmount} type='button' icon variant='danger' ><Minus size={20} weight='bold' /></Button>
-                        <input type="number" id='amount' value={amount} />
+                        <input type="number" id='amount' value={amount} readOnly disabled />
                         <Button onClick={handleAddAmount} type='button' icon variant='success'><Plus size={20} weight='bold' /></Button>
                       </div>
                     </div>
@@ -186,12 +205,12 @@ export default function CreateRequest() {
                       {
                         products.map(x => {
                           return (
-                            <tr key={x.id} title='Selecionar' onClick={() => { setProductCurrent(x); setAmount(1)}}>
+                            <tr key={x.id} title='Selecionar' onClick={() => { setProductCurrent(x); setAmount(1); setProductNameCurrent(x.name)}}>
                               <th scope="row">{x.id}</th>
                               <td>{x.name}</td>
-                              <td>R$ {x.price},00</td>
+                              <td>{x.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
                               <td className="buttons">
-                                <Button icon title='Selecionar' variant='success'><Check weight='bold' size={20} /></Button>
+                                <Button icon type='button' title='Selecionar' variant='success'><Check weight='bold' size={20} /></Button>
                               </td>
                             </tr>
                           )

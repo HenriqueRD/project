@@ -1,0 +1,39 @@
+#orders {
+  margin-top: 4rem;
+}
+.orders {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.orders .headerTable  {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+}
+.orders .headerTable .orderLengthSearch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.orders .headerTable .orderLength {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.orders .headerTable .search {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+}
+.orders .headerTable .search .inputs  {
+  display: flex;
+  gap: 1rem;
+}
+.orders table .total {
+  font-weight: 500;
+}
+.orders table time {
+  font-size: .9rem;
+}

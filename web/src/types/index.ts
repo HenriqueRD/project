@@ -11,3 +11,13 @@ export type ItemProps = {
   total: number
   product: ProductProps
 }
+
+export type OrderProps = {
+  id: number
+  status: string
+  client: string
+  service: string
+  createdAt: string
+  total_value: number
+  items: ItemProps[]
+}

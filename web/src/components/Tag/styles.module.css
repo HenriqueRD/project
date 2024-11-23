@@ -1,7 +1,8 @@
 #tag {
   padding: .2rem .5rem;
   border-radius: 4px;
-  font-size: .9rem;
+  font-size: .8rem;
+  text-transform: uppercase;
   font-weight: 500;
 }
 .primary {

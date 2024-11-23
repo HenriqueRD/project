@@ -11,7 +11,7 @@ export default function Header() {
           <div className={style.navsLink}>
             <nav>
               <Link to="/">Pedidos</Link>
-              <Link to="/criar-pedido">Criar Pedido</Link>
+              <Link to="/novo-pedido">Criar Pedido</Link>
             </nav>
           </div>
         </div>

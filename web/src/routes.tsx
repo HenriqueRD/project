@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Requests from "./pages/Requests";
-import CreateRequest from "./pages/CreateRequest";
+import Orders from "./pages/Orders";
+import CreateOrder from "./pages/CreateOrder";
 
 export default function Router() {
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" Component={Requests} />
-        <Route path="/criar-pedido" Component={CreateRequest} />
+        <Route path="/" Component={Orders} />
+        <Route path="/novo-pedido" Component={CreateOrder} />
       </Routes>
     </BrowserRouter>
   )
