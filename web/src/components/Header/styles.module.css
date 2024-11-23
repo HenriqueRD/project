@@ -1,0 +1,31 @@
+#header {
+	padding: .5rem;
+  background-color: var(--blue-700);
+}
+.logo {
+  color: var(--white);
+}
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navsLink {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.navsLink nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.navsLink nav a {
+  color: var(--white);
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+}
+.navsLink nav a:hover {
+  border-bottom: 2px solid var(--gray-200);
+}
+

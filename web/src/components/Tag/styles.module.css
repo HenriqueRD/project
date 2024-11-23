@@ -1,0 +1,31 @@
+#tag {
+  padding: .2rem .5rem;
+  border-radius: 4px;
+  font-size: .9rem;
+  font-weight: 500;
+}
+.primary {
+  background-color: var(--blue-300);
+  border: 1px solid var(--blue-700);
+  color: var(--blue-700);
+}
+.alert {
+  background-color: var(--yellow-300);
+  border: 1px solid var(--yellow-700);
+  color: var(--yellow-800);
+}
+.success {
+  background-color: var(--green-300);
+  border: 1px solid var(--green-700);
+  color: var(--green-700);
+}
+.danger {
+  background-color: var(--red-300);
+  border: 1px solid var(--red-700);
+  color: var(--red-700);
+}
+.normal {
+  background-color: var(--gray-300);
+  border: 1px solid var(--gray-700);
+  color: var(--gray-800);
+}

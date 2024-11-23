@@ -1,0 +1,13 @@
+#home {
+  margin-top: 4rem;
+}
+.requests {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.requests .headerTable {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

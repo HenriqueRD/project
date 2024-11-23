@@ -1,0 +1,57 @@
+#button {
+  height: 30px;
+  padding: 0 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+#button:disabled {
+  opacity: .6;
+  cursor: inherit;
+}
+#button.isIcon {
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#button.isIcon svg {
+  color: var(--white);  
+}
+.primary {
+  background-color: var(--blue-500);
+  color: var(--white);
+}
+.primary:hover {
+  background-color: var(--blue-400);
+}
+.alert {
+  background-color: var(--yellow-500);
+  color: var(--yellow-800);
+}
+.alert:hover {
+  background-color: var(--yellow-300);
+}
+.success {
+  background-color: var(--green-500);
+  color: var(--green-700);
+}
+.success:hover {
+  background-color: var(--green-300);
+}
+.danger {
+  background-color: var(--red-500);
+  color: var(--red-700);
+}
+.danger:hover {
+  background-color: var(--red-300);
+}
+.normal {
+  background-color: var(--gray-500);
+  color: var(--gray-900);
+}
+.normal:hover {
+  background-color: var(--gray-400);
+}
