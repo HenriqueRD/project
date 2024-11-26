@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import style from './styles.module.css'
 import CardItem from '../../components/CardItem'
@@ -8,52 +8,55 @@ import { ItemProps, ProductProps } from '../../types'
 import Tag from '../../components/Tag'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-
-const products = [
-  {
-    id: 1,
-    name: "Prato feito",
-    type: "11",
-    price: 20
-  },
-  {
-    id: 2,
-    name: "Prato feito 1/2",
-    type: "11",
-    price: 13
-  },
-  {
-    id: 3,
-    name: "Meio Cachorro",
-    type: "11",
-    price: 11
-  },
-  {
-    id: 4,
-    type: "11",
-    name: "Cachorro de Bife",
-    price: 21
-  },
-  {
-    id: 5,
-    name: "Xis frango",
-    type: "11",
-    price: 27
-  },
-]
+import { api } from '../../api'
 
 export default function CreateOrder() {
 
   const nav = useNavigate()
   const [ productCurrent, setProductCurrent ] = useState<ProductProps>({} as any)
   const [ productNameCurrent, setProductNameCurrent ] = useState(productCurrent.name)
+  const [ products, setProducts ] = useState<ProductProps[]>([])
+
   const [ itemsSelected, setItemsSelected ] = useState<ItemProps[]>([])
   const [ amount, setAmount ] = useState(0)
   const [ service, setService ] = useState("local")
+  const [ client, setClient ] = useState("")
   const [ description, setDescription ] = useState("")
 
-  function handlePlaceOrder(event : FormEvent) {
+  async function getProducts() {
+    await api.get("products").then(x => setProducts(x.data))
+  }
+
+  useEffect(() => {
+    getProducts()
+  }, [])
+
+  async function handleCreateOrder(event : FormEvent) {
     event.preventDefault()
+    if (itemsSelected.length === 0) {
+      toast.error("Adicione um item para fazer o pedido!")
+      return
+    }    
+
+    await api.post("orders", {
+      client,
+      service,
+    }).then((x) => {
+      api.post("items", {
+        orderId: x.data.id,
+        items: itemsSelected.map(x => {
+          return {
+            amount: x.amount,
+            description: x.description,
+            productId: x.product.id
+          }
+        })
+      }).then(() => {
+        toast.success("Pedido criado!")
+        nav("/")
+      })
+    })
+
   }
 
   function handleSearchItem(event : FormEvent) {
@@ -102,7 +105,7 @@ export default function CreateOrder() {
           <div className="content">
             <div className={style.contentForm}>
               <div className={style.twoForms}>
-                <form onSubmit={handlePlaceOrder} className={style.formRequest}>
+                <form onSubmit={handleCreateOrder} className={style.formRequest}>
                   <div className={style.formRequestHeader}>
                     <h3>Novo Pedido</h3>
                     <div>
@@ -113,7 +116,7 @@ export default function CreateOrder() {
                   <div className={style.twoInput}>
                     <div className={style.box}>
                       <label htmlFor="client">Cliente</label>
-                      <input id='client' type="text" placeholder='nome do cliente'/>
+                      <input id='client' type="text" placeholder='nome do cliente' value={client} onChange={x => setClient(x.target.value)}/>
                     </div>
                     <div className={style.box}>
                       <label htmlFor="service">Serviço*</label>

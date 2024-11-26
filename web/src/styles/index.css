@@ -69,6 +69,7 @@ textarea, a, select, label, p  {
 }
 a {
   text-decoration: none;
+  cursor: pointer !important;
   color: var(--gray-900);
 }
 button {
@@ -98,7 +99,7 @@ h1, h2, h3 {
 }
 input, select {
   background-color: var(--white);
-  height: 33px;
+  height: 30px;
   padding: 0 1rem;
   border: 1px solid var(--gray-500);
   font-weight: 400;
@@ -153,7 +154,7 @@ select:focus {
 }
 .table tr {
   border-top: 2px solid transparent;
-  border-bottom: 1px solid transparent;
+  border-bottom: 2px solid  var(--gray-200);
 }
 thead th {
   top: 0px;
@@ -162,7 +163,7 @@ thead th {
 .table tr:hover {
   cursor: pointer;
   border-top: 2px solid var(--gray-400);
-  border-bottom: 1px solid var(--gray-400);
+  border-bottom: 2px solid var(--gray-400);
   background-color: var(--gray-300);
 }
 .table tr .buttons {

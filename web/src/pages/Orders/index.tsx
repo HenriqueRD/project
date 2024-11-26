@@ -7,155 +7,23 @@ import Tag from '../../components/Tag'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../components/Button'
 import { OrderProps } from '../../types'
-import { FormEvent, useState } from 'react'
-
-const ordersA = [
-  {
-    id: 1,
-    status: "em preparação",
-    service: "levar",
-    client: "não informado",
-    createdAt: new Date().toISOString(),
-    total_value: 40,
-    items: [
-      {
-        amount: 2,
-        description: "",
-        total: 25,
-        product: {
-          id: 1,
-          name: "Oii",
-          price: 32,
-          type: "ssss"
-        }
-      }
-    ]
-  },
-  {
-    id: 2,
-    status: "finalizado",
-    client: "Ana paula",
-    service: "local",
-    createdAt: new Date().toISOString(),
-    total_value: 93,
-    items: [
-      {
-        amount: 2,
-        description: "",
-        total: 25,
-        product: {
-          id: 1,
-          name: "Oii",
-          price: 32,
-          type: "ssss"
-        }
-      },
-      {
-        amount: 2,
-        description: "",
-        total: 25,
-        product: {
-          id: 1,
-          name: "Oii",
-          price: 32,
-          type: "ssss"
-        }
-      },
-      {
-        amount: 2,
-        description: "",
-        total: 25,
-        product: {
-          id: 1,
-          name: "Oii",
-          price: 32,
-          type: "ssss"
-        }
-      }
-    ]
-  },
-  {
-    id: 3,
-    status: "em preparação",
-    client: "não informado",
-    service: "levar",
-    createdAt: new Date().toISOString(),
-    total_value: 103,
-    items: [
-      {
-        amount: 2,
-        description: "",
-        total: 25,
-        product: {
-          id: 1,
-          name: "Oii",
-          price: 32,
-          type: "ssss"
-        }
-      }
-    ]
-  },
-  {
-    id: 4,
-    status: "cancelado",
-    service: "levar",
-    client: "não informado",
-    createdAt: new Date().toISOString(),
-    total_value: 40,
-    items: [
-      {
-        amount: 2,
-        description: "",
-        total: 25,
-        product: {
-          id: 1,
-          name: "Oii",
-          price: 32,
-          type: "ssss"
-        }
-      },
-      {
-        amount: 2,
-        description: "",
-        total: 25,
-        product: {
-          id: 1,
-          name: "Oii",
-          price: 32,
-          type: "ssss"
-        }
-      }
-    ]
-  },
-  {
-    id: 5,
-    status: "em preparação",
-    service: "local",
-    client: "Paulo",
-    createdAt: new Date().toISOString(),
-    total_value: 40,
-    items: [
-      {
-        amount: 2,
-        description: "",
-        total: 25,
-        product: {
-          id: 1,
-          name: "Oii",
-          price: 32,
-          type: "ssss"
-        }
-      }
-    ]
-  }
-]
+import { FormEvent, useEffect, useState } from 'react'
+import { api } from '../../api'
 
 export default function Orders() {
 
   const nav = useNavigate()
-  const [ orders, setOrders ] = useState<OrderProps[]>(ordersA)
+  const [ orders, setOrders ] = useState<OrderProps[]>([])
   const [ date, setDate ] = useState(new Date())
   const [ status, setStatus ] = useState("all")
+
+  async function getOrders() {
+    await api.get("orders").then(x => setOrders(x.data))
+  }
+
+  useEffect(() => {
+    getOrders()
+  }, [])
 
   function handleSearchOrders(event : FormEvent) {
     event.preventDefault()
@@ -182,7 +50,6 @@ export default function Orders() {
                     <form onSubmit={handleSearchOrders}>
                       <div className={style.inputs}>
                         <select value={status} onChange={x => setStatus(x.target.value)}>
-                          <option value="">Escolha a categoria</option>
                           <option value="em preparação">Em preparação</option>
                           <option value="finalizado">Finalizado</option>
                           <option value="cancelado">Cancelado</option>
@@ -195,7 +62,7 @@ export default function Orders() {
                   </div>
                 </div>
               </div>
-              <div className='containerTable'>
+              <div className={style.containerTable}>
                 <table className='table'>
                   <thead>
                     <tr>
@@ -220,7 +87,7 @@ export default function Orders() {
                             <td>{x.items.length}</td>
                             <td><time title={format(x.createdAt, 'dd/MM/yyyy')} dateTime={format(x.createdAt, 'dd/MM/yyyy')}>{formatDistance(subDays(x.createdAt, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
                             <td><Tag text={x.service}/></td>
-                            <td className={style.total}>{x.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
+                            <td className={style.total}>{x.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
                             <td className="buttons">
                               <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
                               <Button icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>

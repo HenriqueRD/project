@@ -34,6 +34,15 @@
 .orders table .total {
   font-weight: 500;
 }
+.orders .containerTable {
+  border-radius: 4px;
+  height: 500px;
+  width: 100%;
+  background-color: var(--white);
+  border: 1px solid var(--gray-300);
+  overflow: scroll;
+  scrollbar-width: none;
+}
 .orders table time {
   font-size: .9rem;
 }
