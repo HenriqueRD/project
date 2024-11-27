@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import style from './styles.module.css'
 import { api } from '../../api'
-import { OrderProps, StatusProps } from '../../types'
+import { OrderProps, StatusOrderProps } from '../../types'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft } from '@phosphor-icons/react'
 import CardItem from '../../components/CardItem'
@@ -12,9 +12,9 @@ import toast from 'react-hot-toast'
 
 export default function Order() {
 
-  const [ order, setOrder ] = useState<OrderProps>({ id: 0, status: "em preparação", client: "", service: "", createdAt: "", total: 0, items: [] });
+  const [ order, setOrder ] = useState<OrderProps>({ id: 0, status_order: "em preparação", status_payment: "em aberto", client: "", service: "", createdAt: "", total: 0, items: [] });
   const { id } = useParams()
-  const [ statusCurrent, setStatusCurrent ] = useState<StatusProps>("null")
+  const [ statusCurrent, setStatusCurrent ] = useState<StatusOrderProps>("null")
 
   async function getOrder(idOrder : string) {
     await api.get<OrderProps>(`orders/${idOrder}`).then(x => setOrder(x.data)).catch(() => alert("Erro"))
@@ -32,7 +32,7 @@ export default function Order() {
       toast.error("Escolha um status!")
       return
     }
-    else if (statusCurrent.trim() === order.status) {
+    else if (statusCurrent.trim() === order.status_order) {
       toast.error("Escolha um status diferente do atual")
       return
     }
@@ -60,7 +60,7 @@ export default function Order() {
                   <div className={style.headerInfo}>
                     <div>
                       <h3>Informação do pedido #{order.id}</h3>
-                      <Tag text='em aberto' />
+                      <Tag text={order.status_payment} />
                     </div>
                     <Link to="/"><ArrowLeft size={18} /> Voltar aos pedidos</Link>
                   </div>
@@ -77,7 +77,7 @@ export default function Order() {
                   <div className={style.orderStatus}>
                     <div className={style.status}>
                       <label>Status atual</label>
-                      <input type="text" value={order.status} readOnly/>
+                      <input type="text" value={order.status_order} readOnly/>
                     </div>
                     <form onSubmit={handleChangeStatus}>
                       <div className={style.buttons}>

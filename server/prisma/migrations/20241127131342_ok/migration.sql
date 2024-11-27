@@ -22,7 +22,8 @@ CREATE TABLE "Orders" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "client" TEXT NOT NULL,
     "service" TEXT NOT NULL,
-    "status" TEXT NOT NULL,
+    "status_order" TEXT NOT NULL,
+    "status_payment" TEXT NOT NULL,
     "total" REAL NOT NULL,
     "createdAt" DATETIME NOT NULL
 );

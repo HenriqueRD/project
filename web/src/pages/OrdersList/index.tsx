@@ -86,7 +86,7 @@ export default function OrdersList() {
                         return (
                           <tr key={x.id} onClick={() => handleClickOrder(x.id)}>
                             <th scope="row">{x.id}</th>
-                            <td><Tag text={x.status}/></td>
+                            <td><Tag text={x.status_order}/></td>
                             <td>{x.client}</td>
                             <td>{x.items.length}</td>
                             <td><time title={format(x.createdAt, 'dd/MM/yyyy')} dateTime={format(x.createdAt, 'dd/MM/yyyy')}>{formatDistance(subDays(x.createdAt, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>

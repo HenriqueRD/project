@@ -29,11 +29,12 @@ model Items {
 }
 
 model Orders {
-  id        Int      @id @default(autoincrement())
-  client    String
-  service   String
-  status    String
-  total     Float
-  createdAt DateTime
-  items     Items[]
+  id             Int      @id @default(autoincrement())
+  client         String
+  service        String
+  status_order   String
+  status_payment String
+  total          Float
+  createdAt      DateTime
+  items          Items[]
 }

@@ -59,7 +59,7 @@ api.put("/orders", async (req, res) => {
         id: parseInt(body.id)
       },
       data : {
-        status: body.status
+        status_order: body.status
       }
     })
     res.status(200).send()
@@ -96,7 +96,8 @@ api.post("/orders", async (req, res) => {
       client: body.client ? body.client : "",
       createdAt: new Date,
       service: body.service,
-      status: "em preparação",
+      status_order: "em preparação",
+      status_payment: "em aberto",
       total: body.total ? body.total : 0
     } 
   })
