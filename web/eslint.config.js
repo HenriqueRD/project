@@ -18,6 +18,7 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
     },
     rules: {
+      'react-hooks/exhaustive-deps': 'warn',
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',

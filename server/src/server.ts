@@ -51,6 +51,42 @@ api.get("/orders", async (__, res) => {
   })
   res.status(200).send(orders)
 })
+api.put("/orders", async (req, res) => {
+  const { body } = req
+  try {
+    await prisma.orders.update({
+      where: {
+        id: parseInt(body.id)
+      },
+      data : {
+        status: body.status
+      }
+    })
+    res.status(200).send()
+  } catch(err) {
+    res.status(404).json({ message: "Pedido não existe, falhou em autualizar o status", error: "" + err})
+  }
+})
+api.get(`/orders/:id`, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const order = await prisma.orders.findUniqueOrThrow({
+      where: {
+        id: parseInt(id)
+      },
+      include: {
+        items: {
+          include: {
+            product: true
+          }
+        }
+      }
+    })
+    res.status(200).send(order)
+  } catch(err) {
+    res.status(404).json({ message: "Pedido não existe", error: "" + err})
+  }
+})
 api.post("/orders", async (req, res) => {
 
   const { body } = req

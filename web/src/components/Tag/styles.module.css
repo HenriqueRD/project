@@ -1,7 +1,7 @@
 #tag {
   padding: .2rem .5rem;
   border-radius: 4px;
-  font-size: .8rem;
+  font-size: .9rem;
   text-transform: uppercase;
   font-weight: 500;
 }
@@ -18,12 +18,12 @@
 .success {
   background-color: var(--green-300);
   border: 1px solid var(--green-700);
-  color: var(--green-700);
+  color: var(--green-800);
 }
 .danger {
   background-color: var(--red-300);
   border: 1px solid var(--red-700);
-  color: var(--red-700);
+  color: var(--red-800);
 }
 .normal {
   background-color: var(--gray-300);

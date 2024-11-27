@@ -91,10 +91,6 @@
   align-items: center;
   justify-content: space-between;
 }
-#createOrder .formItem input:read-only {
-  font-weight: 500;
-  text-transform: uppercase;
-}
 #createOrder .formItem input[type="number"] {
   width: 50px;
   padding: 0 0rem;

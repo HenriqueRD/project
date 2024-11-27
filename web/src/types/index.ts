@@ -8,7 +8,6 @@ export type ProductProps = {
 export type ItemProps = {
   amount: number
   description: string
-  total: number
   product: ProductProps
 }
 
@@ -21,3 +20,4 @@ export type OrderProps = {
   total: number
   items: ItemProps[]
 }
+export type StatusProps = 'em preparação' | 'finalizado' | 'cancelado' | 'null'

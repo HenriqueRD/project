@@ -10,7 +10,7 @@ import { OrderProps } from '../../types'
 import { FormEvent, useEffect, useState } from 'react'
 import { api } from '../../api'
 
-export default function Orders() {
+export default function OrdersList() {
 
   const nav = useNavigate()
   const [ orders, setOrders ] = useState<OrderProps[]>([])
@@ -27,6 +27,10 @@ export default function Orders() {
 
   function handleSearchOrders(event : FormEvent) {
     event.preventDefault()
+  }
+
+  function handleClickOrder(id : number) {
+    nav(`/pedido/${id}`)
   }
 
   return (
@@ -80,7 +84,7 @@ export default function Orders() {
                     {
                       orders.map(x => {
                         return (
-                          <tr key={x.id}>
+                          <tr key={x.id} onClick={() => handleClickOrder(x.id)}>
                             <th scope="row">{x.id}</th>
                             <td><Tag text={x.status}/></td>
                             <td>{x.client}</td>
