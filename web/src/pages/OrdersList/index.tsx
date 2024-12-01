@@ -1,5 +1,5 @@
 import { Check, ClipboardText, NotePencil } from '@phosphor-icons/react'
-import { format, formatDistance, subDays } from 'date-fns'
+import { add, format, formatDistance, subDays } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import Header from '../../components/Header'
 import style from './styles.module.css'
@@ -14,25 +14,33 @@ export default function OrdersList() {
 
   const nav = useNavigate()
   const [ orders, setOrders ] = useState<OrderProps[]>([])
-  const [ date, setDate ] = useState(new Date())
+  const [ date, setDate ] = useState(add(new Date(), { hours: 3 }).toISOString().split("T")[0])
   const [ status, setStatus ] = useState("all")
 
   async function getOrders() {
     await api.get("orders").then(x => setOrders(x.data))
   }
 
-  useEffect(() => {
+  useEffect(() => {    
     getOrders()
   }, [])
 
-  function handleSearchOrders(event : FormEvent) {
+  async function handleSearchOrders(event : FormEvent) {
     event.preventDefault()
+   
+    if (status === "all") {
+      await api.get("orders", { params: { date } }).then(x => setOrders(x.data))
+      return
+    }
+    await api.get("orders", { params: {
+      status, date
+    } }).then(x => setOrders(x.data))
   }
 
   function handleClickOrder(id : number) {
     nav(`/pedido/${id}`)
   }
-
+  
   return (
     <>
       <Header />
@@ -59,7 +67,7 @@ export default function OrdersList() {
                           <option value="cancelado">Cancelado</option>
                           <option value="all">Todas Categorias</option>
                         </select>
-                        <input type="date" value={format(date, "yyyy-MM-dd")} onChange={x => setDate(new Date(x.target.value))}/>
+                        <input type="date" value={date} onChange={x => setDate(x.target.value)}/>
                         <Button type='submit' text='Procurar' />
                       </div>
                     </form>
@@ -89,9 +97,9 @@ export default function OrdersList() {
                             <td><Tag text={x.status_order}/></td>
                             <td>{x.client}</td>
                             <td>{x.items.length}</td>
-                            <td><time title={format(x.createdAt, 'dd/MM/yyyy')} dateTime={format(x.createdAt, 'dd/MM/yyyy')}>{formatDistance(subDays(x.createdAt, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
+                            <td><time title={format(x.created_at, 'dd/MM/yyyy')} dateTime={x.created_at.toString()}>{formatDistance(subDays(x.created_at, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
                             <td><Tag text={x.service}/></td>
-                            <td className={style.total}>{x.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
+                            <td className={style.total}><Tag text={x.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.status_payment === "pago" ? "success" : "alert"} /></td>
                             <td className="buttons">
                               <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
                               <Button icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>

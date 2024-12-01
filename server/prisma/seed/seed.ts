@@ -4,11 +4,9 @@ import { products } from "./products";
 const prisma = new PrismaClient()
 
 async function main() {
-  for(let prod of products) {
-    await prisma.products.create({
-      data: prod
-    })
-  }
+  await prisma.products.createMany({
+    data: products
+  })
 }
 main().catch(e => {
   console.log(e)

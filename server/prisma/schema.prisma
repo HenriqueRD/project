@@ -22,10 +22,10 @@ model Items {
   id          Int      @id @default(autoincrement())
   amount      Int
   description String
-  product     Products @relation(fields: [productId], references: [id])
-  productId   Int
-  orders      Orders   @relation(fields: [orderId], references: [id])
-  orderId     Int
+  product     Products @relation(fields: [product_id], references: [id])
+  product_id  Int
+  orders      Orders   @relation(fields: [order_id], references: [id])
+  order_id    Int
 }
 
 model Orders {
@@ -35,6 +35,19 @@ model Orders {
   status_order   String
   status_payment String
   total          Float
-  createdAt      DateTime
+  date           String
+  created_at     DateTime @default(now())
+  update_at      DateTime @default(now()) @updatedAt
   items          Items[]
+  sells          Sells[]
+}
+
+model Sells {
+  id             Int      @id @default(autoincrement())
+  total_value    Float
+  method_payment String
+  discount       Float?
+  order          Orders   @relation(fields: [order_id], references: [id])
+  order_id       Int
+  created_at     DateTime @default(now())
 }

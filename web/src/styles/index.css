@@ -157,7 +157,7 @@ select:focus {
   background-color: var(--gray-200)
 }
 .table tr {
-  border-top: 2px solid transparent;
+  border-top: 2px solid var(--blue-600);
   border-bottom: 2px solid  var(--gray-200);
 }
 thead th {

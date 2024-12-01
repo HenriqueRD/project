@@ -15,12 +15,10 @@ export default function Tag({ text, type } : TagProps) {
 }
 
 function parseTagType(text : string) {
-  if (text === "em preparação") return "alert"
-  if (text === "em aberto") return "alert"
-  else if (text === "finalizado") return "success"
-  else if (text === "pago") return "success"
+  if (text === "em preparação" || text === "em aberto") return "alert"
+  else if (text === "pago" || text === "finalizado") return "success"
   else if (text === "cancelado") return "danger"
   else if (text === "local") return "normal"
-  else if (text === "levar") return "primary"
+  else if (text === "concluído" || text === "levar") return "primary"
   else return text
 }

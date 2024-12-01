@@ -3,6 +3,10 @@
   padding: 0 1rem;
   border-radius: 4px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
   cursor: pointer;
 }
 #button:disabled {
@@ -13,12 +17,12 @@
   padding: 0;
   width: 30px;
   height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 #button.isIcon svg {
   color: var(--white);  
+}
+#button.isNotActive {
+  opacity: .7;
 }
 
 .primary {
@@ -35,7 +39,7 @@
 
 .alert {
   background-color: var(--yellow-500);
-  color: var(--yellow-800);
+  color: var(--gray-800);
 }
 .alert:hover {
   background-color: var(--yellow-300);

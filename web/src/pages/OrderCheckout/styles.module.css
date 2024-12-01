@@ -1,33 +1,33 @@
-#order {
+#orderCheckout {
   margin-top: 4rem;
 }
-#order .content {
+#orderCheckout .content {
   display: flex;
   gap: 2rem;
 }
-#order .order {
+#orderCheckout .order {
   flex: 4;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
 }
-#order .contentOrder {
+#orderCheckout .contentOrder {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-#order .listItems {
+#orderCheckout .listItems {
   flex: 3;
 }
-#order .headerInfo {
+#orderCheckout .headerInfo {
   display: flex;
   gap: .5rem;
   flex-direction: column;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--gray-400);
 }
-#order .headerInfo .dates {
+#orderCheckout .headerInfo .dates {
   display: flex;
   flex-direction: column;
   font-size: .8rem;
@@ -35,16 +35,16 @@
   color: var(--gray-600);
   font-weight: 500;
 }
-#order .headerInfo > div {
+#orderCheckout .headerInfo > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-#order .headerInfo p {
+#orderCheckout .headerInfo p {
   font-weight: 500;
   font-size: 1.05rem;
 }
-#order .headerInfo a {
+#orderCheckout .headerInfo a {
   padding-left: 1rem;
   display: flex;
   width: 170px;
@@ -60,63 +60,63 @@
     border-bottom: 1px solid var(--gray-800);
   }
 }
-#order .orderInfoClientService {
+#orderCheckout .methodPays {
   display: flex;
-  align-items: center;
-  gap: 4rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--gray-400);
-}
-#order .box {
-  display: flex;
-  gap: .5rem;
-  flex-direction: column;
-  justify-content: space-between;
-}
-#order .orderStatus {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--gray-400);
-}
-#order .orderStatus .status {
-  display: flex;
-  align-items: start;
   flex-direction: column;
   gap: .5rem;
+  border-bottom: 1px solid var(--gray-400);
+  padding-bottom: 1rem;
 }
-#order .orderStatus form {
+#orderCheckout .methodPays .buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+}
+#orderCheckout .totalOrder {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+#orderCheckout .totalOrder > div {
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-300);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+#orderCheckout .totalOrder > div .box {
+  border-bottom: 1px dashed var(--gray-400);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
 }
-#order .orderStatus form .buttons {
+#orderCheckout .totalOrder > div .value {
+  font-weight: 500;
+  color: var(--gray-700);
+}
+#orderCheckout .totalOrder > div .totalValue {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
 }
-#order .orderStatus .buttons  button {
-  opacity: .5;
-  cursor: pointer;
+#orderCheckout .totalOrder > div .methodPay {
+  text-transform: uppercase;
+  font-size: .9rem;
 }
-#order .orderStatus .buttons button.isActive {
-  opacity: 1;
-  cursor: pointer;
-}
-#order .actionOrder {
+#orderCheckout .actionOrder {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
 }
-#order .listItemsHeader > div {
+#orderCheckout .listItemsHeader > div {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-#order .listItems .containerListItems {
+#orderCheckout .listItems .containerListItems {
   border-radius: 4px;
   height: 380px;
   width: 100%;
@@ -127,14 +127,14 @@
   overflow: scroll;
   scrollbar-width: none;
 }
-#order .listItems .containerListItems .empty {
+#orderCheckout .listItems .containerListItems .empty {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-#order .listItems ul {
+#orderCheckout .listItems ul {
   list-style-type: none;
   display: flex;
   flex-direction: column;

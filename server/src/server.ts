@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 import cors from "cors";
+import { sub } from "date-fns";
+import z from "zod";
 
 const api = express()
 
@@ -14,57 +16,41 @@ api.get("/products", async (__, res) => {
 })
 
 
-api.get("/items", async (__, res) => {
-  const items = await prisma.items.findMany()
-  res.status(200).send(items)
-})
-api.post("/items", async (req, res) => {
-  const { body } = req
-  try {
-    const order = await prisma.orders.findFirstOrThrow({
-      where: {
-        id: body.orderId
-      }
-    })
-    for(let x of body.items) {
-      await prisma.items.create({
-        data: {
-          amount: x.amount,
-          description: x.description ? x.description : "",
-          productId: x.productId,
-          orderId: order.id
-        }
-      })
+api.get("/orders", async (req, res) => {
+  const { query } = req
+
+  if(query.status && query.date) {
+    let date = ""
+    if (typeof query.date === 'string') {
+      date = query.date.toString()
     }
-    res.status(201).send()
-  } catch (err) {
-    res.status(404).json({ message: "Pedido não existe, falhou em criar o item", error: "" + err})
-  }
-})
 
-
-api.get("/orders", async (__, res) => {
-  const orders = await prisma.orders.findMany({
-    include: {
-      items: true
-    },
-  })
-  res.status(200).send(orders)
-})
-api.put("/orders", async (req, res) => {
-  const { body } = req
-  try {
-    await prisma.orders.update({
+    const orders = await prisma.orders.findMany({
       where: {
-        id: parseInt(body.id)
+        AND: {
+          status_order: {
+            equals: query.status.toString(),
+          },
+          date: {
+            equals: date
+          }
+        },
       },
-      data : {
-        status_order: body.status
+      orderBy: {
+        created_at: "desc"
+      },
+      include: {
+        items: true
       }
     })
-    res.status(200).send()
-  } catch(err) {
-    res.status(404).json({ message: "Pedido não existe, falhou em autualizar o status", error: "" + err})
+    res.status(200).send(orders)
+  } else {
+    const orders = await prisma.orders.findMany({
+      include: {
+        items: true
+      }
+    })
+    res.status(200).send(orders)
   }
 })
 api.get(`/orders/:id`, async (req, res) => {
@@ -87,22 +73,130 @@ api.get(`/orders/:id`, async (req, res) => {
     res.status(404).json({ message: "Pedido não existe", error: "" + err})
   }
 })
+api.put("/orders", async (req, res) => {
+ 
+  const orderSchema = z.object({
+    id: z.number().positive(), 
+    client: z.string().optional(),
+    service: z.enum(["levar", "local"]).optional(),
+    status_order: z.enum(["em preparação", "concluído", "finalizado"]).optional(),
+    items: z.array(
+      z.object({
+        amount: z.number().positive(),  
+        product_id: z.number().int(),     
+        description: z.string()         
+    })).optional()
+  })
+
+  const data = orderSchema.parse(req.body)
+  
+  try {
+    const order = await prisma.orders.update({
+      where: {
+        id: data.id
+      },
+      data : {
+        client: data.client,
+        service: data.service,
+        status_order: data.status_order
+      }
+    })
+    res.status(200).send(order)
+  } catch(err) {
+    res.status(404).json({ message: "Pedido não existe, falhou em autualizar o status", error: "" + err})
+  }
+})
 api.post("/orders", async (req, res) => {
 
-  const { body } = req
+  const orderSchema = z.object({
+    client: z.string(),
+    service: z.enum(["levar", "local"]),
+    items: z.array(
+      z.object({
+        amount: z.number().positive(),  
+        product_id: z.number().int(),     
+        description: z.string()         
+    }))
+  })
+
+  const data = orderSchema.parse(req.body)
+
+  const products = await prisma.products.findMany()
+
+  const total_order = data.items.reduce((acc: number, itr) => { return acc + ( itr.amount *(products.find(x => x.id === itr.product_id)?.price || 0.0)) }, 0.0);
 
   const order = await prisma.orders.create({
     data: {
-      client: body.client ? body.client : "",
-      createdAt: new Date,
-      service: body.service,
+      client: data.client ? data.client : "não informado",
+      service: data.service,
       status_order: "em preparação",
       status_payment: "em aberto",
-      total: body.total ? body.total : 0
-    } 
+      date: sub(new Date(), { hours: 3 }).toISOString().split("T")[0],
+      total: total_order,
+      items: {
+        createMany: {
+          data: data.items
+        }
+      }
+    },
+    include: {
+      items: true
+    }
+  })
+  res.status(201).send(order)
+})
+
+
+api.get("/sells", async (__, res) => {
+  const sells = await prisma.sells.findMany({
+    include: {
+      order: true
+    }
+  })
+  res.status(200).send(sells)
+})
+api.post("/sells", async (req, res) => {
+
+  const sellSchema = z.object({
+    method_payment:  z.enum(["dinheiro", "pix", "débito", "crédito"]),
+    discount: z.number().min(0).optional(),
+    order_id: z.number().positive(),
   })
 
-  res.status(201).json({ id: order.id })
+  try {
+    const data = sellSchema.parse(req.body)
+
+    const { id } = await prisma.sells.create({
+      data: {
+        method_payment: data.method_payment,
+        discount: data.discount,
+        order_id: data.order_id,
+        total_value: 0
+      }
+    })
+
+    await prisma.orders.update({
+      where: {
+        id: data.order_id
+      },
+      data: {
+        status_payment: "pago"
+      },
+    })
+
+    const sell = await prisma.sells.findUnique({
+      where: {
+        id
+      },
+      include: {
+        order: true
+      }
+    })
+
+    res.status(201).send(sell)
+  } catch (err) {
+    res.status(404).json(err)
+  }
 })
 
 api.listen(8080)

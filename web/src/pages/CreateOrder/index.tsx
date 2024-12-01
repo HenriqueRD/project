@@ -3,11 +3,11 @@ import Header from '../../components/Header'
 import style from './styles.module.css'
 import CardItem from '../../components/CardItem'
 import Button from '../../components/Button'
-import { Check, Minus, Plus } from '@phosphor-icons/react'
+import { ArrowLeft, Check, Minus, Plus } from '@phosphor-icons/react'
 import { ItemProps, ProductProps } from '../../types'
 import Tag from '../../components/Tag'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../../api'
 
 export default function CreateOrder() {
@@ -41,22 +41,17 @@ export default function CreateOrder() {
     await api.post("orders", {
       client,
       service,
-    }).then((x) => {
-      api.post("items", {
-        orderId: x.data.id,
-        items: itemsSelected.map(x => {
-          return {
-            amount: x.amount,
-            description: x.description,
-            productId: x.product.id
-          }
-        })
-      }).then(() => {
-        toast.success("Pedido criado!")
-        nav("/")
+      items: itemsSelected.map(x => {
+        return {
+          amount: x.amount,
+          description: x.description,
+          product_id: x.product.id
+        }
       })
+    }).then(() => {
+      toast.success("Pedido criado!")
+      nav("/")
     })
-
   }
 
   function handleSearchItem(event : FormEvent) {
@@ -72,7 +67,6 @@ export default function CreateOrder() {
     setItemsSelected([...itemsSelected, {
       amount,
       description,
-      total: productCurrent.price * amount,
       product: productCurrent
     }])
     toast.success("Item adicionado!")
@@ -107,11 +101,11 @@ export default function CreateOrder() {
               <div className={style.twoForms}>
                 <form onSubmit={handleCreateOrder} className={style.formRequest}>
                   <div className={style.formRequestHeader}>
-                    <h3>Novo Pedido</h3>
-                    <div>
-                      <Button onClick={() => nav("/")} title='Cancelar Pedido' type='button' text='Cancelar' variant='danger'/>
-                      <Button title='Realizar Pedido' type="submit" text='Realizar Pedido' variant='success'/>
-                    </div>  
+                    <div >
+                      <h3>Novo Pedido</h3>
+                      <Link to="/"><ArrowLeft size={18} /> Voltar aos pedidos</Link>
+                    </div>
+                    <Button title='Realizar Pedido' type="submit" text='Realizar Pedido' variant='success'/>
                   </div>
                   <div className={style.twoInput}>
                     <div className={style.box}>
