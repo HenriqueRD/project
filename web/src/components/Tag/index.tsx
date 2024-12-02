@@ -9,16 +9,21 @@ export default function Tag({ text, type } : TagProps) {
 
   return (
     <span id={style.tag} className={`${style[type || ""]} ${style[parseTagType(text)]}`}>
-      {text}
+      {parseText(text)}
     </span>
   )
 }
 
 function parseTagType(text : string) {
-  if (text === "em preparação" || text === "em aberto") return "alert"
-  else if (text === "pago" || text === "finalizado") return "success"
-  else if (text === "cancelado") return "danger"
-  else if (text === "local") return "normal"
-  else if (text === "concluído" || text === "levar") return "primary"
+  if (text === "EM_PREPARACAO" || text === "EM_ABERTO") return "alert"
+  else if (text === "PAGO" || text === "FINALIZADO") return "success"
+  else if (text === "LOCAL") return "normal"
+  else if (text === "CONCLUIDO" || text === "LEVAR") return "primary"
+  else return text
+}
+
+function parseText(text : string) {
+  if (text === "EM_PREPARACAO") return "em preparação"
+  else if (text === "EM_ABERTO") return "EM ABERTO"
   else return text
 }

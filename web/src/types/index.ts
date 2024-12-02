@@ -31,8 +31,8 @@ export type SellsProps = {
   order_id: number
 }
 
-export type StatusOrderProps = 'em preparação' | 'concluído' | 'finalizado'
+export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO'
 
-export type StatusPaymentProps = 'em aberto' | 'pago' | 'cancelado'
+export type StatusPaymentProps = 'EM_ABERTO' | 'PAGO'
 
-export type MethodPaymentPros = 'dinheiro' | 'pix' | 'débito' | 'crédito'
+export type MethodPaymentPros = 'DINHEIRO' | 'PIX' | 'DEBITO' | 'CREDITO'

@@ -15,6 +15,7 @@ export default function Order() {
 
   const [ order, setOrder ] = useState<OrderProps>({} as any);
   const { id } = useParams()
+  const [ isLoading, setIsLoading ] = useState(false)
   const nav = useNavigate()
   const [ statusCurrent, setStatusCurrent ] = useState<StatusOrderProps>(order.status_order)
 
@@ -30,32 +31,56 @@ export default function Order() {
 
   async function handleChangeStatus(event : FormEvent) {
     event.preventDefault()
+    setIsLoading(true)
     if (statusCurrent.trim() === "null") {
       toast.error("Escolha um status!")
+      setIsLoading(false)
       return
     }
     else if (statusCurrent.trim() === order.status_order) {
-      toast.error("Escolha um status diferente do atual")
-      return
+      toast.error("Escolha um status diferente do atual")    
+      setIsLoading(false)
+      return  
     }
     api.put("orders", {
-      id: parseInt(id || ""),
+      id: order.id,
       status_order: statusCurrent
     }).then(() => {
       toast.success("Status atualizado")
       if (id) {
         getOrder(id)
       }
+      setIsLoading(false)
+    }).catch(() => {
+      toast.success("Falha ao atualizar o status")
+      setIsLoading(false)
     })
   }
 
   async function handleFinishOrder() {
+    setIsLoading(true)
     api.put("orders", {
-      id: parseInt(id || ""),
-      status_order: "finalizado"
+      id: order.id,
+      status_order: "FINALIZADO"
     }).then(() => {
       toast.success("Pedido finalizado")
+      setIsLoading(false)
       nav("/")
+    }).catch(() => {
+      toast.error("Falha ao finalizar pedido")
+      setIsLoading(false)
+    })
+  }
+
+  async function handleDeleteOrder() {
+    setIsLoading(true)
+    api.delete(`orders/${order.id}`).then(() => {
+      toast.success("Pedido excluido")
+      setIsLoading(false)
+      nav("/")
+    }).catch(() => {
+      toast.error("Falha ao excluir pedido")
+      setIsLoading(false)
     })
   }
 
@@ -100,17 +125,17 @@ export default function Order() {
                       <Tag text={order.status_order} />
                     </div>
                     {
-                        order.status_order !== "finalizado" && (
+                        order.status_order !== "FINALIZADO" && (
                       <form onSubmit={handleChangeStatus}>
                         <div className={style.buttons}>
-                          <button type='button' onClick={() => setStatusCurrent("em preparação")} className={statusCurrent === "em preparação" ? style.isActive : style.x}>
-                            <Tag text="em preparação" />
+                          <button type='button' onClick={() => setStatusCurrent("EM_PREPARACAO")} className={statusCurrent === "EM_PREPARACAO" ? style.isActive : style.x}>
+                            <Tag text="EM_PREPARACAO" />
                           </button>
-                          <button type='button' onClick={() => setStatusCurrent("concluído")} className={statusCurrent === "concluído" ? style.isActive : style.x}>
-                            <Tag text="concluído" />
+                          <button type='button' onClick={() => setStatusCurrent("CONCLUIDO")} className={statusCurrent === "CONCLUIDO" ? style.isActive : style.x}>
+                            <Tag text="CONCLUIDO" />
                           </button>
                         </div>
-                        <Button type='submit' text='Atualizar' />
+                        <Button disabled={isLoading} type='submit' text='Atualizar' />
                       </form>
                     )
                   }
@@ -118,21 +143,19 @@ export default function Order() {
                 </div>
                 <div className={style.actionOrder}>
                   {
-                    order.status_payment === "em aberto" ? (
+                    order.status_payment === "EM_ABERTO" ? (
                       <>
-                        <Link to={`/pedido/pagamento/${order.id}`}>
-                          <Button title='Remover pedido' type='button' text='Excluir Pedido' variant='danger' />                      
-                        </Link>
+                        <Button disabled={isLoading} onClick={handleDeleteOrder} title='Remover pedido' type='button' text='Excluir Pedido' variant='danger' />                      
                         <Link to={`/`}>
-                          <Button title='Editar informação do pedido' type='button' variant='alert' text='Editar pedido' />
+                          <Button disabled={isLoading} title='Editar informação do pedido' type='button' variant='alert' text='Editar pedido' />
                         </Link>
                         <Link to={`/pedido/pagamento/${order.id}`}>
-                          <Button title='Ir para o pagamento' type='button' text='Cobrar Pedido' variant='success' />                      
+                          <Button disabled={isLoading} title='Ir para o pagamento' type='button' text='Cobrar Pedido' variant='success' />                      
                         </Link>
                       </>
                     ) : (
-                      order.status_payment === "pago" && order.status_order !== "finalizado" && (
-                        <Button onClick={handleFinishOrder} title="Finalizar pedido" type='button' variant='success' text='Finalizar Pedido' />
+                      order.status_payment === "PAGO" && order.status_order !== "FINALIZADO" && (
+                        <Button disabled={isLoading} onClick={handleFinishOrder} title="Finalizar pedido" type='button' variant='success' text='Finalizar Pedido' />
                       )
                     )
                   }

@@ -1,12 +1,12 @@
 import { Check, ClipboardText, NotePencil } from '@phosphor-icons/react'
-import { add, format, formatDistance, subDays } from 'date-fns'
+import { format, formatDistance, subDays } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import Header from '../../components/Header'
 import style from './styles.module.css'
 import Tag from '../../components/Tag'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../components/Button'
-import { OrderProps } from '../../types'
+import { OrderProps, StatusOrderProps } from '../../types'
 import { FormEvent, useEffect, useState } from 'react'
 import { api } from '../../api'
 
@@ -14,11 +14,14 @@ export default function OrdersList() {
 
   const nav = useNavigate()
   const [ orders, setOrders ] = useState<OrderProps[]>([])
-  const [ date, setDate ] = useState(add(new Date(), { hours: 3 }).toISOString().split("T")[0])
-  const [ status, setStatus ] = useState("all")
+  const [ date, setDate ] = useState(new Date())
+  const [ status, setStatus ] = useState<StatusOrderProps>("EM_PREPARACAO")
 
-  async function getOrders() {
-    await api.get("orders").then(x => setOrders(x.data))
+  async function getOrders() { 
+    await api.get("orders", { params: {
+      date: format(date, 'yyyy-MM-dd'),
+      status: ["EM_PREPARACAO", "CONCLUIDO"]
+    }}).then(x => setOrders(x.data))
   }
 
   useEffect(() => {    
@@ -27,13 +30,9 @@ export default function OrdersList() {
 
   async function handleSearchOrders(event : FormEvent) {
     event.preventDefault()
-   
-    if (status === "all") {
-      await api.get("orders", { params: { date } }).then(x => setOrders(x.data))
-      return
-    }
     await api.get("orders", { params: {
-      status, date
+      date: format(date, 'yyyy-MM-dd'),
+      status
     } }).then(x => setOrders(x.data))
   }
 
@@ -61,13 +60,12 @@ export default function OrdersList() {
                   <div className={style.form}>
                     <form onSubmit={handleSearchOrders}>
                       <div className={style.inputs}>
-                        <select value={status} onChange={x => setStatus(x.target.value)}>
-                          <option value="em preparação">Em preparação</option>
-                          <option value="finalizado">Finalizado</option>
-                          <option value="cancelado">Cancelado</option>
-                          <option value="all">Todas Categorias</option>
+                        <select value={status} onChange={x => setStatus(x.target.value as StatusOrderProps)}>
+                          <option value="EM_PREPARACAO">Em preparação</option>
+                          <option value="CONCLUIDO">Concluído</option>
+                          <option value="FINALIZADO">Finalizado</option>
                         </select>
-                        <input type="date" value={date} onChange={x => setDate(x.target.value)}/>
+                        <input type="date" value={format(date, 'yyyy-MM-dd')} onChange={x => setDate(new Date(x.target.value))}/>
                         <Button type='submit' text='Procurar' />
                       </div>
                     </form>
@@ -99,7 +97,7 @@ export default function OrdersList() {
                             <td>{x.items.length}</td>
                             <td><time title={format(x.created_at, 'dd/MM/yyyy')} dateTime={x.created_at.toString()}>{formatDistance(subDays(x.created_at, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
                             <td><Tag text={x.service}/></td>
-                            <td className={style.total}><Tag text={x.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.status_payment === "pago" ? "success" : "alert"} /></td>
+                            <td className={style.total}><Tag text={x.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.status_payment === "PAGO" ? "success" : "alert"} /></td>
                             <td className="buttons">
                               <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
                               <Button icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>

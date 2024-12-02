@@ -17,7 +17,7 @@ export default function OrderCheckout() {
   const { id } = useParams()
   const [ isLoading, setIsLoading ] = useState(false)
   const nav = useNavigate()
-  const [ selectMethodPay, setSelectMethodPay ] = useState<MethodPaymentPros>("dinheiro")
+  const [ selectMethodPay, setSelectMethodPay ] = useState<MethodPaymentPros>("DINHEIRO")
   const [ discount, setdDiscount ] = useState(0)
 
 
@@ -44,11 +44,14 @@ export default function OrderCheckout() {
       }).then(() => {
         api.put("orders", {
           id: order.id,
-          status_order: "finalizado"
+          status_order: "FINALIZADO"
         }).then(() => {
-          toast.success("Pedido pago e finalizado")
+          toast.success("Pedido pago")
           setIsLoading(false)   
           nav("/")
+        }).catch(() => {
+          toast.error("Falha ao finalizar")
+          setIsLoading(false)   
         })
       }).catch(() => { 
         toast.error("Falha no pagamento")
@@ -72,8 +75,6 @@ export default function OrderCheckout() {
     setIsLoading(false) 
     setdDiscount(0)
   }
-
-
 
   return (
     <>
@@ -100,16 +101,16 @@ export default function OrderCheckout() {
                   <div className={style.methodPays}>
                     <span>Método de pagamento</span>
                     <div className={style.buttons}>
-                      <Button onClick={() => setSelectMethodPay("dinheiro")} text='Dinheiro' title='Pagar com dinheiro' isActive={selectMethodPay === "dinheiro"}>
+                      <Button onClick={() => setSelectMethodPay("DINHEIRO")} text='Dinheiro' title='Pagar com dinheiro' isActive={selectMethodPay === "DINHEIRO"}>
                         <CurrencyDollar size={20} />
                       </Button>
-                      <Button onClick={() => setSelectMethodPay("pix")} text='Pix' title='Pagar com pix' isActive={selectMethodPay === "pix"}>
+                      <Button onClick={() => setSelectMethodPay("PIX")} text='Pix' title='Pagar com pix' isActive={selectMethodPay === "PIX"}>
                         <PixLogo size={20} />
                       </Button>
-                      <Button onClick={() => setSelectMethodPay("débito")} text='Débito' title='Pagar com cartão de débito' isActive={selectMethodPay === "débito"}>
+                      <Button onClick={() => setSelectMethodPay("DEBITO")} text='Débito' title='Pagar com cartão de débito' isActive={selectMethodPay === "DEBITO"}>
                         <Bank size={20} />
                       </Button>
-                      <Button onClick={() => setSelectMethodPay("crédito")} text='Crédito' title='Pagar com cartão de crédito' isActive={selectMethodPay === "crédito"}>
+                      <Button onClick={() => setSelectMethodPay("CREDITO")} text='Crédito' title='Pagar com cartão de crédito' isActive={selectMethodPay === "CREDITO"}>
                         <CreditCard size={20} />
                       </Button>
                     </div>
@@ -138,9 +139,9 @@ export default function OrderCheckout() {
                 </div>
                 <div className={style.actionOrder}>
                   {
-                    order.status_payment === "em aberto" && (
+                    order.status_payment === "EM_ABERTO" && (
                       <>
-                        <Button disabled={isLoading} onClick={() => handlePaymentOrder(true)} title={order.status_payment === "em aberto" ? 'Ir para o pagamento e finalizar' : "Finalizar pedido" } type='button' variant='success' text='Finalizar e Pagar' />
+                        <Button disabled={isLoading} onClick={() => handlePaymentOrder(true)} title={order.status_payment === "EM_ABERTO" ? 'Ir para o pagamento e finalizar' : "Finalizar pedido" } type='button' variant='success' text='Finalizar e Pagar' />
                         <Button disabled={isLoading} onClick={() => handlePaymentOrder(false)} title='Ir para o pagamento ' type='button' text='Pagar' />
                       </>
                     )

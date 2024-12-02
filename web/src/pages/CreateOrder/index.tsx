@@ -19,7 +19,7 @@ export default function CreateOrder() {
 
   const [ itemsSelected, setItemsSelected ] = useState<ItemProps[]>([])
   const [ amount, setAmount ] = useState(0)
-  const [ service, setService ] = useState("local")
+  const [ service, setService ] = useState("LOCAL")
   const [ client, setClient ] = useState("")
   const [ description, setDescription ] = useState("")
 
@@ -116,8 +116,8 @@ export default function CreateOrder() {
                       <label htmlFor="service">Serviço*</label>
                       <select id='service' value={service} onChange={x => setService(x.target.value)}>
                         <option value="">Escolha o tipo</option>
-                        <option value="local">Local</option>
-                        <option value="levar">Levar</option>
+                        <option value="LOCAL">Local</option>
+                        <option value="LEVAR">Levar</option>
                       </select>
                     </div>
                   </div>
