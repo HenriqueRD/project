@@ -43,6 +43,40 @@
   overflow: scroll;
   scrollbar-width: none;
 }
+.orders .containerTable .tableEmpty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.orders .containerTable .tableEmpty span {
+  font-weight: 500;
+}
 .orders table time {
   font-size: .9rem;
+}
+
+@media (max-width: 780px) {
+  .orders .headerTable .search {
+    justify-content: center;
+  }
+  .orders .headerTable .search p {
+    display: none;
+  }
+  .orders .headerTable  {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 660px) {
+  #orders {
+    margin-top: 2rem;
+  }
+}
+@media (max-width: 440px) {
+  .orders .headerTable .search .inputs  {
+    gap: .5rem;
+  }
 }

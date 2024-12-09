@@ -132,12 +132,14 @@ export default function CreateOrder() {
                       <label htmlFor="">Nome do Produto</label>
                       <input type="text" placeholder='Escolher Produto' value={productNameCurrent} readOnly disabled/>
                     </div>
-                    <div className={style.box}>
-                      <label htmlFor="amount">Quantidade*</label>
-                      <div className={style.addAmount}>
-                        <Button onClick={handleRemoveAmount} type='button' icon variant='danger' ><Minus size={20} weight='bold' /></Button>
-                        <input type="number" id='amount' value={amount} readOnly disabled />
-                        <Button onClick={handleAddAmount} type='button' icon variant='success'><Plus size={20} weight='bold' /></Button>
+                    <div className={style.mobInput}>
+                      <div className={style.box}>
+                        <label htmlFor="amount">Quantidade*</label>
+                        <div className={style.addAmount}>
+                          <Button onClick={handleRemoveAmount} type='button' icon variant='danger' ><Minus size={20} weight='bold' /></Button>
+                          <input type="number" id='amount' value={amount} readOnly disabled />
+                          <Button onClick={handleAddAmount} type='button' icon variant='success'><Plus size={20} weight='bold' /></Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -153,26 +155,28 @@ export default function CreateOrder() {
                     <h3>Itens</h3>
                     <Tag type="normal" text={itemsSelected.length.toString()} />
                   </div>
-                  <div className={style.containerListItems}>
-                    {
-                      itemsSelected.length === 0 ? (
-                        <div className={style.empty}>
-                          <span>Nem um item selecionado</span>
-                        </div>
-                      ) : (
-                        <ul>
-                          {
-                            itemsSelected.map((x, i) => {
-                              return (
-                                <li key={i}>
-                                  <CardItem data={x} id={i+1} handleOnClick={() => handleRemoveItem(i)}/>
-                                </li>
-                              )
-                            })
-                          }
-                        </ul>
-                      )
-                    }
+                  <div className={style.contentItems}>
+                    <div className={style.containerListItems}>
+                      {
+                        itemsSelected.length === 0 ? (
+                          <div className={style.empty}>
+                            <span>Nem um item selecionado</span>
+                          </div>
+                        ) : (
+                          <ul>
+                            {
+                              itemsSelected.map((x, i) => {
+                                return (
+                                  <li key={i}>
+                                    <CardItem data={x} id={i+1} handleOnClick={() => handleRemoveItem(i)}/>
+                                  </li>
+                                )
+                              })
+                            }
+                          </ul>
+                        )
+                      }
+                    </div>
                   </div>
                 </div>
               </div>
@@ -192,10 +196,10 @@ export default function CreateOrder() {
                   <table className='table'>
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
+                        <th scope="col" className='thId'>#</th>
                         <th scope="col">Produto</th>
                         <th scope="col">Preço</th>
-                        <th scope="col">Ação</th>
+                        <th scope="col" className='thButtons'>Ação</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -203,7 +207,7 @@ export default function CreateOrder() {
                         products.map(x => {
                           return (
                             <tr key={x.id} title='Selecionar' onClick={() => { setProductCurrent(x); setAmount(1); setProductNameCurrent(x.name)}}>
-                              <th scope="row">{x.id}</th>
+                              <th scope="row" className='thId'>{x.id}</th>
                               <td>{x.name}</td>
                               <td>{x.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
                               <td className="buttons">

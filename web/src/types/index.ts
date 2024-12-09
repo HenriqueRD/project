@@ -21,6 +21,7 @@ export type OrderProps = {
   update_at: Date
   total: number
   items: ItemProps[]
+  sells: SellsProps[]
 }
 
 export type SellsProps = {
@@ -31,7 +32,7 @@ export type SellsProps = {
   order_id: number
 }
 
-export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO'
+export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO' | "ALL"
 
 export type StatusPaymentProps = 'EM_ABERTO' | 'PAGO'
 

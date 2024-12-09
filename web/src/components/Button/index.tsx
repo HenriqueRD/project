@@ -13,8 +13,19 @@ export default function Button({ text, variant = "primary", icon = false, isActi
 
   return (
     <button id={style.button} {...rest} className={`${style[variant]} ${icon ? style.isIcon : style.x} ${isActive ? style.x : style.isNotActive}`}>
-      {children}
-      <span>{text}</span>
+      {
+        icon ? (
+          <>
+            {children}
+          </>
+        ) : (
+           <>
+            {children}
+            <span>{text}</span>
+           </>
+        )
+      }
+      
     </button>
   )
 }

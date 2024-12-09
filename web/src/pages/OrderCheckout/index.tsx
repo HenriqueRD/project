@@ -31,6 +31,12 @@ export default function OrderCheckout() {
     }
   }, [id])
 
+  if (order.status_payment === "PAGO") {
+    toast.error("Pedido ja foi realizado o pagamento")
+    nav("/")
+    return 
+  }
+
   if (!order.created_at) return <h1>oi</h1>
   if (!order.update_at) return <h1>oi</h1>
 
