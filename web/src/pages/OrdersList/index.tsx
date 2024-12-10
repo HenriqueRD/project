@@ -1,5 +1,6 @@
 import { Check, ClipboardText, NotePencil } from '@phosphor-icons/react'
-import { format, formatDistance, sub, subDays } from 'date-fns'
+import { format, formatDistance, subDays } from 'date-fns'
+import qs from 'qs'
 import { ptBR } from 'date-fns/locale'
 import Header from '../../components/Header'
 import style from './styles.module.css'
@@ -16,12 +17,16 @@ export default function OrdersList() {
   const [ orders, setOrders ] = useState<OrderProps[]>([])
   const [ date, setDate ] = useState(new Date())
   const [ status, setStatus ] = useState<StatusOrderProps>("EM_PREPARACAO")
-//format(date, 'yyyy-MM-dd')
+
   async function getOrders() { 
-    await api.get("orders", { params: {
+    await api.get("orders/", { params: {
       date: format(date, 'yyyy-MM-dd'),
       status: ["EM_PREPARACAO", "CONCLUIDO", "FINALIZADO"]
-    }}).then(x => setOrders(x.data))
+    },
+    paramsSerializer: (params) => {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
+    }
+  }).then(x => setOrders(x.data))
   }
 
   useEffect(() => {    
@@ -33,9 +38,9 @@ export default function OrdersList() {
     if (status === "ALL") {
       getOrders()
     }
-    await api.get("orders", { params: {
+    await api.get("orders/", { params: {
       date: format(date, 'yyyy-MM-dd'),
-      status
+      status: status
     } }).then(x => setOrders(x.data))
   }
 
@@ -101,7 +106,7 @@ export default function OrdersList() {
                               <td className='tdItems'>{x.items.length}</td>
                               <td><time title={format(x.created_at, 'dd/MM/yyyy')} dateTime={x.created_at.toString()}>{formatDistance(subDays(x.created_at, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
                               <td><Tag text={x.service}/></td>
-                              <td className={`${style.total} tdTotal`}><Tag text={x.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.status_payment === "PAGO" ? "success" : "alert"} /></td>
+                              <td className={`${style.total} tdTotal`}><Tag text={x.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.status_payment === "PAGO" ? "success" : "alert"} /></td>
                               <td className="buttons">
                                 <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
                                 <Button icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>

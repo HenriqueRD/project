@@ -38,7 +38,7 @@ export default function OrderCheckout() {
   }
 
   if (!order.created_at) return <h1>oi</h1>
-  if (!order.update_at) return <h1>oi</h1>
+  if (!order.updated_at) return <h1>oi</h1>
 
   async function handlePaymentOrder(isFinish: boolean) {
     setIsLoading(true)
@@ -100,7 +100,7 @@ export default function OrderCheckout() {
                       <Link to={`/pedido/${order.id}`}><ArrowLeft size={18} /> Voltar ao pedido</Link>
                       <div className={style.dates}>
                         <span>Criado em {format(new Date(order.created_at), 'dd/MM/yyyy HH:mm')}</span>
-                        <span>Atualizado em {format(new Date(order.update_at), 'dd/MM/yyyy  HH:mm')}</span>
+                        <span>Atualizado em {format(new Date(order.updated_at), 'dd/MM/yyyy  HH:mm')}</span>
                       </div>
                     </div>
                   </div>

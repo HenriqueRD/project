@@ -18,8 +18,8 @@ export type OrderProps = {
   client: string
   service: string
   created_at: Date
-  update_at: Date
-  total: number
+  updated_at: Date
+  total_value: number
   items: ItemProps[]
   sells: SellsProps[]
 }

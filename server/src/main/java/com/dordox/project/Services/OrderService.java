@@ -25,13 +25,11 @@ public class OrderService {
   @Autowired
   private ItemRepository repoItem;
 
-  public List<OrderEntity> list(MultiValueMap<String, Object> params) {
+  public List<OrderEntity> list(MultiValueMap<String, String> params) {
     List<StatusOrderEnum> status = params.get("status").stream().map((x) -> StatusOrderEnum.valueOf(x.toString())).toList();
-    String date = params.get("date").get(0).toString();
-
+    String date = params.getFirst("date");
     LocalDateTime localDateTime = LocalDateTime.parse(date + "T00:00:00");
 
-    System.out.println(localDateTime+ " - "+ localDateTime.plusDays(1) );
     List<OrderEntity> orders = repo.findByStatusOrderInAndCreatedAtBetween(status, localDateTime, localDateTime.plusDays(1));
     return orders;
   }

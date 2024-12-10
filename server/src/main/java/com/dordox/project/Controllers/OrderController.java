@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,13 +31,14 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/orders")
+@CrossOrigin(origins = "http://localhost:5173")
 public class OrderController {
 
   @Autowired
   private OrderService service;
 
   @GetMapping("/")
-  public ResponseEntity<Object> list(@RequestParam MultiValueMap<String, Object> params) {
+  public ResponseEntity<Object> list(@RequestParam MultiValueMap<String, String> params) {
     List<OrderResponse> orders = service.list(params).stream().map(x -> new OrderResponse(x)).toList();
     
     return new ResponseEntity<>(orders, HttpStatus.OK);

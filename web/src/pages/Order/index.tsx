@@ -14,18 +14,17 @@ import { TailSpin } from 'react-loader-spinner'
 
 export default function Order() {
 
-  const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sells: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total: 0, update_at: new Date(), id: 0 });
+  const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sells: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date(), id: 0 });
   const { id } = useParams()
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isLoadingOrder, setIsLoadingOrder ] = useState(false)
   const nav = useNavigate()
-  const [ statusCurrent, setStatusCurrent ] = useState<StatusOrderProps>(order.status_order)
+  const [ statusCurrent, setStatusCurrent ] = useState("null" as String | "EM_PREPARACAO" | "CONCLUIDO")
 
   async function getOrder(idOrder : string) {
     setIsLoadingOrder(true)
     await api.get<OrderProps>(`orders/${idOrder}`).then(x => { 
       setOrder(x.data)
-      setStatusCurrent(x.data.status_order)
     }).catch((err) => {
       toast.error(err.message)
       nav("/")
@@ -43,19 +42,18 @@ export default function Order() {
   async function handleChangeStatus(event : FormEvent) {
     event.preventDefault()
     setIsLoading(true)
-    if (statusCurrent.trim() === "null") {
-      toast.error("Escolha um status!")
+    if (statusCurrent === "null") {
+      toast.error("Escolha um status")    
       setIsLoading(false)
-      return
+      return  
     }
-    else if (statusCurrent.trim() === order.status_order) {
+    if (statusCurrent.trim() === order.status_order) {
       toast.error("Escolha um status diferente do atual")    
       setIsLoading(false)
       return  
     }
-    api.put("orders", {
-      id: order.id,
-      status_order: statusCurrent
+    api.patch(`orders/${id}`, {
+      order_status: statusCurrent
     }).then(() => {
       toast.success("Status atualizado")
       if (id) {
@@ -63,14 +61,14 @@ export default function Order() {
       }
       setIsLoading(false)
     }).catch(() => {
-      toast.success("Falha ao atualizar o status")
+      toast.error("Falha ao atualizar o status")
       setIsLoading(false)
     })
   }
 
   async function handleFinishOrder() {
     setIsLoading(true)
-    api.put("orders", {
+    api.put(`orders/${id}`, {
       id: order.id,
       status_order: "FINALIZADO"
     }).then(() => {
@@ -125,7 +123,7 @@ export default function Order() {
                           <Link to="/"><ArrowLeft size={18} /> Voltar aos pedidos</Link>
                           <div className={style.dates}>
                             <span>Criado em {format(order.created_at, 'dd/MM/yyyy HH:mm')}</span>
-                            <span>Atualizado em {format(order.update_at, 'dd/MM/yyyy  HH:mm')}</span>
+                            <span>Atualizado em {format(order.updated_at, 'dd/MM/yyyy  HH:mm')}</span>
                           </div>
                         </div>
                       </div>
@@ -168,7 +166,7 @@ export default function Order() {
                               <div>
                                 <div className={style.box}>
                                   <span>Subtotal dos itens</span>
-                                  <span className={style.value}>+ {order.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                                  <span className={style.value}>+ {order.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                                 </div>
                                 <div className={style.box}>
                                   <span>Desconto</span>

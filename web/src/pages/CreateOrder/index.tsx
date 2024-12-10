@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useContext, useState } from 'react'
 import Header from '../../components/Header'
 import style from './styles.module.css'
 import CardItem from '../../components/CardItem'
@@ -9,13 +9,15 @@ import Tag from '../../components/Tag'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../../api'
+import { ProductContext } from '../../contexts/ProductContext'
 
 export default function CreateOrder() {
 
   const nav = useNavigate()
   const [ productCurrent, setProductCurrent ] = useState<ProductProps>({} as any)
   const [ productNameCurrent, setProductNameCurrent ] = useState(productCurrent.name)
-  const [ products, setProducts ] = useState<ProductProps[]>([])
+  const { products } = useContext(ProductContext)
+  const [ productsListCurrent, setProductsListCurrent ] = useState<ProductProps[]>(products)
 
   const [ itemsSelected, setItemsSelected ] = useState<ItemProps[]>([])
   const [ amount, setAmount ] = useState(0)
@@ -23,13 +25,14 @@ export default function CreateOrder() {
   const [ client, setClient ] = useState("")
   const [ description, setDescription ] = useState("")
 
-  async function getProducts() {
-    await api.get("products").then(x => setProducts(x.data))
+  function handleSearchProducts(text : String) {
+    const newArray = products.filter(x => x.name.toLowerCase().includes(text.toLowerCase()))
+    setProductsListCurrent(newArray);
   }
 
-  useEffect(() => {
-    getProducts()
-  }, [])
+  function handleFormSearchProductReset() {
+    setProductsListCurrent(products)
+  }
 
   async function handleCreateOrder(event : FormEvent) {
     event.preventDefault()
@@ -38,14 +41,16 @@ export default function CreateOrder() {
       return
     }    
 
-    await api.post("orders", {
+    await api.post("orders/", {
       client,
       service,
       items: itemsSelected.map(x => {
         return {
           amount: x.amount,
           description: x.description,
-          product_id: x.product.id
+          product: {
+            id: x.product.id
+          }
         }
       })
     }).then(() => {
@@ -184,41 +189,48 @@ export default function CreateOrder() {
                 <h3>Item</h3>
                 <div className={style.headerTable}>
                   <div className={style.box}>
-                    <label htmlFor="id">Procurar por id ou nome</label>
+                    <label htmlFor="id">Procurar por nome</label>
                     <div className={style.inputsSearch}>
-                      <input  id='id' type="number" className={style.id} placeholder='id'/>
-                      <input id='name' type="text"  placeholder='nome do produto'/>
+                      <input id='name' placeholder='nome do produto' onChange={(x) => handleSearchProducts(x.target.value)} />
                     </div>
                   </div>
-                  <Button type='submit' text='Procurar'/>
+                  <Button type='reset' text='Resetar' onClick={handleFormSearchProductReset}/>
                 </div>
                 <div className={style.containerTable}>
-                  <table className='table'>
-                    <thead>
-                      <tr>
-                        <th scope="col" className='thId'>#</th>
-                        <th scope="col">Produto</th>
-                        <th scope="col">Preço</th>
-                        <th scope="col" className='thButtons'>Ação</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        products.map(x => {
-                          return (
-                            <tr key={x.id} title='Selecionar' onClick={() => { setProductCurrent(x); setAmount(1); setProductNameCurrent(x.name)}}>
-                              <th scope="row" className='thId'>{x.id}</th>
-                              <td>{x.name}</td>
-                              <td>{x.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
-                              <td className="buttons">
-                                <Button icon type='button' title='Selecionar' variant='success'><Check weight='bold' size={20} /></Button>
-                              </td>
-                            </tr>
-                          )
-                        })
-                      }
-                    </tbody>
-                  </table>
+                  {
+                    productsListCurrent.length === 0 ? (
+                      <div className={style.empty}>
+                        <span>Nem um produto foi encontrado</span>
+                      </div>
+                    ) : (
+                      <table className='table'>
+                        <thead>
+                          <tr>
+                            <th scope="col" className='thId'>#</th>
+                            <th scope="col">Produto</th>
+                            <th scope="col">Preço</th>
+                            <th scope="col" className='thButtons'>Ação</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {
+                            productsListCurrent.map(x => {
+                              return (
+                                <tr key={x.id} title='Selecionar' onClick={() => { setProductCurrent(x); setAmount(1); setProductNameCurrent(x.name)}}>
+                                  <th scope="row" className='thId'>{x.id}</th>
+                                  <td>{x.name}</td>
+                                  <td>{x.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
+                                  <td className="buttons">
+                                    <Button icon type='button' title='Selecionar' variant='success'><Check weight='bold' size={20} /></Button>
+                                  </td>
+                                </tr>
+                              )
+                            })
+                          }
+                        </tbody>
+                      </table>
+                    )
+                  }
                 </div>
               </form>
             </div>

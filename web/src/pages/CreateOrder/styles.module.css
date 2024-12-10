@@ -134,14 +134,14 @@
   overflow: scroll;
   scrollbar-width: none;
 }
-#createOrder .listItems .containerListItems .empty {
+#createOrder .empty {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-#createOrder .listItems .containerListItems .empty span {
+#createOrder .empty span {
   font-weight: 500;
 }
 #createOrder .listItems ul {
