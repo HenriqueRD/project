@@ -14,7 +14,7 @@ public class CreateOrderWithItemsRequest {
   @NotNull(message = "o client é obrigatório")
   private String client;
   @NotNull(message = "o service é obrigatório")
-  @Pattern(regexp = "LEVAR|LOCAL", message = "o service deve ser 'LEVAR' ou 'LOCAL'")
+  @Pattern(regexp = "LEVAR|LOCAL", message = "o service deve ser LEVAR | LOCAL")
   @NotBlank(message = "o service não pode estar vazio")
   private String service;
   @NotNull(message = "o items é obrigatório.")

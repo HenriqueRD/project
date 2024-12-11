@@ -21,7 +21,7 @@ export type OrderProps = {
   updated_at: Date
   total_value: number
   items: ItemProps[]
-  sells: SellsProps[]
+  sell: SellsProps[]
 }
 
 export type SellsProps = {

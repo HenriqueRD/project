@@ -76,8 +76,8 @@ public class OrderService {
   }
 
   public void delete(Long id) throws RecordNotFoundException {
-    Optional<OrderEntity> order = repo.findById(id);
-    if(order.isPresent()) {
+    boolean isOrder = repo.findById(id).isPresent();
+    if(isOrder) {
       repo.deleteById(id);
     } 
     else {

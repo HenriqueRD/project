@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.dordox.project.Dto.ErrorDto.ErrorResponse;
 import com.dordox.project.Dto.ErrorDto.FieldErrorResponse;
+import com.dordox.project.Errors.Exceptions.OrderAlreadyPaidException;
 import com.dordox.project.Errors.Exceptions.RecordNotFoundException;
 
 @RestControllerAdvice
@@ -18,6 +19,12 @@ public class HandleControllerError {
   public ResponseEntity<ErrorResponse> handleRecordNotFoundException(RecordNotFoundException exception) {
     ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage());
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(OrderAlreadyPaidException.class)
+  public ResponseEntity<ErrorResponse> handleOrderAlreadyPaidException(OrderAlreadyPaidException exception) {
+    ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT, exception.getMessage());
+    return new ResponseEntity<>(error, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.dordox.project.Dto.ItemDto.ItemResponse;
+import com.dordox.project.Dto.SellDto.SellResponse;
 import com.dordox.project.Entities.OrderEntity;
 import com.dordox.project.Entities.Enums.PaymentOrderEnum;
 import com.dordox.project.Entities.Enums.ServiceOrderEnum;
@@ -18,6 +19,7 @@ public class OrderResponse {
   private PaymentOrderEnum status_payment;
   private Float total_value;
   private List<ItemResponse> items;
+  private List<SellResponse> sell;
   private LocalDateTime created_at;
   private LocalDateTime updated_at;
 
@@ -31,6 +33,7 @@ public class OrderResponse {
     this.status_payment = obj.getStatusPayment();
     this.total_value = obj.getTotalValue();
     this.items = obj.getItems() != null ? obj.getItems().stream().map(x -> new ItemResponse(x)).toList() : null;
+    this.sell = obj.getSell() != null ? obj.getSell().stream().map(x -> new SellResponse(x)).toList() : null;
     this.created_at = obj.getCreatedAt();
     this.updated_at =  obj.getUpdated_at();
   }
@@ -85,5 +88,10 @@ public class OrderResponse {
   public void setUpdated_at(LocalDateTime updated_at) {
     this.updated_at = updated_at;
   }
-
+  public List<SellResponse> getSell() {
+    return sell;
+  }
+  public void setSell(List<SellResponse> sell) {
+    this.sell = sell;
+  }
 }

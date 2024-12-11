@@ -1,6 +1,7 @@
 package com.dordox.project.Entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,7 +41,9 @@ public class OrderEntity {
   @Column(name = "total_value")
   private Float totalValue;
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-  private List<ItemEntity> items;
+  private List<ItemEntity> items = new ArrayList<>();
+  @OneToMany(mappedBy = "order")
+  private List<SellEntity> sell = new ArrayList<>();
   @CreationTimestamp
   @Column(name = "created_at")
   private LocalDateTime createdAt;
@@ -99,6 +102,9 @@ public class OrderEntity {
   }
   public void setItems(List<ItemEntity> items) {
     this.items = items;
+  }
+  public List<SellEntity> getSell() {
+    return sell;
   }
   public LocalDateTime getCreatedAt() {
     return createdAt;

@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import style from './styles.module.css'
 import { api } from '../../api'
-import { OrderProps, StatusOrderProps } from '../../types'
+import { OrderProps } from '../../types'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft } from '@phosphor-icons/react'
 import CardItem from '../../components/CardItem'
@@ -14,7 +14,7 @@ import { TailSpin } from 'react-loader-spinner'
 
 export default function Order() {
 
-  const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sells: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date(), id: 0 });
+  const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sell: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date(), id: 0 });
   const { id } = useParams()
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isLoadingOrder, setIsLoadingOrder ] = useState(false)
@@ -101,7 +101,7 @@ export default function Order() {
           <div className="content">
           {
             isLoadingOrder ? (
-              <div className={style.contentEmpty}>
+              <div className='contentEmpty'>
                 <TailSpin
                   visible={true}
                   height="66"
@@ -159,7 +159,7 @@ export default function Order() {
                         }
                       </div>
                       {
-                        order.status_payment === "PAGO" && order.sells.map(x => {
+                        order.status_payment === "PAGO" && order.sell.map(x => {
                           return (
                             <div className={style.totalOrder}>
                               <h3>Resumo do Pagamento</h3>
@@ -192,7 +192,7 @@ export default function Order() {
                         order.status_payment === "EM_ABERTO" ? (
                           <>
                             <Button disabled={isLoading} onClick={handleDeleteOrder} title='Remover pedido' type='button' text='Excluir Pedido' variant='danger' />                      
-                            <Link to={`/`}>
+                            <Link to={`/pedido/editar/${order.id}`}>
                               <Button disabled={isLoading} title='Editar informação do pedido' type='button' variant='alert' text='Editar pedido' />
                             </Link>
                             <Link to={`/pedido/pagamento/${order.id}`}>

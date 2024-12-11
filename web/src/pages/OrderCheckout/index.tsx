@@ -11,15 +11,30 @@ import Button from '../../components/Button'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'
 
+/*
+
+.then(() => {
+        api.put("orders", {
+          id: order.id,
+          status_order: "FINALIZADO"
+        }).then(() => {
+          toast.success("Pedido pago")
+          setIsLoading(false)   
+          nav("/")
+        }).catch(() => {
+          toast.error("Falha ao finalizar")
+          setIsLoading(false)   
+        })
+      })
+*/
 export default function OrderCheckout() {
 
-  const [ order, setOrder ] = useState<OrderProps>({} as any)
+  const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sell: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date(), id: 0 })
   const { id } = useParams()
   const [ isLoading, setIsLoading ] = useState(false)
   const nav = useNavigate()
   const [ selectMethodPay, setSelectMethodPay ] = useState<MethodPaymentPros>("DINHEIRO")
   const [ discount, setdDiscount ] = useState(0)
-
 
   async function getOrder(idOrder : string) {
     await api.get<OrderProps>(`orders/${idOrder}`).then(x => setOrder(x.data)).catch(() => alert("Erro"))
@@ -35,40 +50,29 @@ export default function OrderCheckout() {
     toast.error("Pedido ja foi realizado o pagamento")
     nav("/")
     return 
-  }
-
-  if (!order.created_at) return <h1>oi</h1>
-  if (!order.updated_at) return <h1>oi</h1>
+  }  
 
   async function handlePaymentOrder(isFinish: boolean) {
     setIsLoading(true)
     if (isFinish) {
-      await api.post("sells", {
+      await api.post("sells/", {
         method_payment: selectMethodPay,
         discount,
-        order_id: order.id
-      }).then(() => {
-        api.put("orders", {
-          id: order.id,
-          status_order: "FINALIZADO"
-        }).then(() => {
-          toast.success("Pedido pago")
-          setIsLoading(false)   
-          nav("/")
-        }).catch(() => {
-          toast.error("Falha ao finalizar")
-          setIsLoading(false)   
-        })
+        order: {
+          id: order.id
+        }
       }).catch(() => { 
         toast.error("Falha no pagamento")
         setIsLoading(false) 
       })
     }
     else {
-      await api.post("sells", {
+      await api.post("sells/", {
         method_payment: selectMethodPay,
         discount,
-        order_id: order.id
+        order: {
+          id: order.id
+        }
       }).then(() => {
           toast.success("Pedido pago")
           setIsLoading(false)   

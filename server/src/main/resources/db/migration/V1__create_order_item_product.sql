@@ -28,3 +28,13 @@ CREATE TABLE items(
   CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 
+CREATE TABLE sells(
+  id  SERIAL PRIMARY KEY,
+  discount TEXT,
+  total_value INT,
+  method_payment VARCHAR(10),
+  order_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders(id)
+);
