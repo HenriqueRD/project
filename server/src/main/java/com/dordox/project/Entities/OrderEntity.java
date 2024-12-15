@@ -40,7 +40,7 @@ public class OrderEntity {
   private PaymentOrderEnum statusPayment;
   @Column(name = "total_value")
   private Float totalValue;
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ItemEntity> items = new ArrayList<>();
   @OneToMany(mappedBy = "order")
   private List<SellEntity> sell = new ArrayList<>();
@@ -55,7 +55,7 @@ public class OrderEntity {
   }
   public OrderEntity(OrderRequest obj) {
     this.client = obj.getClient();
-    this.service = obj.getService();
+    this.service =ServiceOrderEnum.valueOf(obj.getService());
   }
   public OrderEntity(String client, ServiceOrderEnum service) {
     this.client = client;
@@ -103,6 +103,12 @@ public class OrderEntity {
   public void setItems(List<ItemEntity> items) {
     this.items = items;
   }
+  public void addItems(ItemEntity items) {
+    this.items.add(items);
+  }
+  public void subItems(ItemEntity items) {
+    this.items.remove(items);
+  }
   public List<SellEntity> getSell() {
     return sell;
   }
@@ -112,10 +118,10 @@ public class OrderEntity {
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
-  public LocalDateTime getUpdated_at() {
+  public LocalDateTime getUpdatedAt() {
     return updatedAt;
   }
-  public void setUpdated_at(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
+  public void setUpdatedAt() {
+    this.updatedAt = LocalDateTime.now();
   }
 }

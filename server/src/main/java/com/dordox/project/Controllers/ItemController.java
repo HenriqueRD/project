@@ -32,9 +32,9 @@ public class ItemController {
     return new ResponseEntity<>(null, HttpStatus.CREATED);	
   }
   
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable Long id) {
-    service.delete(id);
+  @DeleteMapping("/{id}/order/{orderId}")
+  public ResponseEntity<Void> delete(@PathVariable Long orderId, @PathVariable Long id) {
+    service.delete(orderId, id);
     return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);	
   }
 } 

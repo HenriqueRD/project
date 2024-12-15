@@ -35,7 +35,7 @@ public class OrderResponse {
     this.items = obj.getItems() != null ? obj.getItems().stream().map(x -> new ItemResponse(x)).toList() : null;
     this.sell = obj.getSell() != null ? obj.getSell().stream().map(x -> new SellResponse(x)).toList() : null;
     this.created_at = obj.getCreatedAt();
-    this.updated_at =  obj.getUpdated_at();
+    this.updated_at =  obj.getUpdatedAt();
   }
   public Long getId() {
     return id;

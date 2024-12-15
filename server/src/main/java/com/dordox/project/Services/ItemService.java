@@ -23,25 +23,37 @@ public class ItemService {
   //check order paid
 
   @Transactional
-  public void create(Long id, ItemEntity obj) {
-     Optional<OrderEntity> isOrder = repoOrder.findById(id);
+  public void create(Long orderId, ItemEntity obj) {
+    Optional<OrderEntity> isOrder = repoOrder.findById(orderId);
     if (isOrder.isPresent()) {
-      obj.setOrder(isOrder.get());
+      OrderEntity order = isOrder.get();
+      obj.setOrder(order);
+      order.setUpdatedAt();
+      repoOrder.save(order);
       repo.save(obj);
     } 
     else {
-      throw new RecordNotFoundException("pedido", id);
+      throw new RecordNotFoundException("pedido", orderId);
     }
   }
 
   @Transactional
-  public void delete(Long id) {
-    boolean isItem = repo.findById(id).isPresent();
-    if(isItem) {
-      repo.deleteById(id);
+  public void delete(Long orderId, Long id) {
+    Optional<OrderEntity> isOrder = repoOrder.findById(orderId);
+    if (isOrder.isPresent()) {
+      Optional<ItemEntity> isItem = repo.findById(id);
+      OrderEntity order = isOrder.get();
+      if(isItem.isPresent()) {
+        order.setUpdatedAt();
+        repoOrder.save(order);
+        repo.deleteById(id);
+      }
+      else {
+        throw new RecordNotFoundException("item", id);
+      }
     } 
     else {
-      throw new RecordNotFoundException("item", id);
+      throw new RecordNotFoundException("pedido", orderId);
     }
   }
 }

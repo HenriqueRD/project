@@ -4,6 +4,7 @@ import { api } from "../api"
 
 type ProductContextProps = {
   products: ProductProps[]
+  isLoading: boolean
 }
 
 type ProductProviderProps = {
@@ -15,17 +16,21 @@ export const ProductContext = createContext({} as ProductContextProps)
 export function ProductProvider({ children } : ProductProviderProps) {
 
   const [ products, setProducts ] = useState<ProductProps[]>([])
+  const [ isLoading, setIsLoading ] = useState(false)
 
   async function getProducts() {
-    await api.get("products").then(x => setProducts(x.data))
+    setIsLoading(true)
+    await api.get("products").then(x => setProducts(x.data)).finally(() => setIsLoading(false))
   }
 
   useEffect(() => {
-    getProducts()
+    if (!products.length) {
+      getProducts()
+    }
   }, [])
 
   return (
-    <ProductContext.Provider value={{products}}>
+    <ProductContext.Provider value={{products, isLoading}}>
       {children}
     </ProductContext.Provider>
   )

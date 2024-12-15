@@ -14,18 +14,18 @@ import { TailSpin } from 'react-loader-spinner'
 
 export default function EditOrder() {
 
-  const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sell: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date(), id: 0 });
+  const [ order, setOrder ] = useState<OrderProps>({ id: 0, client: "", created_at: new Date(), items: [], sell: [], service: "LOCAL", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date() });
   const { id } = useParams()
   const nav = useNavigate()
   const [ productCurrent, setProductCurrent ] = useState<ProductProps>({} as any)
   const [ productNameCurrent, setProductNameCurrent ] = useState(productCurrent.name)
   const { products } = useContext(ProductContext)
   const [ productsListCurrent, setProductsListCurrent ] = useState<ProductProps[]>(products)
-  const [ isLoadingOrder, setIsLoadingOrder ] = useState(false)
-
+  const [ isLoadingOrder, setIsLoadingOrder ] = useState(true)
   const [ itemsSelected, setItemsSelected ] = useState<ItemProps[]>([])
+
   const [ amount, setAmount ] = useState(0)
-  const [ service, setService ] = useState("LOCAL")
+  const [ service, setService ] = useState("")
   const [ client, setClient ] = useState("")
   const [ description, setDescription ] = useState("")
 
@@ -47,6 +47,14 @@ export default function EditOrder() {
     }
   }, [id])
 
+  useEffect(() => {
+    if (order.items) {
+      setItemsSelected(order.items)
+      setService(order.service)
+      setClient(order.client)
+    }
+  }, [order])
+
   function handleSearchProducts(text : String) {
     const newArray = products.filter(x => x.name.toLowerCase().includes(text.toLowerCase()))
     setProductsListCurrent(newArray);
@@ -56,28 +64,17 @@ export default function EditOrder() {
     setProductsListCurrent(products)
   }
 
-  async function handleCreateOrder(event : FormEvent) {
+  async function handleUpdateInfoOrder(event : FormEvent) {
     event.preventDefault()
-    if (itemsSelected.length === 0) {
-      toast.error("Adicione um item para fazer o pedido!")
-      return
-    }    
-
-    await api.post("orders/", {
+    await api.put(`orders/${order.id}`, {
       client,
-      service,
-      items: itemsSelected.map(x => {
-        return {
-          amount: x.amount,
-          description: x.description,
-          product: {
-            id: x.product.id
-          }
-        }
-      })
+      service
     }).then(() => {
-      toast.success("Pedido criado!")
+      toast.success("Pedido criado")
       nav("/")
+    }).catch((x) => {
+      toast.error("Falha ao atualizar o pedido")
+      console.error(x.response.data.message)
     })
   }
 
@@ -85,27 +82,45 @@ export default function EditOrder() {
     event.preventDefault()
   }
 
-  function handleAddItem(event : FormEvent) {
+  async function handleAddItem(event : FormEvent) {
     event.preventDefault()
     if (!productCurrent.name || amount === 0) {
       toast.error("Selecione um Item!")
       return
-    }  
-    setItemsSelected([...itemsSelected, {
+    }
+    await api.post(`items/order/${order.id}`, {
       amount,
       description,
-      product: productCurrent
-    }])
-    toast.success("Item adicionado!")
-    setProductNameCurrent("")
-    setAmount(0)
-    setDescription("")
-    setProductCurrent({} as any)
+      product: {
+        id: productCurrent.id
+      }
+    }).then(() => {
+      setItemsSelected([...itemsSelected, {
+        amount,
+        description,
+        product: productCurrent
+      }])
+      toast.success("Item adicionado")
+    }).catch((x) => {
+      toast.error("Falha ao adicionar o item")
+      console.error(x.response.data.message)
+    }).finally(() => {
+      setProductNameCurrent("")
+      setAmount(0)
+      setDescription("")
+      setProductCurrent({} as any)
+    })
   }
 
-  function handleRemoveItem(id : number) {
-    const newArray = itemsSelected.filter((__, i) => i !== id)
-    setItemsSelected(newArray)
+  async function handleRemoveItem(id? : number) {
+    await api.delete(`items/${id}/order/${order.id}`).then(() => {
+      toast.success("Item removido")
+      const newArray = itemsSelected.filter((x) => x.id !== id)
+      setItemsSelected(newArray)
+    }).catch(x => {
+      toast.error("Falha ao remover o item")
+      console.error(x.response.data.message)
+    })
   }
 
   function handleAddAmount() {
@@ -130,7 +145,7 @@ export default function EditOrder() {
                   <TailSpin
                     visible={true}
                     height="66"
-                    width=""
+                    width="66"
                     color="#0a58ca"
                     ariaLabel="tail-spin-loading"
                   />
@@ -138,13 +153,13 @@ export default function EditOrder() {
               ) : (
                 <div className={style.contentForm}>
                   <div className={style.twoForms}>
-                    <form onSubmit={handleCreateOrder} className={style.formRequest}>
+                    <form onSubmit={handleUpdateInfoOrder} className={style.formRequest}>
                       <div className={style.formRequestHeader}>
                         <div >
                           <h3>Editar pedido #{order.id}</h3>
                           <Link to={`/pedido/${order.id}`}><ArrowLeft size={18} /> Voltar ao pedido</Link>
                         </div>
-                        <Button title='Editar pedido' type="submit" text='Atualizar pedido' variant='alert'/>
+                        <Button title='Editar pedido' type="submit" text='Atualizar dados' variant='alert'/>
                       </div>
                       <div className={style.twoInput}>
                         <div className={style.box}>
@@ -197,22 +212,34 @@ export default function EditOrder() {
                       <div className={style.contentItems}>
                         <div className={style.containerListItems}>
                           {
-                            order.items.length === 0 ? (
-                              <div className={style.empty}>
-                                <span>Nem um item selecionado</span>
+                            isLoadingOrder ? (
+                              <div className='contentEmpty'>
+                                <TailSpin
+                                  visible={true}
+                                  height="66"
+                                  width="66"
+                                  color="#0a58ca"
+                                  ariaLabel="tail-spin-loading"
+                                />
                               </div>
-                            ) : (
-                              <ul>
-                                {
-                                  order.items.map((x, i) => {
-                                    return (
-                                      <li key={i}>
-                                        <CardItem data={x} id={i+1} handleOnClick={() => handleRemoveItem(i)}/>
-                                      </li>
-                                    )
-                                  })
-                                }
-                              </ul>
+                            ): (
+                              itemsSelected.length === 0 ? (
+                                <div className={style.empty}>
+                                  <span>Nem um item selecionado</span>
+                                </div>
+                              ) : (
+                                <ul>
+                                  {
+                                    itemsSelected.map((x, i) => {
+                                      return (
+                                        <li key={i}>
+                                          <CardItem data={x} id={i+1} handleOnClick={() => handleRemoveItem(x?.id)}/>
+                                        </li>
+                                      )
+                                    })
+                                  }
+                                </ul>
+                              )
                             )
                           }
                         </div>
@@ -231,6 +258,7 @@ export default function EditOrder() {
                       <Button type='reset' text='Resetar' onClick={handleFormSearchProductReset}/>
                     </div>
                     <div className={style.containerTable}>
+                      
                       {
                         productsListCurrent.length === 0 ? (
                           <div className={style.empty}>

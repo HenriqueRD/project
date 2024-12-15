@@ -186,7 +186,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .contentEmpty {
   width: 100%;
-  height: 550px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

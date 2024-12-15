@@ -1,25 +1,18 @@
 package com.dordox.project.Dto.OrderDto;
 
-import com.dordox.project.Entities.OrderEntity;
-import com.dordox.project.Entities.Enums.ServiceOrderEnum;
-
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 
 public class OrderRequest {
   @NotNull(message = "O cliente é obrigatório")
   private String client;
-  @NotNull(message = "O serviço é obrigatório")
-  @Enumerated(EnumType.STRING)
-  private ServiceOrderEnum service;
+  @Pattern(regexp = "LEVAR|LOCAL", message = "o service deve ser LEVAR | LOCAL")
+  @NotBlank(message = "o service não pode estar vazio")
+  private String service;
 
   public OrderRequest() {
-  }
-  public OrderRequest(OrderEntity obj) {
-    this.client = obj.getClient();
-    this.service = obj.getService();
   }
   public String getClient() {
     return client;
@@ -27,10 +20,10 @@ public class OrderRequest {
   public void setClient(String client) {
     this.client = client;
   }
-  public ServiceOrderEnum getService() {
+  public String getService() {
     return service;
   }
-  public void setService(ServiceOrderEnum service) {
+  public void setService(String service) {
     this.service = service;
   }
 }

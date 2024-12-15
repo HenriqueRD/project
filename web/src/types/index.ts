@@ -6,6 +6,7 @@ export type ProductProps = {
 }
 
 export type ItemProps = {
+  id?: number
   amount: number
   description: string
   product: ProductProps

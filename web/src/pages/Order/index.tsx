@@ -105,7 +105,7 @@ export default function Order() {
                 <TailSpin
                   visible={true}
                   height="66"
-                  width=""
+                  width="66"
                   color="#0a58ca"
                   ariaLabel="tail-spin-loading"
                 />

@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.dordox.project.Dto.OrderDto.CreateOrderWithItemsRequest;
+import com.dordox.project.Dto.OrderDto.OrderRequest;
 import com.dordox.project.Dto.OrderDto.OrderResponse;
 import com.dordox.project.Dto.OrderDto.OrderStatusUpdateRequest;
 import com.dordox.project.Entities.ItemEntity;
@@ -49,6 +51,14 @@ public class OrderController {
     OrderResponse order = new OrderResponse(service.find(id));
 
     return new ResponseEntity<>(order, HttpStatus.OK);	
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody OrderRequest obj)  {
+    OrderEntity order = new OrderEntity(obj.getClient(), ServiceOrderEnum.valueOf(obj.getService()));
+    OrderResponse data = new OrderResponse(service.update(id, order));
+
+    return new ResponseEntity<>(data, HttpStatus.OK);	
   }
 
   @PatchMapping("/{id}")

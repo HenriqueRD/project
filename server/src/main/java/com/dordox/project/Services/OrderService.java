@@ -44,6 +44,19 @@ public class OrderService {
     }
   }
 
+  public OrderEntity update(Long id, OrderEntity obj) throws RecordNotFoundException {
+    Optional<OrderEntity> isOrder = repo.findById(id);
+    if(isOrder.isPresent()) {
+      OrderEntity order = isOrder.get();
+      order.setClient(obj.getClient());
+      order.setService(obj.getService());
+      return repo.save(order);
+    } 
+    else {
+      throw new RecordNotFoundException("pedido", id);
+    }
+  }
+
   public OrderEntity updateStatusOrder(Long id, StatusOrderEnum status) throws RecordNotFoundException {
     Optional<OrderEntity> isOrder = repo.findById(id);
     if(isOrder.isPresent()) {
