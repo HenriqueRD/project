@@ -68,6 +68,13 @@ public class OrderController {
     return new ResponseEntity<>(order, HttpStatus.OK);	
   }
 
+  @PatchMapping("{id}/finished")
+  public ResponseEntity<Object> finishedOrder(@PathVariable Long id)  {
+    OrderResponse order = new OrderResponse(service.finishedOrder(id));
+
+    return new ResponseEntity<>(order, HttpStatus.OK);	
+  }
+
   @PostMapping("/")
   public ResponseEntity<Object> create(@Valid @RequestBody CreateOrderWithItemsRequest obj)  {
     List<ItemEntity> items = obj.getItems().stream().map((x) -> (new ItemEntity(x))).toList();

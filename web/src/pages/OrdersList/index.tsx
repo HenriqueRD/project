@@ -74,7 +74,7 @@ export default function OrdersList() {
                           <option value="FINALIZADO">Finalizado</option>
                           <option value="ALL">Todos</option>
                         </select>
-                        <input type="date" value={format(date, 'yyyy-MM-dd')} onChange={x => setDate(new Date(x.target.value))}/>
+                        <input type="date" value={format(date, 'yyyy-MM-dd')} onChange={x => setDate(new Date(x.target.value+ "T00:00:00"))}/>
                         <Button type='submit' text='Procurar' />
                       </div>
                     </form>

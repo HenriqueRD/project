@@ -41,7 +41,7 @@ public class SellService {
         obj.setTotalValue(totalValue);
         return repo.save(obj);
       }
-      throw new OrderAlreadyPaidException();
+      throw new OrderAlreadyPaidException(obj.getOrder().getId());
     }
     throw new RecordNotFoundException("pedido", obj.getOrder().getId());
   }

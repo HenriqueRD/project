@@ -56,28 +56,29 @@ export default function Order() {
       order_status: statusCurrent
     }).then(() => {
       toast.success("Status atualizado")
+    }).catch((x) => {
+      toast.error("Falha ao atualizar o status")
+      console.error(x.response.data.message)
+    }).finally(() => {
+      setIsLoading(false)
       if (id) {
         getOrder(id)
       }
-      setIsLoading(false)
-    }).catch(() => {
-      toast.error("Falha ao atualizar o status")
-      setIsLoading(false)
     })
   }
 
   async function handleFinishOrder() {
     setIsLoading(true)
-    api.put(`orders/${id}`, {
-      id: order.id,
-      status_order: "FINALIZADO"
-    }).then(() => {
+    api.patch(`orders/${id}/finished`).then(() => {
       toast.success("Pedido finalizado")
-      setIsLoading(false)
-      nav("/")
-    }).catch(() => {
+    }).catch((x) => {
       toast.error("Falha ao finalizar pedido")
+      console.error(x.response.data.message)
+    }).finally(() => {
       setIsLoading(false)
+      if (id) {
+        getOrder(id)
+      }
     })
   }
 

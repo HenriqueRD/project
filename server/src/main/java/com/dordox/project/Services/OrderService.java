@@ -13,6 +13,7 @@ import com.dordox.project.Entities.ItemEntity;
 import com.dordox.project.Entities.OrderEntity;
 import com.dordox.project.Entities.Enums.PaymentOrderEnum;
 import com.dordox.project.Entities.Enums.StatusOrderEnum;
+import com.dordox.project.Errors.Exceptions.PaymentRequiredException;
 import com.dordox.project.Errors.Exceptions.RecordNotFoundException;
 import com.dordox.project.Repositories.ItemRepository;
 import com.dordox.project.Repositories.OrderRepository;
@@ -69,8 +70,26 @@ public class OrderService {
     }
   }
 
+  public OrderEntity finishedOrder(Long id) throws RecordNotFoundException {
+    Optional<OrderEntity> isOrder = repo.findById(id);
+    if(isOrder.isPresent()) {
+      OrderEntity order = isOrder.get();
+      if(order.getStatusPayment() == PaymentOrderEnum.PAGO) {
+        order.setStatusOrder(StatusOrderEnum.FINALIZADO);
+        return repo.save(order);
+      }
+      throw new PaymentRequiredException();
+    } 
+    else {
+      throw new RecordNotFoundException("pedido", id);
+    }
+  }
+
   @Transactional
   public OrderEntity create(OrderEntity order, List<ItemEntity> items) {
+    if(order.getClient().equals("")) {
+      order.setClient("não informado");
+    }
     order.setStatusOrder(StatusOrderEnum.EM_PREPARACAO);
     order.setStatusPayment(PaymentOrderEnum.EM_ABERTO);
     order.setTotalValue(0.f);

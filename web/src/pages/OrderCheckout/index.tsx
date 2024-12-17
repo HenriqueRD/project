@@ -11,22 +11,6 @@ import Button from '../../components/Button'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'
 
-/*
-
-.then(() => {
-        api.put("orders", {
-          id: order.id,
-          status_order: "FINALIZADO"
-        }).then(() => {
-          toast.success("Pedido pago")
-          setIsLoading(false)   
-          nav("/")
-        }).catch(() => {
-          toast.error("Falha ao finalizar")
-          setIsLoading(false)   
-        })
-      })
-*/
 export default function OrderCheckout() {
 
   const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sell: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date(), id: 0 })
@@ -61,10 +45,19 @@ export default function OrderCheckout() {
         order: {
           id: order.id
         }
-      }).catch(() => { 
-        toast.error("Falha no pagamento")
-        setIsLoading(false) 
-      })
+      }).then(() => {
+        toast.success("Pedido pago")
+        api.patch(`orders/${order.id}/finished`).then(() => {
+          toast.success("Pedido finalizado")
+        }).catch((x) => {
+          toast.error("Falha ao finalizar pedido")
+          console.error(x.response.data.message)
+        })
+        nav("/")
+    }).catch((x) => { 
+      toast.error("Falha no pagamento")
+      console.error(x.response.data.message)
+    }).finally(() => setIsLoading(false))
     }
     else {
       await api.post("sells/", {
@@ -74,15 +67,13 @@ export default function OrderCheckout() {
           id: order.id
         }
       }).then(() => {
-          toast.success("Pedido pago")
-          setIsLoading(false)   
-          nav("/")
-      }).catch(() => { 
+        toast.success("Pedido pago")
+        nav("/")
+      }).catch((x) => { 
         toast.error("Falha no pagamento")
-        setIsLoading(false) 
-      })
+        console.error(x.response.data.message)
+      }).finally(() => setIsLoading(false))
     }
-    setIsLoading(false) 
     setdDiscount(0)
   }
 
@@ -125,12 +116,16 @@ export default function OrderCheckout() {
                       </Button>
                     </div>
                   </div>
+                  <div className={style.discount}>
+                    <label>Desconto</label>
+                    <input type="number" value={discount} min={0} onChange={x => { x.target.value === "" ? setdDiscount(0) : setdDiscount(parseInt(x.target.value))}} />
+                  </div>
                   <div className={style.totalOrder}>
                     <h3>Resumo do Pagamento</h3>
                     <div>
                       <div className={style.box}>
                         <span>Subtotal dos itens</span>
-                        <span className={style.value}>+ R$ 72,00</span>
+                        <span className={style.value}>+ {order.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                       </div>
                       <div className={style.box}>
                         <span>Desconto</span>
@@ -142,7 +137,7 @@ export default function OrderCheckout() {
                       </div>
                       <div className={style.totalValue}>
                         <span className={style.value}>Total Final</span>
-                        <span className={style.value}>R$ 72,00</span>
+                        <span className={style.value}>{(order.total_value - discount).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                       </div>
                     </div>
                   </div>  

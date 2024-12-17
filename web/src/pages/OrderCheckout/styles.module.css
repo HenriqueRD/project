@@ -72,6 +72,15 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 2.5rem;
 }
+#orderCheckout .discount {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+#orderCheckout .discount > input {
+  max-width: 150px;
+  width: 100%;
+}
 #orderCheckout .totalOrder {
   display: flex;
   flex-direction: column;

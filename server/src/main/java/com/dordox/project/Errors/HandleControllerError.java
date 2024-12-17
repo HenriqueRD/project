@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.dordox.project.Dto.ErrorDto.ErrorResponse;
 import com.dordox.project.Dto.ErrorDto.FieldErrorResponse;
 import com.dordox.project.Errors.Exceptions.OrderAlreadyPaidException;
+import com.dordox.project.Errors.Exceptions.PaymentRequiredException;
 import com.dordox.project.Errors.Exceptions.RecordNotFoundException;
 
 @RestControllerAdvice
@@ -23,6 +24,12 @@ public class HandleControllerError {
 
   @ExceptionHandler(OrderAlreadyPaidException.class)
   public ResponseEntity<ErrorResponse> handleOrderAlreadyPaidException(OrderAlreadyPaidException exception) {
+    ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT, exception.getMessage());
+    return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(PaymentRequiredException.class)
+  public ResponseEntity<ErrorResponse> handleOrderIsNotPaidException(PaymentRequiredException exception) {
     ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT, exception.getMessage());
     return new ResponseEntity<>(error, HttpStatus.CONFLICT);
   }
