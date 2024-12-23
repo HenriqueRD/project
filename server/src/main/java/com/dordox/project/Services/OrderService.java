@@ -11,8 +11,8 @@ import org.springframework.util.MultiValueMap;
 
 import com.dordox.project.Entities.ItemEntity;
 import com.dordox.project.Entities.OrderEntity;
-import com.dordox.project.Entities.Enums.PaymentOrderEnum;
-import com.dordox.project.Entities.Enums.StatusOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.PaymentOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.StatusOrderEnum;
 import com.dordox.project.Errors.Exceptions.PaymentRequiredException;
 import com.dordox.project.Errors.Exceptions.RecordNotFoundException;
 import com.dordox.project.Repositories.ItemRepository;

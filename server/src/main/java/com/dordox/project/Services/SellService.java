@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dordox.project.Entities.OrderEntity;
 import com.dordox.project.Entities.SellEntity;
-import com.dordox.project.Entities.Enums.PaymentOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.PaymentOrderEnum;
+import com.dordox.project.Entities.Enums.Transactions.CategoryTransactionEnum;
 import com.dordox.project.Errors.Exceptions.OrderAlreadyPaidException;
 import com.dordox.project.Errors.Exceptions.RecordNotFoundException;
 import com.dordox.project.Repositories.OrderRepository;
@@ -22,6 +23,8 @@ public class SellService {
   private SellRepository repo;
   @Autowired
   private OrderRepository repoOrder;
+  @Autowired
+  private TransactionService servTransaction;
 
   public List<SellEntity> list() {
     List<SellEntity> sells = repo.findAll();
@@ -39,7 +42,9 @@ public class SellService {
         repoOrder.save(order);
         float totalValue = 0.f;
         obj.setTotalValue(totalValue);
-        return repo.save(obj);
+        SellEntity sell = repo.save(obj);
+        servTransaction.createInput(sell, CategoryTransactionEnum.VENDA);
+        return sell;
       }
       throw new OrderAlreadyPaidException(obj.getOrder().getId());
     }

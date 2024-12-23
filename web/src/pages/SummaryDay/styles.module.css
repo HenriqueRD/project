@@ -1,0 +1,39 @@
+#summaryDay {
+  margin-top: 2rem;
+}
+#summaryDay .summaryTransactionInfo {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--gray-400);
+  padding-bottom: 1rem;
+  gap: 1rem;
+}
+#summaryDay .summaryTransactionInfoHeader {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+#summaryDay .summaryTransactionInfoHeader p {
+  padding-left: .5rem;
+  color:  var(--gray-700);
+}
+#summaryDay .cards {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+#summaryDay .cards .treeTransa {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+}
+#summaryDay .containerTable {
+  border-radius: 4px;
+  height: 400px;
+  width: 100%;
+  background-color: var(--white);
+  border: 1px solid var(--gray-300);
+  overflow: scroll;
+  scrollbar-width: none;
+}

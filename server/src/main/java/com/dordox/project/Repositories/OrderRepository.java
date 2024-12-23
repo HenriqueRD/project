@@ -5,11 +5,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-//import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.dordox.project.Entities.OrderEntity;
-import com.dordox.project.Entities.Enums.StatusOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.StatusOrderEnum;
 
 @Repository
 public interface OrderRepository extends JpaRepository<OrderEntity, Long>{

@@ -21,18 +21,21 @@
   --blue-700: #084298;
   --blue-800: #052c65;
 
+  --red-neon: #ea868f1a;
   --red-300: #ea868f;
   --red-500: #dc3545;
   --red-600: #b02a37;
   --red-700: #842029;
   --red-800: #58151c;
 
+  --yellow-neon: #ffda6a1a;
   --yellow-300: #ffda6a;
   --yellow-500: #ffc107;
   --yellow-600: #cc9a06;
   --yellow-700: #997404;
   --yellow-800: #664d03;
 
+  --green-neon: #75b7981a;
   --green-300: #75b798;
   --green-500: #198754;
   --green-600: #146c43;
@@ -45,6 +48,7 @@
   --gray-600: #6c757d;
   --gray-500: #adb5bd;
   --gray-400: #ced4da;
+  --gray-neon: #ced4da1a;
   --gray-300: #dee2e6;
   --gray-200: #e9ecef;
   --gray-100: #f8f9fa;
@@ -190,6 +194,9 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.contentEmpty span {
+  font-weight: 500;
 }
 
 @media (max-width: 780px) {

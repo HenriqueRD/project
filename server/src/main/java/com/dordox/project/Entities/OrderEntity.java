@@ -8,9 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.dordox.project.Dto.OrderDto.OrderRequest;
-import com.dordox.project.Entities.Enums.PaymentOrderEnum;
-import com.dordox.project.Entities.Enums.ServiceOrderEnum;
-import com.dordox.project.Entities.Enums.StatusOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.PaymentOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.ServiceOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.StatusOrderEnum;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

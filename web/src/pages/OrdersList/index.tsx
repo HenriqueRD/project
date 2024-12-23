@@ -109,8 +109,14 @@ export default function OrdersList() {
                               <td className={`${style.total} tdTotal`}><Tag text={x.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.status_payment === "PAGO" ? "success" : "alert"} /></td>
                               <td className="buttons">
                                 <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
-                                <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/editar/${x.id}`)}} icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>
-                                <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/pagamento/${x.id}`)}} icon title='Finalizar Pedido' variant='success'><Check weight='bold' size={20} /></Button>
+                                {
+                                  x.status_payment !== "PAGO" && (
+                                    <>
+                                      <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/editar/${x.id}`)}} icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>
+                                      <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/pagamento/${x.id}`)}} icon title='Finalizar Pedido' variant='success'><Check weight='bold' size={20} /></Button>
+                                    </>
+                                  )
+                                }
                               </td>
                             </tr>
                           )
@@ -120,7 +126,7 @@ export default function OrdersList() {
                 </table>
                 {
                   orders.length === 0 && (
-                    <div className={style.tableEmpty}>
+                    <div className='contentEmpty'>
                       <span>Nem um pedido encontado</span>
                     </div>
                   )

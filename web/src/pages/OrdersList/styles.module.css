@@ -43,15 +43,6 @@
   overflow: scroll;
   scrollbar-width: none;
 }
-.orders .containerTable .tableEmpty {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.orders .containerTable .tableEmpty span {
-  font-weight: 500;
-}
 .orders table time {
   font-size: .9rem;
 }

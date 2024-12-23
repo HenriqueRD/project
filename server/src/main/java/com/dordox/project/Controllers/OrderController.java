@@ -24,8 +24,8 @@ import com.dordox.project.Dto.OrderDto.OrderResponse;
 import com.dordox.project.Dto.OrderDto.OrderStatusUpdateRequest;
 import com.dordox.project.Entities.ItemEntity;
 import com.dordox.project.Entities.OrderEntity;
-import com.dordox.project.Entities.Enums.ServiceOrderEnum;
-import com.dordox.project.Entities.Enums.StatusOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.ServiceOrderEnum;
+import com.dordox.project.Entities.Enums.Orders.StatusOrderEnum;
 import com.dordox.project.Services.OrderService;
 
 import jakarta.validation.Valid;

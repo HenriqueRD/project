@@ -1,0 +1,64 @@
+#cardSummaryTransaction {
+  max-width: 210px;
+  width: 100%;
+  height: 120px;
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--gray-600);
+  background-color: var(--gray-neon);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#cardSummaryTransaction.input {
+  border: 1px solid var(--green-500);
+  background-color: var(--green-neon);
+}
+#cardSummaryTransaction.output {
+  border: 1px solid var(--red-500);
+  background-color: var(--red-neon);
+}
+#cardSummaryTransaction.order {
+  border: 1px solid var(--yellow-500);
+  background-color: var(--yellow-neon);
+}
+#cardSummaryTransaction .total {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+#cardSummaryTransaction.input .total {
+  color: var(--green-700);
+}
+#cardSummaryTransaction.output .total {
+  color: var(--red-800);
+}
+#cardSummaryTransaction.order .total {
+  color: var(--yellow-800);
+}
+#cardSummaryTransaction .isInput {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  justify-content: space-between;
+}
+#cardSummaryTransaction.input .isInput svg {
+  color: var(--green-500);
+}
+#cardSummaryTransaction.total .isInput svg {
+  color: var(--gray-700);
+}
+#cardSummaryTransaction.output .isInput svg {
+  color: var(--red-500);
+}
+#cardSummaryTransaction.order .isInput svg {
+  color: var(--yellow-600);
+}
+#cardSummaryTransaction .contentTotal {
+  display: flex;
+  flex-direction: column;
+}
+#cardSummaryTransaction .contentTotal .comparation{
+  color: var(--gray-800);
+  font-size: .8rem;
+  font-weight: 500;
+}

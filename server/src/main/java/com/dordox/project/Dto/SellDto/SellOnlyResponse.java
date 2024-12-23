@@ -2,27 +2,24 @@ package com.dordox.project.Dto.SellDto;
 
 import java.time.LocalDateTime;
 
-import com.dordox.project.Dto.OrderDto.OrderNotSellResponse;
 import com.dordox.project.Entities.SellEntity;
 import com.dordox.project.Entities.Enums.Sells.MethodPaymentSellEnum;
 
-public class SellResponse {
+public class SellOnlyResponse {
   private Long id;
   private MethodPaymentSellEnum method_payment;
   private Float total_value;
   private Float discount;
   private LocalDateTime created_at;
-  private OrderNotSellResponse order;
 
-  public SellResponse() {
+  public SellOnlyResponse() {
   }
-  public SellResponse(SellEntity obj) {
+  public SellOnlyResponse(SellEntity obj) {
     this.id = obj.getId();
     this.method_payment = obj.getMethodPayment();
     this.total_value = obj.getTotalValue();
     this.discount = obj.getDiscount();
     this.created_at = obj.getCreatedAt();
-    this.order = new OrderNotSellResponse(obj.getOrder());
   }
   public Long getId() {
     return id;
@@ -32,12 +29,6 @@ public class SellResponse {
   }
   public MethodPaymentSellEnum getMethod_payment() {
     return method_payment;
-  }
-  public OrderNotSellResponse getOrder() {
-    return order;
-  }
-  public void setOrder(OrderNotSellResponse order) {
-    this.order = order;
   }
   public void setMethod_payment(MethodPaymentSellEnum method_payment) {
     this.method_payment = method_payment;

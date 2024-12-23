@@ -38,3 +38,14 @@ CREATE TABLE sells(
 
   CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders(id)
 );
+
+CREATE TABLE transactions(
+  id  SERIAL PRIMARY KEY,
+  type VARCHAR(8),
+  category VARCHAR(10),
+  total_value INT,
+  sell_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_sell_id FOREIGN KEY (sell_id) REFERENCES sells(id)
+);
