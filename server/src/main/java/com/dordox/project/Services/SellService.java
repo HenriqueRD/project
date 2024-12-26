@@ -43,7 +43,7 @@ public class SellService {
         float totalValue = 0.f;
         obj.setTotalValue(totalValue);
         SellEntity sell = repo.save(obj);
-        servTransaction.createInput(sell, CategoryTransactionEnum.VENDA);
+        servTransaction.createInput(sell, CategoryTransactionEnum.VENDA_PEDIDO);
         return sell;
       }
       throw new OrderAlreadyPaidException(obj.getOrder().getId());

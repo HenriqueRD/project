@@ -42,7 +42,7 @@ CREATE TABLE sells(
 CREATE TABLE transactions(
   id  SERIAL PRIMARY KEY,
   type VARCHAR(8),
-  category VARCHAR(10),
+  category VARCHAR(25),
   total_value INT,
   sell_id INT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

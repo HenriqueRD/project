@@ -1,7 +1,9 @@
 package com.dordox.project.Entities.Enums.Transactions;
 
 public enum CategoryTransactionEnum {
-  VENDA,
+  VENDA_PEDIDO,
   COMPRA,
-  DESPESA;
+  DESPESA_OUTROS,
+  DESPESA_CONCERTOS,
+  DESPESA_SALARIO;
 }
