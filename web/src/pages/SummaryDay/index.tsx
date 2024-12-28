@@ -1,10 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardSummaryTransaction from "../../components/CardSummaryTransaction";
 import Header from "../../components/Header";
 import style from './styles.module.css'
+import { api } from "../../api";
+import { TransactionsProps } from "../../types";
+import Tag from "../../components/Tag";
 
 export default function SummaryDay() {
-  const [ transactions, setTrasactions ] = useState([])
+  const [ transactions, setTrasactions ] = useState<TransactionsProps[]>([] as any)
+
+  async function getTransactions() {
+    await api.get("/transactions/", { params: { date: '2024-12-27' } }).then((x) => setTrasactions(x.data)).then(() => console.log(transactions))
+  }
+
+  useEffect(() => {
+    getTransactions()
+  }, [])
+
   return (
     <>
       <Header />
@@ -43,6 +55,9 @@ export default function SummaryDay() {
                           return (
                             <tr key={x.id}>
                               <th scope="row" className='thId'>{x.id}</th>
+                              <th scope="row">{x.category}</th>
+                              <th scope="row"><Tag  text={x.type} /></th>
+                              <th scope="row">{x.total_value}</th>
                             </tr>
                           )
                         })

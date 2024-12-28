@@ -33,6 +33,13 @@ export type SellsProps = {
   order_id: number
 }
 
+export type TransactionsProps = {
+  id: number
+  type: string
+  category: string
+  total_value: number
+}
+
 export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO' | "ALL"
 
 export type StatusPaymentProps = 'EM_ABERTO' | 'PAGO'
