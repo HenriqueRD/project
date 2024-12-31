@@ -121,7 +121,7 @@ export default function Order() {
                           <Tag text={order.status_payment} />
                         </div>
                         <div>
-                          <Link to="/"><ArrowLeft size={18} /> Voltar aos pedidos</Link>
+                          <Link to="/pedidos"><ArrowLeft size={18} /> Voltar aos pedidos</Link>
                           <div className={style.dates}>
                             <span>Criado em {format(order.created_at, 'dd/MM/yyyy HH:mm')}</span>
                             <span>Atualizado em {format(order.updated_at, 'dd/MM/yyyy  HH:mm')}</span>
@@ -175,11 +175,11 @@ export default function Order() {
                                 </div>
                                 <div className={style.box}>
                                   <span>Forma de Pagamento</span>
-                                  <span className={`${style.methodPay} ${style.value}`}>{x.method_payment}</span>
+                                  <span className={`${style.methodPay} ${style.value}`}>ARRUMAR</span>
                                 </div>
                                 <div className={style.totalValue}>
                                   <span className={style.value}>Total Final</span>
-                                  <span className={style.value}>{x.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                                  <span className={style.value}>ARRUMAR</span>
                                 </div>
                               </div>
                             </div> 

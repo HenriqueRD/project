@@ -39,12 +39,10 @@ export default function OrderCheckout() {
   async function handlePaymentOrder(isFinish: boolean) {
     setIsLoading(true)
     if (isFinish) {
-      await api.post("sells/", {
+      await api.post(`sells/order/${order.id}`, {
         method_payment: selectMethodPay,
         discount,
-        order: {
-          id: order.id
-        }
+        total_value: order.total_value
       }).then(() => {
         toast.success("Pedido pago")
         api.patch(`orders/${order.id}/finished`).then(() => {
@@ -60,12 +58,10 @@ export default function OrderCheckout() {
     }).finally(() => setIsLoading(false))
     }
     else {
-      await api.post("sells/", {
+      await api.post(`sells/order/${order.id}`, {
         method_payment: selectMethodPay,
         discount,
-        order: {
-          id: order.id
-        }
+        total_value: order.total_value
       }).then(() => {
         toast.success("Pedido pago")
         nav("/")

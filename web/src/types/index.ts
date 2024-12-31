@@ -27,8 +27,6 @@ export type OrderProps = {
 
 export type SellsProps = {
   id: number
-  method_payment: StatusPaymentProps
-  total_value: number
   discount: number
   order_id: number
 }
