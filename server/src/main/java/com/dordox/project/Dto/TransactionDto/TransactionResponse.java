@@ -2,7 +2,6 @@ package com.dordox.project.Dto.TransactionDto;
 
 import java.time.LocalDateTime;
 
-import com.dordox.project.Dto.SellDto.SellOnlyResponse;
 import com.dordox.project.Entities.TransactionEntity;
 import com.dordox.project.Entities.Enums.Transactions.CategoryTransactionEnum;
 import com.dordox.project.Entities.Enums.Transactions.TypeTransactionEnum;
@@ -12,7 +11,6 @@ public class TransactionResponse {
   private Float total_value;
   private TypeTransactionEnum type;
   private CategoryTransactionEnum category;
-  private SellOnlyResponse sell;
   private LocalDateTime created_at;
 
   public TransactionResponse() {
@@ -21,7 +19,6 @@ public class TransactionResponse {
   public TransactionResponse(TransactionEntity obj) {
     this.id = obj.getId();
     this.category = obj.getCategory();
-    this.sell = new SellOnlyResponse(obj.getSell());
     this.type = obj.getType();
     this.created_at = obj.getCreatedAt();
     this.total_value = obj.getTotalValue();
@@ -47,12 +44,6 @@ public class TransactionResponse {
   }
   public void setCategory(CategoryTransactionEnum category) {
     this.category = category;
-  }
-  public SellOnlyResponse getSell() {
-    return sell;
-  }
-  public void setSell(SellOnlyResponse sell) {
-    this.sell = sell;
   }
   public LocalDateTime getCreated_at() {
     return created_at;

@@ -28,24 +28,20 @@ CREATE TABLE items(
   CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 
-CREATE TABLE sells(
-  id  SERIAL PRIMARY KEY,
-  discount TEXT,
-  total_value INT,
-  method_payment VARCHAR(10),
-  order_id INT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-  CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders(id)
-);
-
 CREATE TABLE transactions(
   id  SERIAL PRIMARY KEY,
   type VARCHAR(8),
   category VARCHAR(25),
   total_value INT,
-  sell_id INT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  method_payment VARCHAR(10),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-  CONSTRAINT fk_sell_id FOREIGN KEY (sell_id) REFERENCES sells(id)
+CREATE TABLE sells(
+  id INT PRIMARY KEY,
+  discount INT,
+  order_id INT,
+
+  CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders(id),
+  CONSTRAINT fk_transaction_id FOREIGN KEY (id) REFERENCES transactions(id)
 );

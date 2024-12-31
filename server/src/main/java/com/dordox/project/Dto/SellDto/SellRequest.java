@@ -8,7 +8,7 @@ public class SellRequest {
   @NotNull(message = "o discont é obrigatório")
   private Float discount;
   @NotNull(message = "o method_payment é obrigatório")
-  @Pattern(regexp = "DEBITO|PIX|DINHEIRO|CREDITO", message = "o method_payment deve ser DEBITO | PIX| DINHEIRO | CREDITO")
+  @Pattern(regexp = "DEBITO|PIX|DINHEIRO|CREDITO", message = "o method_payment deve ser DEBITO | PIX | DINHEIRO | CREDITO")
   @NotBlank(message = "o method_payment não pode estar vazio")
   private String method_payment;
   @NotNull(message = "o total_value é obrigatório")

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.dordox.project.Dto.SellDto.SellRequest;
 import com.dordox.project.Dto.SellDto.SellResponse;
-import com.dordox.project.Entities.SellEntity;
 import com.dordox.project.Services.SellService;
 
 import jakarta.validation.Valid;
@@ -35,8 +34,8 @@ public class SellController {
   }
 
   @PostMapping("/order/{orderId}")
-  public ResponseEntity<SellResponse> create(@Valid @RequestBody SellRequest obj, @PathVariable Long orderId) {
-    SellResponse sell = new SellResponse(service.create(new SellEntity(obj), orderId));
+  public ResponseEntity<SellResponse> createOrder(@Valid @RequestBody SellRequest obj, @PathVariable Long orderId) {
+    SellResponse sell = new SellResponse(service.create(obj, orderId));
     return new ResponseEntity<>(sell, HttpStatus.CREATED);	
   }
   

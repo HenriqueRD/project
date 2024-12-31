@@ -15,9 +15,6 @@ public class SellOnlyResponse {
   public SellOnlyResponse() {
   }
   public SellOnlyResponse(SellEntity obj) {
-    this.id = obj.getId();
-    this.method_payment = obj.getMethodPayment();
-    this.total_value = obj.getTotalValue();
     this.discount = obj.getDiscount();
     this.created_at = obj.getCreatedAt();
   }
