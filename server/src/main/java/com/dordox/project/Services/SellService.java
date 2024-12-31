@@ -12,6 +12,7 @@ import com.dordox.project.Entities.SellEntity;
 import com.dordox.project.Entities.Enums.Orders.PaymentOrderEnum;
 import com.dordox.project.Entities.Enums.Transactions.CategoryTransactionEnum;
 import com.dordox.project.Errors.Exceptions.OrderAlreadyPaidException;
+import com.dordox.project.Errors.Exceptions.OrderDifferentTotalValueException;
 import com.dordox.project.Errors.Exceptions.RecordNotFoundException;
 import com.dordox.project.Repositories.OrderRepository;
 import com.dordox.project.Repositories.SellRepository;
@@ -32,22 +33,25 @@ public class SellService {
   }
 
   @Transactional
-  public SellEntity create(SellEntity obj) {
-    System.out.println(obj.getOrder().getId());
-    Optional<OrderEntity> isOrder = repoOrder.findById(obj.getOrder().getId());
+  public SellEntity create(SellEntity obj, Long orderId) {
+    Optional<OrderEntity> isOrder = repoOrder.findById(orderId);
     if (isOrder.isPresent()) {
       OrderEntity order = isOrder.get();
       if (order.getStatusPayment() == PaymentOrderEnum.EM_ABERTO) {
-        order.setStatusPayment(PaymentOrderEnum.PAGO);
-        repoOrder.save(order);
-        float totalValue = 0.f;
-        obj.setTotalValue(totalValue);
-        SellEntity sell = repo.save(obj);
-        servTransaction.createInput(sell, CategoryTransactionEnum.VENDA_PEDIDO);
-        return sell;
+        Float totalValue = repoOrder.getSumOrderItems(orderId);
+        if (totalValue.equals(obj.getTotalValue())) {
+          order.setStatusPayment(PaymentOrderEnum.PAGO);
+          repoOrder.save(order);
+          obj.setTotalValue(totalValue);
+          obj.setOrder(order);
+          SellEntity sell = repo.save(obj);
+          servTransaction.createInput(sell, CategoryTransactionEnum.VENDA_PEDIDO);
+          return sell;
+        }
+        throw new OrderDifferentTotalValueException(totalValue, obj.getTotalValue(), orderId);
       }
-      throw new OrderAlreadyPaidException(obj.getOrder().getId());
+      throw new OrderAlreadyPaidException(orderId);
     }
-    throw new RecordNotFoundException("pedido", obj.getOrder().getId());
+    throw new RecordNotFoundException("pedido", orderId);
   }
 }

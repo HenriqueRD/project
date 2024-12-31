@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,7 +19,6 @@ import com.dordox.project.Entities.SellEntity;
 import com.dordox.project.Services.SellService;
 
 import jakarta.validation.Valid;
-
 
 @Controller
 @RequestMapping("/sells")
@@ -34,9 +34,9 @@ public class SellController {
     return new ResponseEntity<>(sells, HttpStatus.OK); 
   }
 
-  @PostMapping("/")
-  public ResponseEntity<SellResponse> create(@Valid @RequestBody SellRequest obj) {
-    SellResponse sell = new SellResponse(service.create(new SellEntity(obj)));
+  @PostMapping("/order/{orderId}")
+  public ResponseEntity<SellResponse> create(@Valid @RequestBody SellRequest obj, @PathVariable Long orderId) {
+    SellResponse sell = new SellResponse(service.create(new SellEntity(obj), orderId));
     return new ResponseEntity<>(sell, HttpStatus.CREATED);	
   }
   

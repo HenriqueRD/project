@@ -38,6 +38,7 @@ export type TransactionsProps = {
   type: string
   category: string
   total_value: number
+  created_at: Date
 }
 
 export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO' | "ALL"

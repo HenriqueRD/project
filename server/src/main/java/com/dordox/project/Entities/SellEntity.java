@@ -47,8 +47,7 @@ public class SellEntity {
   public SellEntity(SellRequest obj) {
     this.methodPayment = MethodPaymentSellEnum.valueOf(obj.getMethod_payment());
     this.discount = obj.getDiscount();
-    //ARUMMAR===========================
-    this.order = obj.getOrder();
+    this.totalValue = obj.getTotal_value();
   }
   public Long getId() {
     return id;

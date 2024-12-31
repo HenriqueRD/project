@@ -1,8 +1,8 @@
-import { ArrowCircleDown, ArrowCircleUp, ClipboardText, CurrencyCircleDollar } from '@phosphor-icons/react'
+import { ArrowCircleDown, ArrowCircleUp, ArrowsDownUp, CurrencyCircleDollar } from '@phosphor-icons/react'
 import style from './styles.module.css'
 
 type CardSummaryTransactionProps = {
-  type: "input" | "output" | "total" | "order"
+  type: "input" | "output" | "total" | "transactions"
   valueCurrent?: number
   valueBack?: number
 }
@@ -13,7 +13,7 @@ export default function CardSummaryTransaction({ type, valueBack = 0, valueCurre
     input: { label: "Entradas", icon: <ArrowCircleUp size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})},
     output: { label: "Saídas", icon: <ArrowCircleDown size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) },
     total: { label: "Total", icon: <CurrencyCircleDollar size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) },
-    order: { label: "Pedidos", icon: <ClipboardText size={30} />, value: valueCurrent },
+    transactions: { label: "Transações", icon: <ArrowsDownUp size={30} />, value: valueCurrent },
   };
 
   const { label, icon, value } = typeConfig[type];

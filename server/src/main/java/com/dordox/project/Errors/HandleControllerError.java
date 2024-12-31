@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.dordox.project.Dto.ErrorDto.ErrorResponse;
 import com.dordox.project.Dto.ErrorDto.FieldErrorResponse;
 import com.dordox.project.Errors.Exceptions.OrderAlreadyPaidException;
+import com.dordox.project.Errors.Exceptions.OrderDifferentTotalValueException;
 import com.dordox.project.Errors.Exceptions.PaymentRequiredException;
 import com.dordox.project.Errors.Exceptions.RecordNotFoundException;
 
@@ -30,6 +31,12 @@ public class HandleControllerError {
 
   @ExceptionHandler(PaymentRequiredException.class)
   public ResponseEntity<ErrorResponse> handleOrderIsNotPaidException(PaymentRequiredException exception) {
+    ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT, exception.getMessage());
+    return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(OrderDifferentTotalValueException.class)
+  public ResponseEntity<ErrorResponse> handleOrderDifferentTotalValueException(OrderDifferentTotalValueException exception) {
     ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT, exception.getMessage());
     return new ResponseEntity<>(error, HttpStatus.CONFLICT);
   }

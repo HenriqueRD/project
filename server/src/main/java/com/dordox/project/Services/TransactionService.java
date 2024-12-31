@@ -22,7 +22,6 @@ public class TransactionService {
   public List<TransactionEntity> list(MultiValueMap<String, String> params) {
     String date = params.get("date").getFirst();
     LocalDateTime startDate = LocalDateTime.parse(date + "T00:00:00");
-    System.out.println(date);
     return repo.findByCreatedAtBetween(startDate, startDate.plusDays(1));
   }
 

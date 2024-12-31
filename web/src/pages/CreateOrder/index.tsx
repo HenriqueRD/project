@@ -55,7 +55,7 @@ export default function CreateOrder() {
       })
     }).then(() => {
       toast.success("Pedido criado!")
-      nav("/")
+      nav("/pedidos")
     })
   }
 

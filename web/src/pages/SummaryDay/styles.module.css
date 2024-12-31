@@ -28,6 +28,12 @@
   display: flex;
   gap: 2rem;
 }
+#summaryDay .contentTable {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: .5rem;
+}
 #summaryDay .containerTable {
   border-radius: 4px;
   height: 400px;
@@ -36,4 +42,7 @@
   border: 1px solid var(--gray-300);
   overflow: scroll;
   scrollbar-width: none;
+}
+#summaryDay .categoryTable {
+  font-size: .9rem;
 }

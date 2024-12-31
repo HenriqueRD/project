@@ -14,6 +14,7 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
+  --blue-neon: #6ea8fe1a;
   --blue-300: #6ea8fe;
   --blue-400: #3d8bfd;
   --blue-500: #0d6efd;
@@ -149,7 +150,7 @@ select:focus {
 }
 .table thead th {
   padding: .5rem .1rem;
-  text-align: left;
+  text-align: center;
   background-color: var(--blue-600);
   color: var(--white);
 }
@@ -160,8 +161,9 @@ select:focus {
 .table tr:nth-child(even) {
   background-color: var(--gray-200)
 }
-.table tr {
+.table tbody tr {
   border-top: 2px solid var(--blue-600);
+  margin-top: 1rem;
   border-bottom: 2px solid  var(--gray-200);
 }
 thead th {
@@ -229,13 +231,13 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 850px) {
   html {
       font-size: 15px; /* Reduz a base para dispositivos menores */
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
   html {
       font-size: 14px; /* Reduz a base para dispositivos menores */
   }

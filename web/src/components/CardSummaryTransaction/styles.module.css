@@ -18,9 +18,9 @@
   border: 1px solid var(--red-500);
   background-color: var(--red-neon);
 }
-#cardSummaryTransaction.order {
-  border: 1px solid var(--yellow-500);
-  background-color: var(--yellow-neon);
+#cardSummaryTransaction.transactions {
+  border: 1px solid var(--blue-500);
+  background-color: var(--blue-neon);
 }
 #cardSummaryTransaction .total {
   font-size: 1.5rem;
@@ -32,8 +32,8 @@
 #cardSummaryTransaction.output .total {
   color: var(--red-800);
 }
-#cardSummaryTransaction.order .total {
-  color: var(--yellow-800);
+#cardSummaryTransaction.transactions .total {
+  color: var(--blue-800);
 }
 #cardSummaryTransaction .isInput {
   display: flex;
@@ -50,8 +50,8 @@
 #cardSummaryTransaction.output .isInput svg {
   color: var(--red-500);
 }
-#cardSummaryTransaction.order .isInput svg {
-  color: var(--yellow-600);
+#cardSummaryTransaction.transactions .isInput svg {
+  color: var(--blue-600);
 }
 #cardSummaryTransaction .contentTotal {
   display: flex;
