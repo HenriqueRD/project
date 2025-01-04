@@ -175,11 +175,11 @@ export default function Order() {
                                 </div>
                                 <div className={style.box}>
                                   <span>Forma de Pagamento</span>
-                                  <span className={`${style.methodPay} ${style.value}`}>ARRUMAR</span>
+                                  <span className={`${style.methodPay} ${style.value}`}>{x.method_payment}</span>
                                 </div>
                                 <div className={style.totalValue}>
                                   <span className={style.value}>Total Final</span>
-                                  <span className={style.value}>ARRUMAR</span>
+                                  <span className={style.value}>{(x.total_value - x.discount).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                                 </div>
                               </div>
                             </div> 

@@ -28,6 +28,23 @@
   display: flex;
   gap: 2rem;
 }
+#summaryDay .summaryInputsInfo {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--gray-400);
+  padding-bottom: 1rem;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+#summaryDay .summaryInputsInfo p {
+  padding-left: .5rem;
+}
+#summaryDay .summaryInputsInfo .cardsInputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
 #summaryDay .contentTable {
   display: flex;
   flex-direction: column;

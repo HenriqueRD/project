@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.dordox.project.Dto.OrderDto.CreateOrderWithItemsRequest;
+import com.dordox.project.Dto.OrderDto.OrderNotSellResponse;
 import com.dordox.project.Dto.OrderDto.OrderRequest;
 import com.dordox.project.Dto.OrderDto.OrderResponse;
 import com.dordox.project.Dto.OrderDto.OrderStatusUpdateRequest;
@@ -41,7 +42,7 @@ public class OrderController {
 
   @GetMapping("/")
   public ResponseEntity<Object> list(@RequestParam MultiValueMap<String, String> params) {
-    List<OrderResponse> orders = service.list(params).stream().map(x -> new OrderResponse(x)).toList();
+    List<OrderNotSellResponse> orders = service.list(params).stream().map(x -> new OrderNotSellResponse(x)).toList();
     
     return new ResponseEntity<>(orders, HttpStatus.OK);
   }

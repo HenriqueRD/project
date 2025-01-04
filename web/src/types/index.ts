@@ -29,6 +29,8 @@ export type SellsProps = {
   id: number
   discount: number
   order_id: number
+  method_payment: MethodPaymentPros
+  total_value: number
 }
 
 export type TransactionsProps = {
@@ -36,6 +38,7 @@ export type TransactionsProps = {
   type: string
   category: string
   total_value: number
+  method_payment: MethodPaymentPros
   created_at: Date
 }
 

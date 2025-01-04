@@ -7,12 +7,24 @@ import { TransactionsProps } from "../../types";
 import Tag from "../../components/Tag";
 import { format, formatDistance, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { TailSpin } from "react-loader-spinner";
+import toast from "react-hot-toast";
+import CardSummaryMethodPayment from "../../components/CardSummaryMethodPayment";
 
 export default function SummaryDay() {
   const [ transactions, setTrasactions ] = useState<TransactionsProps[]>([] as any)
+  const [ isLoading, setIsLoading ] = useState(false)
 
+  const totalInputs = transactions.filter(x => x.type === "ENTRADA").reduce((acc, itr) =>  acc + itr.total_value, 0)
+  const totalOutputs = transactions.filter(x => x.type === "SAIDA").reduce((acc, itr) =>  acc + itr.total_value, 0)
+
+  
   async function getTransactions() {
-    await api.get("/transactions/", { params: { date: new Date().toISOString().split("T")[0] } }).then((x) => setTrasactions(x.data)).then(() => console.log(transactions))
+    setIsLoading(true)
+    await api.get("/transactions/", { params: { date: format(new Date(), 'yyyy-MM-dd') }})
+    .then((x) => setTrasactions(x.data))
+    .catch(() => toast.error("Falha ao carregar as transações"))
+    .finally(() => setIsLoading(false))
   }
 
   useEffect(() => {
@@ -28,15 +40,24 @@ export default function SummaryDay() {
             <div className={style.summaryTransactionInfo}>
               <div className={style.summaryTransactionInfoHeader}>
                 <h3>Resumo do dia</h3>
-                <p>abaixo o resumo das transações realizadas hoje</p>
+                <p>Abaixo o resumo das transações realizadas no dia de hoje</p>
               </div>
               <div className={style.cards}>
                 <div className={style.treeTransa}>
-                  <CardSummaryTransaction type="input" valueCurrent={992} valueBack={764} />
-                  <CardSummaryTransaction type="output" valueCurrent={992} valueBack={764} />
-                  <CardSummaryTransaction type="total" valueCurrent={992 + 760}/>
+                  <CardSummaryTransaction type="input" valueCurrent={totalInputs} valueBack={1} />
+                  <CardSummaryTransaction type="output" valueCurrent={totalOutputs} valueBack={1} />
+                  <CardSummaryTransaction type="total" valueCurrent={totalInputs + totalOutputs}/>
                 </div>
-                <CardSummaryTransaction type="transactions" valueCurrent={992} valueBack={764} />
+                <CardSummaryTransaction type="transactions" valueCurrent={transactions.length} valueBack={1} />
+              </div>
+            </div>
+            <div className={style.summaryInputsInfo}>
+              <p>Métodos de pagamento utilizados nas transações de receitas</p>
+              <div className={style.cardsInputs}>
+                <CardSummaryMethodPayment type="money" valueCurrent={totalInputs} />                
+                <CardSummaryMethodPayment type="pix" valueCurrent={totalInputs} />
+                <CardSummaryMethodPayment type="credit" valueCurrent={totalInputs} />
+                <CardSummaryMethodPayment type="debit" valueCurrent={totalInputs} />
               </div>
             </div>
             <div className={style.contentTable}>
@@ -48,6 +69,7 @@ export default function SummaryDay() {
                       <th scope="col" className='thId'>#</th>
                       <th scope="col">Tipo</th>
                       <th scope="col">Descrição</th>
+                      <th scope="col">Pagamento</th>
                       <th scope="col">Valor</th>
                       <th scope="col">Criado</th>
                     </tr>
@@ -60,6 +82,7 @@ export default function SummaryDay() {
                             <th scope="row" className='thId'>{x.id}</th>
                             <td scope="row"><Tag  text={x.type}/></td>
                             <td scope="row" className={style.categoryTable}>{x.category}</td>
+                            <td scope="row" className={style.categoryTable}>{x.method_payment}</td>
                             <td scope="row">{x.total_value.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</td>
                             <td scope="row"><time title={format(x.created_at, 'dd/MM/yyyy')} dateTime={x.created_at.toString()}>{formatDistance(subDays(x.created_at, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
                           </tr>
@@ -69,10 +92,22 @@ export default function SummaryDay() {
                   </tbody>
                 </table>
                 {
-                  transactions.length === 0 && (
-                    <div className='contentEmpty'>
-                      <span>nem uma transação foi efetuado hoje</span>
+                  isLoading ? (
+                    <div className="contentEmpty">
+                      <TailSpin
+                        visible={true}
+                        height="66"
+                        width="66"
+                        color="#0a58ca"
+                        ariaLabel="tail-spin-loading"
+                      />
                     </div>
+                  ) : (
+                    transactions.length === 0 && (
+                      <div className='contentEmpty'>
+                        <span>nem uma transação foi efetuado hoje</span>
+                      </div>
+                    )
                   )
                 }
               </div>
