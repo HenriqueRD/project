@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.dordox.project.Dto.TransactionDto.TransactionResponse;
+import com.dordox.project.Mapper.TransactionMapper;
 import com.dordox.project.Services.TransactionService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +26,12 @@ public class TransactionController {
 
   @Autowired
   private TransactionService service;
+  @Autowired
+  private TransactionMapper mapper;
 
   @GetMapping("/")
   public ResponseEntity<List<TransactionResponse>> list(@RequestParam MultiValueMap<String, String> params) {
-    List<TransactionResponse> list = service.list(params).stream().map(x -> new TransactionResponse(x)).toList();
+    List<TransactionResponse> list = mapper.toResponse(service.list(params));
       return new ResponseEntity<>(list, HttpStatus.OK);
   }
   

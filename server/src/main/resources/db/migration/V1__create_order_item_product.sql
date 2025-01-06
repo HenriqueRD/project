@@ -45,3 +45,18 @@ CREATE TABLE sells(
   CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders(id),
   CONSTRAINT fk_transaction_id FOREIGN KEY (id) REFERENCES transactions(id)
 );
+
+CREATE TABLE suppliers(
+  id INT PRIMARY KEY,
+  name VARCHAR(100),
+  cnpj VARCHAR(15),
+  type VARCHAR(15)
+);
+
+CREATE TABLE expenses(
+  id INT PRIMARY KEY,
+  supplier_id INT,
+
+  CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers(id),
+  CONSTRAINT fk_transaction_id FOREIGN KEY (id) REFERENCES transactions(id)
+);

@@ -14,7 +14,7 @@ import { TailSpin } from 'react-loader-spinner'
 
 export default function Order() {
 
-  const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sell: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date(), id: 0 });
+  const [ order, setOrder ] = useState<OrderProps>({ client: "", createdAt: new Date(), items: [], sell: [], service: "", statusOrder: "EM_PREPARACAO", statusPayment: "EM_ABERTO", totalValue: 0, updatedAt: new Date(), id: 0 });
   const { id } = useParams()
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isLoadingOrder, setIsLoadingOrder ] = useState(false)
@@ -47,13 +47,13 @@ export default function Order() {
       setIsLoading(false)
       return  
     }
-    if (statusCurrent.trim() === order.status_order) {
+    if (statusCurrent.trim() === order.statusOrder) {
       toast.error("Escolha um status diferente do atual")    
       setIsLoading(false)
       return  
     }
     api.patch(`orders/${id}`, {
-      order_status: statusCurrent
+      orderStatus: statusCurrent
     }).then(() => {
       toast.success("Status atualizado")
     }).catch((x) => {
@@ -118,13 +118,13 @@ export default function Order() {
                       <div className={style.headerInfo}>
                         <div>
                           <h3>Informação do pedido #{order.id}</h3>
-                          <Tag text={order.status_payment} />
+                          <Tag text={order.statusPayment} />
                         </div>
                         <div>
                           <Link to="/pedidos"><ArrowLeft size={18} /> Voltar aos pedidos</Link>
                           <div className={style.dates}>
-                            <span>Criado em {format(order.created_at, 'dd/MM/yyyy HH:mm')}</span>
-                            <span>Atualizado em {format(order.updated_at, 'dd/MM/yyyy  HH:mm')}</span>
+                            <span>Criado em {format(order.createdAt, 'dd/MM/yyyy HH:mm')}</span>
+                            <span>Atualizado em {format(order.updatedAt, 'dd/MM/yyyy  HH:mm')}</span>
                           </div>
                         </div>
                       </div>
@@ -141,10 +141,10 @@ export default function Order() {
                       <div className={style.orderStatus}>
                         <div className={style.status}>
                           <label>Status atual</label>
-                          <Tag text={order.status_order} />
+                          <Tag text={order.statusOrder} />
                         </div>
                         {
-                          order.status_order !== "FINALIZADO" && (
+                          order.statusOrder !== "FINALIZADO" && (
                             <form onSubmit={handleChangeStatus}>
                               <div className={style.buttons}>
                                 <button type='button' onClick={() => setStatusCurrent("EM_PREPARACAO")} className={statusCurrent === "EM_PREPARACAO" ? style.isActive : style.x}>
@@ -160,14 +160,14 @@ export default function Order() {
                         }
                       </div>
                       {
-                        order.status_payment === "PAGO" && order.sell.map(x => {
+                        order.statusPayment === "PAGO" && order.sell.map(x => {
                           return (
                             <div className={style.totalOrder}>
                               <h3>Resumo do Pagamento</h3>
                               <div>
                                 <div className={style.box}>
                                   <span>Subtotal dos itens</span>
-                                  <span className={style.value}>+ {order.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                                  <span className={style.value}>+ {order.totalValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                                 </div>
                                 <div className={style.box}>
                                   <span>Desconto</span>
@@ -175,11 +175,11 @@ export default function Order() {
                                 </div>
                                 <div className={style.box}>
                                   <span>Forma de Pagamento</span>
-                                  <span className={`${style.methodPay} ${style.value}`}>{x.method_payment}</span>
+                                  <span className={`${style.methodPay} ${style.value}`}>{x.methodPayment}</span>
                                 </div>
                                 <div className={style.totalValue}>
                                   <span className={style.value}>Total Final</span>
-                                  <span className={style.value}>{(x.total_value - x.discount).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                                  <span className={style.value}>{(x.totalValue - x.discount).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                                 </div>
                               </div>
                             </div> 
@@ -190,7 +190,7 @@ export default function Order() {
                     </div>
                     <div className={style.actionOrder}>
                       {
-                        order.status_payment === "EM_ABERTO" ? (
+                        order.statusPayment === "EM_ABERTO" ? (
                           <>
                             <Button disabled={isLoading} onClick={handleDeleteOrder} title='Remover pedido' type='button' text='Excluir Pedido' variant='danger' />                      
                             <Link to={`/pedido/editar/${order.id}`}>
@@ -201,7 +201,7 @@ export default function Order() {
                             </Link>
                           </>
                         ) : (
-                          order.status_payment === "PAGO" && order.status_order !== "FINALIZADO" && (
+                          order.statusPayment === "PAGO" && order.statusOrder !== "FINALIZADO" && (
                             <Button disabled={isLoading} onClick={handleFinishOrder} title="Finalizar pedido" type='button' variant='success' text='Finalizar Pedido' />
                           )
                         )

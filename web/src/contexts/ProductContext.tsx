@@ -20,7 +20,7 @@ export function ProductProvider({ children } : ProductProviderProps) {
 
   async function getProducts() {
     setIsLoading(true)
-    await api.get("products").then(x => setProducts(x.data)).finally(() => setIsLoading(false))
+    await api.get("products/").then(x => setProducts(x.data)).finally(() => setIsLoading(false))
   }
 
   useEffect(() => {

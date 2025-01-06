@@ -51,6 +51,8 @@ public class OrderService {
       OrderEntity order = isOrder.get();
       order.setClient(obj.getClient());
       order.setService(obj.getService());
+      float totalValue = repo.getSumOrderItems(order.getId());
+      order.setTotalValue(totalValue);
       return repo.save(order);
     } 
     else {
@@ -116,4 +118,5 @@ public class OrderService {
       throw new RecordNotFoundException("pedido", id);
     }
   }
+
 }

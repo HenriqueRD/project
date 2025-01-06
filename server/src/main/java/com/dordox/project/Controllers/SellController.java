@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.dordox.project.Dto.SellDto.SellRequest;
 import com.dordox.project.Dto.SellDto.SellResponse;
+import com.dordox.project.Mapper.SellMapper;
 import com.dordox.project.Services.SellService;
 
 import jakarta.validation.Valid;
@@ -26,16 +27,18 @@ public class SellController {
 
   @Autowired
   private SellService service;
+  @Autowired
+  private SellMapper mapper;
 
   @GetMapping("/")
   public ResponseEntity<List<SellResponse>> list() {
-    List<SellResponse> sells = service.list().stream().map((x) -> (new SellResponse(x))).toList();
+    List<SellResponse> sells = mapper.toResponse(service.list());
     return new ResponseEntity<>(sells, HttpStatus.OK); 
   }
 
   @PostMapping("/order/{orderId}")
   public ResponseEntity<SellResponse> createOrder(@Valid @RequestBody SellRequest obj, @PathVariable Long orderId) {
-    SellResponse sell = new SellResponse(service.create(obj, orderId));
+    SellResponse sell =mapper.toResponse(service.create(obj, orderId));
     return new ResponseEntity<>(sell, HttpStatus.CREATED);	
   }
   

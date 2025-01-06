@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 
 export default function OrderCheckout() {
 
-  const [ order, setOrder ] = useState<OrderProps>({ client: "", created_at: new Date(), items: [], sell: [], service: "", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date(), id: 0 })
+  const [ order, setOrder ] = useState<OrderProps>({ client: "", createdAt: new Date(), items: [], sell: [], service: "", statusOrder: "EM_PREPARACAO", statusPayment: "EM_ABERTO", totalValue: 0, updatedAt: new Date(), id: 0 })
   const { id } = useParams()
   const [ isLoading, setIsLoading ] = useState(false)
   const nav = useNavigate()
@@ -30,7 +30,7 @@ export default function OrderCheckout() {
     }
   }, [id])
 
-  if (order.status_payment === "PAGO") {
+  if (order.statusPayment === "PAGO") {
     toast.error("Pedido ja foi realizado o pagamento")
     nav("/")
     return 
@@ -42,7 +42,7 @@ export default function OrderCheckout() {
       await api.post(`sells/order/${order.id}`, {
         method_payment: selectMethodPay,
         discount,
-        total_value: order.total_value
+        total_value: order.totalValue
       }).then(() => {
         toast.success("Pedido pago")
         api.patch(`orders/${order.id}/finished`).then(() => {
@@ -61,7 +61,7 @@ export default function OrderCheckout() {
       await api.post(`sells/order/${order.id}`, {
         method_payment: selectMethodPay,
         discount,
-        total_value: order.total_value
+        total_value: order.totalValue
       }).then(() => {
         toast.success("Pedido pago")
         nav("/")
@@ -85,13 +85,13 @@ export default function OrderCheckout() {
                   <div className={style.headerInfo}>
                     <div>
                       <h3>Pagamento do pedido #{order.id}</h3>
-                      <Tag text={order.status_payment} />
+                      <Tag text={order.statusPayment} />
                     </div>
                     <div>
                       <Link to={`/pedido/${order.id}`}><ArrowLeft size={18} /> Voltar ao pedido</Link>
                       <div className={style.dates}>
-                        <span>Criado em {format(new Date(order.created_at), 'dd/MM/yyyy HH:mm')}</span>
-                        <span>Atualizado em {format(new Date(order.updated_at), 'dd/MM/yyyy  HH:mm')}</span>
+                        <span>Criado em {format(new Date(order.createdAt), 'dd/MM/yyyy HH:mm')}</span>
+                        <span>Atualizado em {format(new Date(order.updatedAt), 'dd/MM/yyyy  HH:mm')}</span>
                       </div>
                     </div>
                   </div>
@@ -121,7 +121,7 @@ export default function OrderCheckout() {
                     <div>
                       <div className={style.box}>
                         <span>Subtotal dos itens</span>
-                        <span className={style.value}>+ {order.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                        <span className={style.value}>+ {order.totalValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                       </div>
                       <div className={style.box}>
                         <span>Desconto</span>
@@ -133,16 +133,16 @@ export default function OrderCheckout() {
                       </div>
                       <div className={style.totalValue}>
                         <span className={style.value}>Total Final</span>
-                        <span className={style.value}>{(order.total_value - discount).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                        <span className={style.value}>{(order.totalValue - discount).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                       </div>
                     </div>
                   </div>  
                 </div>
                 <div className={style.actionOrder}>
                   {
-                    order.status_payment === "EM_ABERTO" && (
+                    order.statusPayment === "EM_ABERTO" && (
                       <>
-                        <Button disabled={isLoading} onClick={() => handlePaymentOrder(true)} title={order.status_payment === "EM_ABERTO" ? 'Ir para o pagamento e finalizar' : "Finalizar pedido" } type='button' variant='success' text='Finalizar e Pagar' />
+                        <Button disabled={isLoading} onClick={() => handlePaymentOrder(true)} title={order.statusPayment === "EM_ABERTO" ? 'Ir para o pagamento e finalizar' : "Finalizar pedido" } type='button' variant='success' text='Finalizar e Pagar' />
                         <Button disabled={isLoading} onClick={() => handlePaymentOrder(false)} title='Ir para o pagamento ' type='button' text='Pagar' />
                       </>
                     )

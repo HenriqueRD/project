@@ -14,13 +14,13 @@ export type ItemProps = {
 
 export type OrderProps = {
   id: number
-  status_order: StatusOrderProps
-  status_payment: StatusPaymentProps
+  statusOrder: StatusOrderProps
+  statusPayment: StatusPaymentProps
   client: string
   service: string
-  created_at: Date
-  updated_at: Date
-  total_value: number
+  createdAt: Date
+  updatedAt: Date
+  totalValue: number
   items: ItemProps[]
   sell: SellsProps[]
 }
@@ -28,18 +28,18 @@ export type OrderProps = {
 export type SellsProps = {
   id: number
   discount: number
-  order_id: number
-  method_payment: MethodPaymentPros
-  total_value: number
+  orderId: number
+  methodPayment: MethodPaymentPros
+  totalValue: number
 }
 
 export type TransactionsProps = {
   id: number
   type: string
   category: string
-  total_value: number
-  method_payment: MethodPaymentPros
-  created_at: Date
+  totalValue: number
+  methodPayment: MethodPaymentPros
+  createdAt: Date
 }
 
 export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO' | "ALL"

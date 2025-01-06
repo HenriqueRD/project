@@ -3,18 +3,18 @@ package com.dordox.project.Dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 
 public class ErrorResponse {
-  private HttpStatus status_code;
+  private HttpStatus statusCode;
   private String message;
 
-  public ErrorResponse(HttpStatus status_code, String message) {
-    this.status_code = status_code;
+  public ErrorResponse(HttpStatus statusCode, String message) {
+    this.statusCode = statusCode;
     this.message = message;
   }
-  public HttpStatus getStatus_code() {
-    return status_code;
+  public HttpStatus getStatusCode() {
+    return statusCode;
   }
-  public void setStatus_code(HttpStatus status_code) {
-    this.status_code = status_code;
+  public void setStatusCode(HttpStatus statusCode) {
+    this.statusCode = statusCode;
   }
   public String getMessage() {
     return message;

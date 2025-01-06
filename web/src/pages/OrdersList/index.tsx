@@ -101,16 +101,16 @@ export default function OrdersList() {
                           return (
                             <tr key={x.id} onClick={() => handleClickOrder(x.id)}>
                               <th scope="row" className='thId'>{x.id}</th>
-                              <td><Tag text={x.status_order}/></td>
+                              <td><Tag text={x.statusOrder}/></td>
                               <td>{x.client}</td>
                               <td className='tdItems'>{x.items.length}</td>
-                              <td><time title={format(x.created_at, 'dd/MM/yyyy')} dateTime={x.created_at.toString()}>{formatDistance(subDays(x.created_at, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
+                              <td><time title={format(x.createdAt, 'dd/MM/yyyy')} dateTime={x.createdAt.toString()}>{formatDistance(subDays(x.createdAt, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
                               <td><Tag text={x.service}/></td>
-                              <td className={`${style.total} tdTotal`}><Tag text={x.total_value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.status_payment === "PAGO" ? "success" : "alert"} /></td>
+                              <td className={`${style.total} tdTotal`}><Tag text={x.totalValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.statusPayment === "PAGO" ? "success" : "alert"} /></td>
                               <td className="buttons">
                                 <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
                                 {
-                                  x.status_payment !== "PAGO" && (
+                                  x.statusPayment !== "PAGO" && (
                                     <>
                                       <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/editar/${x.id}`)}} icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>
                                       <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/pagamento/${x.id}`)}} icon title='Finalizar Pedido' variant='success'><Check weight='bold' size={20} /></Button>

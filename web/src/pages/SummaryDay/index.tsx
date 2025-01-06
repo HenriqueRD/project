@@ -15,8 +15,8 @@ export default function SummaryDay() {
   const [ transactions, setTrasactions ] = useState<TransactionsProps[]>([] as any)
   const [ isLoading, setIsLoading ] = useState(false)
 
-  const totalInputs = transactions.filter(x => x.type === "ENTRADA").reduce((acc, itr) =>  acc + itr.total_value, 0)
-  const totalOutputs = transactions.filter(x => x.type === "SAIDA").reduce((acc, itr) =>  acc + itr.total_value, 0)
+  const totalInputs = transactions.filter(x => x.type === "ENTRADA").reduce((acc, itr) =>  acc + itr.totalValue, 0)
+  const totalOutputs = transactions.filter(x => x.type === "SAIDA").reduce((acc, itr) =>  acc + itr.totalValue, 0)
 
   
   async function getTransactions() {
@@ -82,9 +82,9 @@ export default function SummaryDay() {
                             <th scope="row" className='thId'>{x.id}</th>
                             <td scope="row"><Tag  text={x.type}/></td>
                             <td scope="row" className={style.categoryTable}>{x.category}</td>
-                            <td scope="row" className={style.categoryTable}>{x.method_payment}</td>
-                            <td scope="row">{x.total_value.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</td>
-                            <td scope="row"><time title={format(x.created_at, 'dd/MM/yyyy')} dateTime={x.created_at.toString()}>{formatDistance(subDays(x.created_at, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
+                            <td scope="row" className={style.categoryTable}>{x.methodPayment}</td>
+                            <td scope="row">{x.totalValue.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</td>
+                            <td scope="row"><time title={format(x.createdAt, 'dd/MM/yyyy')} dateTime={x.createdAt.toString()}>{formatDistance(subDays(x.createdAt, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
                           </tr>
                         )
                       })

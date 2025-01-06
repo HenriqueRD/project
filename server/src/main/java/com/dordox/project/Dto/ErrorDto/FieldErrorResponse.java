@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 public class FieldErrorResponse extends ErrorResponse {
   private List<FieldMessageError> filds = new ArrayList<>();
 
-  public FieldErrorResponse(HttpStatus status_code, String message) {
-    super(status_code, message);
+  public FieldErrorResponse(HttpStatus statusCode, String message) {
+    super(statusCode, message);
   }
   public List<FieldMessageError> getFilds() {
     return filds;

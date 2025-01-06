@@ -14,7 +14,7 @@ import { TailSpin } from 'react-loader-spinner'
 
 export default function EditOrder() {
 
-  const [ order, setOrder ] = useState<OrderProps>({ id: 0, client: "", created_at: new Date(), items: [], sell: [], service: "LOCAL", status_order: "EM_PREPARACAO", status_payment: "EM_ABERTO", total_value: 0, updated_at: new Date() });
+  const [ order, setOrder ] = useState<OrderProps>({ id: 0, client: "", createdAt: new Date(), items: [], sell: [], service: "LOCAL", statusOrder: "EM_PREPARACAO", statusPayment: "EM_ABERTO", totalValue: 0, updatedAt: new Date() });
   const { id } = useParams()
   const nav = useNavigate()
   const [ productCurrent, setProductCurrent ] = useState<ProductProps>({} as any)

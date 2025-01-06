@@ -27,6 +27,7 @@ import com.dordox.project.Entities.ItemEntity;
 import com.dordox.project.Entities.OrderEntity;
 import com.dordox.project.Entities.Enums.Orders.ServiceOrderEnum;
 import com.dordox.project.Entities.Enums.Orders.StatusOrderEnum;
+import com.dordox.project.Mapper.OrderMapper;
 import com.dordox.project.Services.OrderService;
 
 import jakarta.validation.Valid;
@@ -40,16 +41,19 @@ public class OrderController {
   @Autowired
   private OrderService service;
 
+  @Autowired
+  private OrderMapper mapper;
+
   @GetMapping("/")
   public ResponseEntity<Object> list(@RequestParam MultiValueMap<String, String> params) {
-    List<OrderNotSellResponse> orders = service.list(params).stream().map(x -> new OrderNotSellResponse(x)).toList();
+    List<OrderNotSellResponse> orders = mapper.toResponseNotSell(service.list(params));
     
     return new ResponseEntity<>(orders, HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<Object> find(@PathVariable Long id) {
-    OrderResponse order = new OrderResponse(service.find(id));
+    OrderResponse order = mapper.toResponse(service.find(id));
 
     return new ResponseEntity<>(order, HttpStatus.OK);	
   }
@@ -57,21 +61,21 @@ public class OrderController {
   @PutMapping("/{id}")
   public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody OrderRequest obj)  {
     OrderEntity order = new OrderEntity(obj.getClient(), ServiceOrderEnum.valueOf(obj.getService()));
-    OrderResponse data = new OrderResponse(service.update(id, order));
+    OrderResponse data = mapper.toResponse(service.update(id, order));
 
     return new ResponseEntity<>(data, HttpStatus.OK);	
   }
 
   @PatchMapping("/{id}")
   public ResponseEntity<Object> updateStatusOrder(@PathVariable Long id, @Valid @RequestBody OrderStatusUpdateRequest obj)  {
-    OrderResponse order = new OrderResponse(service.updateStatusOrder(id, StatusOrderEnum.valueOf(obj.getOrder_status())));
+    OrderResponse order = mapper.toResponse(service.updateStatusOrder(id, StatusOrderEnum.valueOf(obj.getOrderStatus())));
 
     return new ResponseEntity<>(order, HttpStatus.OK);	
   }
 
   @PatchMapping("{id}/finished")
   public ResponseEntity<Object> finishedOrder(@PathVariable Long id)  {
-    OrderResponse order = new OrderResponse(service.finishedOrder(id));
+    OrderResponse order = mapper.toResponse(service.finishedOrder(id));
 
     return new ResponseEntity<>(order, HttpStatus.OK);	
   }
@@ -80,7 +84,7 @@ public class OrderController {
   public ResponseEntity<Object> create(@Valid @RequestBody CreateOrderWithItemsRequest obj)  {
     List<ItemEntity> items = obj.getItems().stream().map((x) -> (new ItemEntity(x))).toList();
     OrderEntity order = new OrderEntity(obj.getClient(), ServiceOrderEnum.valueOf(obj.getService()));
-    OrderResponse data = new OrderResponse(service.create(order, items));
+    OrderResponse data = mapper.toResponse(service.create(order, items));
 
     return new ResponseEntity<>(data, HttpStatus.CREATED);	
   }
