@@ -9,8 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dordox.project.Dto.ExpenseDto.ExpenseResponse;
-import com.dordox.project.Mapper.ExpenseMapper;
-import com.dordox.project.Services.ExpenseService;
+import com.dordox.project.Dto.SupplierDto.SupplierResponse;
+import com.dordox.project.Mapper.SupplierMapper;
+import com.dordox.project.Services.SupplierService;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,19 +21,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
-@RequestMapping("/expenses")
+@RequestMapping("/supplier")
 @CrossOrigin("http://localhost:5173")
-public class ExpenseController {
+public class SupplierController {
 
   @Autowired
-  private ExpenseService service;
+  private SupplierService service;
   @Autowired
-  private ExpenseMapper mapper;
+  private SupplierMapper mapper;
 
   @GetMapping("/")
-  public ResponseEntity<List<ExpenseResponse>> list() {
-    List<ExpenseResponse> expenses = mapper.toResponse(service.list());
-    return new ResponseEntity<>(expenses, HttpStatus.OK);
+  public ResponseEntity<List<SupplierResponse>> list() {
+    List<SupplierResponse> suppliers = mapper.toResponse(service.list());
+    return new ResponseEntity<>(suppliers, HttpStatus.OK);
   }
 
   @PostMapping("/")

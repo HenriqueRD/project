@@ -47,10 +47,10 @@ CREATE TABLE sells(
 );
 
 CREATE TABLE suppliers(
-  id INT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100),
-  cnpj VARCHAR(15),
-  type VARCHAR(15)
+  cnpj VARCHAR(20),
+  type VARCHAR(20)
 );
 
 CREATE TABLE expenses(

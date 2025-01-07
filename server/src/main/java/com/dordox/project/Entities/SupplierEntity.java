@@ -24,8 +24,7 @@ public class SupplierEntity {
  
   public SupplierEntity() {
   }
-  public SupplierEntity(Long id, String name, String cnpj, String type) {
-    this.id = id;
+  public SupplierEntity(String name, String cnpj, String type) {
     this.name = name;
     this.cnpj = cnpj;
     this.type = type;
