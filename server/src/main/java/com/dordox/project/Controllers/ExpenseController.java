@@ -8,9 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dordox.project.Dto.ExpenseDto.ExpenseWithSupplierRequest;
 import com.dordox.project.Dto.ExpenseDto.ExpenseResponse;
 import com.dordox.project.Mapper.ExpenseMapper;
 import com.dordox.project.Services.ExpenseService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +39,8 @@ public class ExpenseController {
   }
 
   @PostMapping("/")
-  public ResponseEntity<ExpenseResponse> create(@RequestBody String entity) {
-    return new ResponseEntity<>(null, HttpStatus.CREATED);
+  public ResponseEntity<ExpenseResponse> createWithSupplier(@Valid @RequestBody ExpenseWithSupplierRequest obj) {
+    ExpenseResponse expense = mapper.toResponse(service.createWithSupplier(obj));
+    return new ResponseEntity<>(expense, HttpStatus.CREATED);
   }
 }

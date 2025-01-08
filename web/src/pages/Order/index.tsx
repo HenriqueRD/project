@@ -196,7 +196,7 @@ export default function Order() {
                             <Link to={`/pedido/editar/${order.id}`}>
                               <Button disabled={isLoading} title='Editar informação do pedido' type='button' variant='alert' text='Editar pedido' />
                             </Link>
-                            <Link to={`/pedido/pagamento/${order.id}`}>
+                            <Link to={`/pedido/pagar/${order.id}`}>
                               <Button disabled={isLoading} title='Ir para o pagamento' type='button' text='Cobrar Pedido' variant='success' />                      
                             </Link>
                           </>

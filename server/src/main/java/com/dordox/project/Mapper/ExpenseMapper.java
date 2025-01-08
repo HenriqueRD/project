@@ -12,4 +12,5 @@ public interface ExpenseMapper {
 
   List<ExpenseResponse> toResponse(List<ExpenseEntity> obj);
   ExpenseResponse toResponse(ExpenseEntity obj);
+  
 }

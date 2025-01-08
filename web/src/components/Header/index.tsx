@@ -12,8 +12,10 @@ export default function Header() {
           </Link>
           <div className={style.navsLink}>
             <nav>
+              <Link to="/">Transações</Link>
               <Link to="/pedidos">Pedidos</Link>
-              <Link to="/novo-pedido">Novo pedido</Link>
+              <Link to="/despesa/criar">Nova despesa</Link>
+              <Link to="/pedido/criar">Novo pedido</Link>
             </nav>
           </div>
         </div>

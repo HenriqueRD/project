@@ -25,7 +25,7 @@
   color: var(--white);  
 }
 #button.isNotActive {
-  opacity: .7;
+  opacity: .6;
 }
 
 .primary {

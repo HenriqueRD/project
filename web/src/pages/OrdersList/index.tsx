@@ -5,7 +5,7 @@ import { ptBR } from 'date-fns/locale'
 import Header from '../../components/Header'
 import style from './styles.module.css'
 import Tag from '../../components/Tag'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../components/Button'
 import { OrderProps, StatusOrderProps } from '../../types'
 import { FormEvent, useEffect, useState } from 'react'
@@ -61,7 +61,9 @@ export default function OrdersList() {
                     <h3>Pedidos </h3>
                     <Tag text={orders.length.toString()} type='normal' />
                   </div>
-                  <Button onClick={() => nav("/novo-pedido")} text="Novo Pedido" title='Realizar Pedido' />
+                  <Link to="/pedido/criar">
+                    <Button text="Novo Pedido" title='Realizar Pedido' />
+                  </Link>
                 </div>
                 <div className={style.search}>
                   <p>Filtrar pedidos por Data e Categoria</p>
@@ -113,7 +115,7 @@ export default function OrdersList() {
                                   x.statusPayment !== "PAGO" && (
                                     <>
                                       <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/editar/${x.id}`)}} icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>
-                                      <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/pagamento/${x.id}`)}} icon title='Finalizar Pedido' variant='success'><Check weight='bold' size={20} /></Button>
+                                      <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/pagar/${x.id}`)}} icon title='Finalizar Pedido' variant='success'><Check weight='bold' size={20} /></Button>
                                     </>
                                   )
                                 }

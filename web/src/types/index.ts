@@ -42,8 +42,19 @@ export type TransactionsProps = {
   createdAt: Date
 }
 
+export type SupplierProps = {
+  id: number
+  name: string
+  cnpj: string
+  type: TypeSupplierExpensePros
+}
+
 export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO' | "ALL"
 
 export type StatusPaymentProps = 'EM_ABERTO' | 'PAGO'
 
 export type MethodPaymentPros = 'DINHEIRO' | 'PIX' | 'DEBITO' | 'CREDITO'
+
+export type MethodPaymentExpensePros = 'DINHEIRO' | 'PIX' | "BOLETO"
+
+export type TypeSupplierExpensePros = 'MERCADO' | 'SUPERMERCADO' | "DISTRIBUIDORA"

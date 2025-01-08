@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dordox.project.Dto.ExpenseDto.ExpenseResponse;
 import com.dordox.project.Dto.SupplierDto.SupplierResponse;
 import com.dordox.project.Mapper.SupplierMapper;
 import com.dordox.project.Services.SupplierService;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
-@RequestMapping("/supplier")
+@RequestMapping("/suppliers")
 @CrossOrigin("http://localhost:5173")
 public class SupplierController {
 
@@ -37,7 +36,7 @@ public class SupplierController {
   }
 
   @PostMapping("/")
-  public ResponseEntity<ExpenseResponse> create(@RequestBody String entity) {
+  public ResponseEntity<SupplierResponse> create(@RequestBody int obj) {
     return new ResponseEntity<>(null, HttpStatus.CREATED);
   }
 }

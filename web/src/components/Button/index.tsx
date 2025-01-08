@@ -19,13 +19,12 @@ export default function Button({ text, variant = "primary", icon = false, isActi
             {children}
           </>
         ) : (
-           <>
-            {children}
-            <span>{text}</span>
-           </>
+          <>
+          {children}
+          <span>{text}</span>
+          </>
         )
       }
-      
     </button>
   )
 }

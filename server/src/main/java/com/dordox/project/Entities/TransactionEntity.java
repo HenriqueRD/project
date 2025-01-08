@@ -46,13 +46,15 @@ public class TransactionEntity {
 
   public TransactionEntity() {
   }
-  
   public TransactionEntity(TypeTransactionEnum type, CategoryTransactionEnum category, MethodPaymentSellEnum methodPayment) {
     this.type = type;
     this.category = category;
     this.methodPayment = methodPayment;
   }
-
+  public TransactionEntity(TypeTransactionEnum type, MethodPaymentSellEnum methodPayment) {
+    this.type = type;
+    this.methodPayment = methodPayment;
+  }
   public Long getId() {
     return id;
   }

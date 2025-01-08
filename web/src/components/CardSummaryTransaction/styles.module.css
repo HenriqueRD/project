@@ -60,5 +60,5 @@
 #cardSummaryTransaction .contentTotal .comparation{
   color: var(--gray-800);
   font-size: .8rem;
-  font-weight: 500;
+  font-weight: 00;
 }

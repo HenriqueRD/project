@@ -46,7 +46,7 @@ export default function SummaryDay() {
                 <div className={style.treeTransa}>
                   <CardSummaryTransaction type="input" valueCurrent={totalInputs} valueBack={1} />
                   <CardSummaryTransaction type="output" valueCurrent={totalOutputs} valueBack={1} />
-                  <CardSummaryTransaction type="total" valueCurrent={totalInputs + totalOutputs}/>
+                  <CardSummaryTransaction type="total" valueCurrent={totalInputs - totalOutputs} />
                 </div>
                 <CardSummaryTransaction type="transactions" valueCurrent={transactions.length} valueBack={1} />
               </div>
@@ -99,7 +99,7 @@ export default function SummaryDay() {
                         height="66"
                         width="66"
                         color="#0a58ca"
-                        ariaLabel="tail-spin-loading"
+                        ariaLabel="tail-spin-loading" 
                       />
                     </div>
                   ) : (
