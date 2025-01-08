@@ -45,6 +45,16 @@
   justify-content: center;
   gap: 2rem;
 }
+#summaryDay .contentTable .tableHeaderTransactions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#summaryDay .contentTable .tableHeaderTransactions .buttonsHeader {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
 #summaryDay .contentTable {
   display: flex;
   flex-direction: column;

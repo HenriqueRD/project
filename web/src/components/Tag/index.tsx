@@ -26,5 +26,6 @@ function parseTagType(text : string) {
 function parseText(text : string) {
   if (text === "EM_PREPARACAO") return "em preparação"
   else if (text === "EM_ABERTO") return "em aberto"
+  else if (text === "SAIDA") return "saída"
   else return text
 }

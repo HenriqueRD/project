@@ -16,7 +16,7 @@ export default function CreateExpense() {
   const [ suppliers, setSuppliers ] = useState<SupplierProps[]>([])
   const [ suppliersListCurrent, setSuppliersListCurrent ] = useState<SupplierProps[]>([])
   const [ isLoading, setIsLoading ] = useState(false)
-  const [ valueTotal, setValueTotal ] = useState(0)
+  const [ totalValue, setTotalValue ] = useState(0)
   const [ selectMethodPay, setSelectMethodPay ] = useState("" as MethodPaymentExpensePros)
 
   async function getSuppliers() {
@@ -45,9 +45,10 @@ export default function CreateExpense() {
 
   async function handleSupplierOrder(event : FormEvent) {
     event.preventDefault()
-
-    await api.post("suppliers/", {
-      
+    await api.post("expenses/", { 
+      totalValue,
+      methodPayment: selectMethodPay,
+      supplierId: supplierCurrent.id,
     }).then(() => {
       toast.success("Despesa adicionada")
       nav("/")
@@ -76,11 +77,11 @@ export default function CreateExpense() {
                   <div className={style.twoInput}>
                     <div className={style.box}>
                       <label htmlFor="">Valor total</label>
-                      <input type="number" placeholder='valor da compra' value={valueTotal === 0 ? "" : valueTotal} onChange={(x) => setValueTotal(parseInt(x.target.value))}/>
+                      <input type="number" placeholder='valor da compra' value={totalValue === 0 ? "" : totalValue} onChange={(x) => setTotalValue(parseInt(x.target.value))}/>
                     </div>
                     <div className={style.box}>
-                      <label htmlFor="">Nome</label>
-                      <input type="text" placeholder='Escolher Produto' value={supplierCurrent.name} readOnly disabled/>
+                      <label htmlFor="">Observações</label>
+                      <input type="text" placeholder='observação sobre a compra' value={supplierCurrent.name} />
                     </div>
                   </div>
                   <div className={style.methodPays}>

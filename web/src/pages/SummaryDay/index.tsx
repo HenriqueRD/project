@@ -3,13 +3,15 @@ import CardSummaryTransaction from "../../components/CardSummaryTransaction";
 import Header from "../../components/Header";
 import style from './styles.module.css'
 import { api } from "../../api";
-import { TransactionsProps } from "../../types";
+import { MethodPaymentPros, TransactionsProps } from "../../types";
 import Tag from "../../components/Tag";
 import { format, formatDistance, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { TailSpin } from "react-loader-spinner";
 import toast from "react-hot-toast";
 import CardSummaryMethodPayment from "../../components/CardSummaryMethodPayment";
+import Button from "../../components/Button";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 
 export default function SummaryDay() {
   const [ transactions, setTrasactions ] = useState<TransactionsProps[]>([] as any)
@@ -17,7 +19,6 @@ export default function SummaryDay() {
 
   const totalInputs = transactions.filter(x => x.type === "ENTRADA").reduce((acc, itr) =>  acc + itr.totalValue, 0)
   const totalOutputs = transactions.filter(x => x.type === "SAIDA").reduce((acc, itr) =>  acc + itr.totalValue, 0)
-
   
   async function getTransactions() {
     setIsLoading(true)
@@ -30,6 +31,10 @@ export default function SummaryDay() {
   useEffect(() => {
     getTransactions()
   }, [])
+
+  function filterTransactionsByMethodPayment(type : MethodPaymentPros) {
+    return transactions.filter(x => x.type === "ENTRADA").filter(x => x.methodPayment === type).reduce((acc, itr) => acc + itr.totalValue, 0)
+  }
 
   return (
     <>
@@ -54,14 +59,24 @@ export default function SummaryDay() {
             <div className={style.summaryInputsInfo}>
               <p>Métodos de pagamento utilizados nas transações de receitas</p>
               <div className={style.cardsInputs}>
-                <CardSummaryMethodPayment type="money" valueCurrent={totalInputs} />                
-                <CardSummaryMethodPayment type="pix" valueCurrent={totalInputs} />
-                <CardSummaryMethodPayment type="credit" valueCurrent={totalInputs} />
-                <CardSummaryMethodPayment type="debit" valueCurrent={totalInputs} />
+                <CardSummaryMethodPayment type="money" valueCurrent={filterTransactionsByMethodPayment("DINHEIRO")} />                
+                <CardSummaryMethodPayment type="pix" valueCurrent={filterTransactionsByMethodPayment("PIX")} />
+                <CardSummaryMethodPayment type="credit" valueCurrent={filterTransactionsByMethodPayment("CREDITO")} />
+                <CardSummaryMethodPayment type="debit" valueCurrent={filterTransactionsByMethodPayment("DEBITO")} />
               </div>
             </div>
             <div className={style.contentTable}>
-              <h3>Transações</h3>
+              <div className={style.tableHeaderTransactions}>
+                <h3>Transações</h3>
+                <div className={style.buttonsHeader}>
+                  <select>
+                    <option value="ALL">Todos</option>
+                    <option value="INPUT">Entradas</option>
+                    <option value="OUTPUT">Saídas</option>
+                  </select>
+                  <Button icon><MagnifyingGlass size={20}/></Button>
+                </div>
+              </div>
               <div className={style.containerTable}>
                 <table className='table'>
                   <thead>
