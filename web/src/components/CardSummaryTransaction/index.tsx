@@ -4,10 +4,10 @@ import style from './styles.module.css'
 type CardSummaryTransactionProps = {
   type: "input" | "output" | "total" | "transactions"
   valueCurrent?: number
-  valueBack?: number
+  //valueBack?: number
 }
 
-export default function CardSummaryTransaction({ type, valueBack = 0, valueCurrent = 0 }: CardSummaryTransactionProps) {
+export default function CardSummaryTransaction({ type, valueCurrent = 0 }: CardSummaryTransactionProps) {
 
   const typeConfig = {
     input: { label: "Entradas", icon: <ArrowCircleUp size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})},
@@ -17,7 +17,7 @@ export default function CardSummaryTransaction({ type, valueBack = 0, valueCurre
   };
 
   const { label, icon, value } = typeConfig[type];
-  const comparation = (((valueCurrent - valueBack) / valueBack) * 100).toFixed(0)
+  //const comparation = (((valueCurrent - valueBack) / valueBack) * 100).toFixed(0)
 
   return (
     <div id={style.cardSummaryTransaction} className={style[type]}>
@@ -28,9 +28,11 @@ export default function CardSummaryTransaction({ type, valueBack = 0, valueCurre
       <div className={style.contentTotal}>
         <span className={style.total}>{value}</span>
         {
+          /*
           type !== "total" && (
             <span className={style.comparation}>{comparation}% em relação a ontem</span>
           )
+          */
         }
       </div>
     </div>

@@ -50,10 +50,10 @@
   align-items: center;
   justify-content: space-between;
 }
-#summaryDay .contentTable .tableHeaderTransactions .buttonsHeader {
+#summaryDay .contentTable .tableHeaderTransactions .tableHeaderTransactionsForm {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 1rem;
 }
 #summaryDay .contentTable {
   display: flex;
