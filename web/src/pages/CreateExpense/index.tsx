@@ -3,7 +3,7 @@ import Header from '../../components/Header'
 import style from './styles.module.css'
 import Button from '../../components/Button'
 import { ArrowLeft, Barcode, Check, CurrencyDollar, PixLogo } from '@phosphor-icons/react'
-import { MethodPaymentExpensePros, SupplierProps } from '../../types'
+import { MethodPaymentExpenseProps, SupplierProps } from '../../types'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../../api'
@@ -17,7 +17,7 @@ export default function CreateExpense() {
   const [ suppliersListCurrent, setSuppliersListCurrent ] = useState<SupplierProps[]>([])
   const [ isLoading, setIsLoading ] = useState(false)
   const [ totalValue, setTotalValue ] = useState(0)
-  const [ selectMethodPay, setSelectMethodPay ] = useState("" as MethodPaymentExpensePros)
+  const [ selectMethodPay, setSelectMethodPay ] = useState("" as MethodPaymentExpenseProps)
 
   async function getSuppliers() {
     setIsLoading(true)
@@ -81,7 +81,7 @@ export default function CreateExpense() {
                     </div>
                     <div className={style.box}>
                       <label htmlFor="">Observações</label>
-                      <input type="text" placeholder='observação sobre a compra' value={supplierCurrent.name} />
+                      <input type="text" placeholder='observação sobre a compra' />
                     </div>
                   </div>
                   <div className={style.methodPays}>
@@ -99,10 +99,8 @@ export default function CreateExpense() {
                     </div>
                   </div>
                 </form>
-                <form className={style.formItem}>
-                  <div className={style.formItemHeader}>
-                    <h3>Fornecedor selecionado</h3>
-                  </div>
+                <div className={style.supplier}>
+                  <h3>Fornecedor selecionado</h3>
                   <div className={style.twoInput}>
                     <div className={style.box}>
                       <label htmlFor="">Nome</label>
@@ -113,7 +111,7 @@ export default function CreateExpense() {
                       <input type="text" placeholder='Escolher Fornecedor' value={supplierCurrent.type} readOnly disabled/>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
               <form className={style.formSearchSupplier}>
                 <h3>Fornecedores</h3>

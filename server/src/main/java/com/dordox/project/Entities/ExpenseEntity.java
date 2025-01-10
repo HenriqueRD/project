@@ -1,7 +1,7 @@
 package com.dordox.project.Entities;
 
-import com.dordox.project.Entities.Enums.Sells.MethodPaymentSellEnum;
 import com.dordox.project.Entities.Enums.Transactions.CategoryTransactionEnum;
+import com.dordox.project.Entities.Enums.Transactions.MethodPaymentTransactionEnum;
 import com.dordox.project.Entities.Enums.Transactions.TypeTransactionEnum;
 
 import jakarta.persistence.Entity;
@@ -20,7 +20,7 @@ public class ExpenseEntity extends TransactionEntity {
 
   public ExpenseEntity() {
   }
-  public ExpenseEntity(SupplierEntity supplier, CategoryTransactionEnum category, MethodPaymentSellEnum methodPayment) {
+  public ExpenseEntity(SupplierEntity supplier, CategoryTransactionEnum category, MethodPaymentTransactionEnum methodPayment) {
     super(TypeTransactionEnum.SAIDA, category, methodPayment);
     this.supplier = supplier;
   }

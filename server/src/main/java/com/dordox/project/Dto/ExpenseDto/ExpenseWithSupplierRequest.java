@@ -1,6 +1,6 @@
 package com.dordox.project.Dto.ExpenseDto;
 
-import com.dordox.project.Entities.Enums.Sells.MethodPaymentSellEnum;
+import com.dordox.project.Entities.Enums.Transactions.MethodPaymentTransactionEnum;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 
 public class ExpenseWithSupplierRequest {
   @NotNull(message = "o methodPayment é obrigatório")
-  @Pattern(regexp = "DEBITO|PIX|DINHEIRO|CREDITO", message = "o methodPayment deve ser DEBITO | PIX | DINHEIRO | CREDITO")
+  @Pattern(regexp = "PIX|DINHEIRO|BOLETO", message = "o methodPayment deve ser BOLETO | PIX | DINHEIRO")
   @NotBlank(message = "o methodPayment não pode estar vazio")
   private String methodPayment;
   @NotNull(message = "o totalValue é obrigatório")
@@ -16,8 +16,8 @@ public class ExpenseWithSupplierRequest {
   @NotNull(message = "o supplierId é obrigatório")
   private Long supplierId;
   
-  public MethodPaymentSellEnum getMethodPayment() {
-    return MethodPaymentSellEnum.valueOf(methodPayment);
+  public MethodPaymentTransactionEnum getMethodPayment() {
+    return MethodPaymentTransactionEnum.valueOf(methodPayment);
   }
   public void setMethodPayment(String methodPayment) {
     this.methodPayment = methodPayment;

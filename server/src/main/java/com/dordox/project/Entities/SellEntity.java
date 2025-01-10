@@ -1,8 +1,8 @@
 package com.dordox.project.Entities;
 
 import com.dordox.project.Dto.SellDto.SellRequest;
-import com.dordox.project.Entities.Enums.Sells.MethodPaymentSellEnum;
 import com.dordox.project.Entities.Enums.Transactions.CategoryTransactionEnum;
+import com.dordox.project.Entities.Enums.Transactions.MethodPaymentTransactionEnum;
 import com.dordox.project.Entities.Enums.Transactions.TypeTransactionEnum;
 
 import jakarta.persistence.Entity;
@@ -24,7 +24,7 @@ public class SellEntity extends TransactionEntity {
     super();
   }
   public SellEntity(SellRequest obj) {
-    super(TypeTransactionEnum.ENTRADA, CategoryTransactionEnum.VENDA_PEDIDO, MethodPaymentSellEnum.valueOf(obj.getMethod_payment()));
+    super(TypeTransactionEnum.ENTRADA, CategoryTransactionEnum.VENDA_PEDIDO, MethodPaymentTransactionEnum.valueOf(obj.getMethod_payment()));
     this.discount = obj.getDiscount();
   }
   public Float getDiscount() {

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.dordox.project.Entities.ProductEntity;
 import com.dordox.project.Entities.SupplierEntity;
+import com.dordox.project.Entities.Enums.Suppliers.TypeSuppliersEnum;
 import com.dordox.project.Repositories.ProductRepository;
 import com.dordox.project.Repositories.SupplierRepository;
 
@@ -40,8 +41,9 @@ public class DataLoader implements CommandLineRunner {
       repoProduct.save(new ProductEntity("Batata grande", 21.f, "Comida"));
       repoProduct.save(new ProductEntity("Pastel", 9.f, "Comida"));
 
-      repoSupplier.save(new SupplierEntity("Fruteira Flavio", "00.623.904/0001-73", "mercado"));
-      repoSupplier.save(new SupplierEntity("Coca-Cola FEMSA", "65.321.984/0001-21", "distribuidora"));
+      repoSupplier.save(new SupplierEntity("Fruteira Flavio", "00.623.904/0001-73", TypeSuppliersEnum.MERCADO, "51 998960698"));
+      repoSupplier.save(new SupplierEntity("Coca-Cola FEMSA", "65.321.984/0001-21",  TypeSuppliersEnum.DISTRIBUIDORA, "51 998432200"));
+      repoSupplier.save(new SupplierEntity("Atacadão", "65.321.984/0001-21",  TypeSuppliersEnum.ATACADISTA, "51 998925478"));
     }
   }
 }

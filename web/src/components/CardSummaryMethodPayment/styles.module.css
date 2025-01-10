@@ -13,9 +13,7 @@
 #cardSummaryMethodPayment .total {
   font-size: 1.1rem;
   font-weight: 500;
-}
-#cardSummaryMethodPayment .total {
-  color: var(--green-700);
+  color: var(--green-800);
 }
 #cardSummaryMethodPayment .isInput {
   display: flex;

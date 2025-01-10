@@ -24,7 +24,7 @@
 }
 #cardSummaryTransaction .total {
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 400;
 }
 #cardSummaryTransaction.input .total {
   color: var(--green-700);
@@ -56,9 +56,4 @@
 #cardSummaryTransaction .contentTotal {
   display: flex;
   flex-direction: column;
-}
-#cardSummaryTransaction .contentTotal .comparation{
-  color: var(--gray-800);
-  font-size: .8rem;
-  font-weight: 00;
 }

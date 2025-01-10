@@ -3,11 +3,11 @@ package com.dordox.project.Dto.ExpenseDto;
 import java.time.LocalDateTime;
 
 import com.dordox.project.Dto.SupplierDto.SupplierResponse;
-import com.dordox.project.Entities.Enums.Sells.MethodPaymentSellEnum;
+import com.dordox.project.Entities.Enums.Transactions.MethodPaymentTransactionEnum;
 
 public record ExpenseResponse(
   Long id,
-  MethodPaymentSellEnum methodPayment,
+  MethodPaymentTransactionEnum methodPayment,
   Float totalValue,
   SupplierResponse supplier,
   LocalDateTime createdAt

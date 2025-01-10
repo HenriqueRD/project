@@ -29,7 +29,7 @@ export type SellsProps = {
   id: number
   discount: number
   orderId: number
-  methodPayment: MethodPaymentPros
+  methodPayment: MethodPaymentSellProps
   totalValue: number
 }
 
@@ -38,7 +38,7 @@ export type TransactionsProps = {
   type: string
   category: string
   totalValue: number
-  methodPayment: MethodPaymentPros
+  methodPayment: MethodPaymentTransactionProps
   createdAt: Date
 }
 
@@ -46,15 +46,19 @@ export type SupplierProps = {
   id: number
   name: string
   cnpj: string
-  type: TypeSupplierExpensePros
+  type: TypeSupplierExpenseProps
 }
 
 export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO' | "ALL"
 
 export type StatusPaymentProps = 'EM_ABERTO' | 'PAGO'
 
-export type MethodPaymentPros = 'DINHEIRO' | 'PIX' | 'DEBITO' | 'CREDITO'
+export type MethodPaymentSellProps = 'DINHEIRO' | 'PIX' | 'DEBITO' | 'CREDITO'
 
-export type MethodPaymentExpensePros = 'DINHEIRO' | 'PIX' | "BOLETO"
+export type MethodPaymentExpenseProps = 'DINHEIRO' | 'PIX' | "BOLETO"
 
-export type TypeSupplierExpensePros = 'MERCADO' | 'SUPERMERCADO' | "DISTRIBUIDORA"
+export type MethodPaymentTransactionProps = 'DINHEIRO' | 'PIX' | 'DEBITO' | 'CREDITO' | 'BOLETO'
+
+export type TypeTransactionProps = 'ENTRADA' | 'SAIDA'
+
+export type TypeSupplierExpenseProps = 'MERCADO' | 'SUPERMERCADO' | "DISTRIBUIDORA"

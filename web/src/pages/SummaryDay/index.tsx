@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import CardSummaryTransaction from "../../components/CardSummaryTransaction";
 import Header from "../../components/Header";
 import qs from 'qs'
 import style from './styles.module.css'
 import { api } from "../../api";
-import { MethodPaymentPros, TransactionsProps } from "../../types";
+import { MethodPaymentSellProps, MethodPaymentTransactionProps, TransactionsProps, TypeTransactionProps } from "../../types";
 import Tag from "../../components/Tag";
 import { format, formatDistance, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -17,6 +17,8 @@ import { MagnifyingGlass } from "@phosphor-icons/react";
 export default function SummaryDay() {
   const [ transactions, setTrasactions ] = useState<TransactionsProps[]>([] as any)
   const [ isLoading, setIsLoading ] = useState(false)
+  const [ methodPayment, setMethodPayment ] = useState<MethodPaymentTransactionProps | "ALL">()
+  const [ type, setType ] = useState<TypeTransactionProps>()
 
   const totalInputs = transactions.filter(x => x.type === "ENTRADA").reduce((acc, itr) =>  acc + itr.totalValue, 0)
   const totalOutputs = transactions.filter(x => x.type === "SAIDA").reduce((acc, itr) =>  acc + itr.totalValue, 0)
@@ -26,7 +28,7 @@ export default function SummaryDay() {
     await api.get("/transactions/", { params: {
       date: format(new Date(), 'yyyy-MM-dd'),
       type: !type ? ["SAIDA", "ENTRADA"] : type, 
-      methodPayment: !methodPayment ? ["DINHEIRO", "PIX", "BOLETO", "DEBITO", "CREDITO"] : methodPayment
+      payment: !methodPayment ? ["DINHEIRO", "PIX", "BOLETO", "DEBITO", "CREDITO"] : methodPayment
     },
     paramsSerializer: (params) => {
       return qs.stringify(params, { arrayFormat: 'repeat' })
@@ -40,8 +42,13 @@ export default function SummaryDay() {
     getTransactions()
   }, [])
 
-  function filterTransactionsByMethodPayment(type : MethodPaymentPros) {
+  function filterTransactionsByMethodPayment(type : MethodPaymentSellProps) {
     return transactions.filter(x => x.type === "ENTRADA").filter(x => x.methodPayment === type).reduce((acc, itr) => acc + itr.totalValue, 0)
+  }
+
+  async function handleFilterList(event : FormEvent) {
+    event.preventDefault()
+    await getTransactions(!type ? "" : type, !methodPayment ? "" : methodPayment)
   }
 
   return (
@@ -75,22 +82,22 @@ export default function SummaryDay() {
             </div>
             <div className={style.contentTable}>
               <div className={style.tableHeaderTransactions}>
-                <h3>Transações</h3>
-                <form className={style.tableHeaderTransactionsForm}>
-                  <select>
-                    <option value="ALL">Todos pagamento</option>
+                <h3>Extrato Transações</h3>
+                <form onSubmit={handleFilterList} className={style.tableHeaderTransactionsForm}>
+                  <select value={methodPayment} onChange={(x) => setMethodPayment(x.target.value as MethodPaymentTransactionProps)}>
+                    <option value="">Todos pagamento</option>
                     <option value="DINHEIRO">Dinheiro</option>
                     <option value="CREDITO">Crédito</option>
                     <option value="DEBITO">Débito</option>
                     <option value="PIX">Pix</option>
                     <option value="BOLETO">Boleto</option>
                   </select>
-                  <select>
-                    <option value="ALL">Todos tipos</option>
-                    <option value="OUTPUT">Saídas</option>
-                    <option value="INPUT">Entradas</option>
+                  <select value={type} onChange={(x) => setType(x.target.value as TypeTransactionProps)}>
+                    <option value="">Todos tipos</option>
+                    <option value="SAIDA">Saídas</option>
+                    <option value="ENTRADA">Entradas</option>
                   </select>
-                  <Button icon><MagnifyingGlass size={20}/></Button>
+                  <Button type="submit" icon><MagnifyingGlass size={20}/></Button>
                 </form>
               </div>
               <div className={style.containerTable}>

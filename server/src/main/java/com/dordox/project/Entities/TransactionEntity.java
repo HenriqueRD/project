@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.dordox.project.Entities.Enums.Sells.MethodPaymentSellEnum;
 import com.dordox.project.Entities.Enums.Transactions.CategoryTransactionEnum;
+import com.dordox.project.Entities.Enums.Transactions.MethodPaymentTransactionEnum;
 import com.dordox.project.Entities.Enums.Transactions.TypeTransactionEnum;
 
 import jakarta.persistence.Column;
@@ -32,7 +32,8 @@ public class TransactionEntity {
   private Float totalValue;
 
   @Column(name = "method_payment")
-  private MethodPaymentSellEnum methodPayment;
+  @Enumerated(EnumType.STRING)
+  private MethodPaymentTransactionEnum methodPayment;
 
   @Enumerated(EnumType.STRING)
   private TypeTransactionEnum type;
@@ -46,12 +47,12 @@ public class TransactionEntity {
 
   public TransactionEntity() {
   }
-  public TransactionEntity(TypeTransactionEnum type, CategoryTransactionEnum category, MethodPaymentSellEnum methodPayment) {
+  public TransactionEntity(TypeTransactionEnum type, CategoryTransactionEnum category, MethodPaymentTransactionEnum methodPayment) {
     this.type = type;
     this.category = category;
     this.methodPayment = methodPayment;
   }
-  public TransactionEntity(TypeTransactionEnum type, MethodPaymentSellEnum methodPayment) {
+  public TransactionEntity(TypeTransactionEnum type, MethodPaymentTransactionEnum methodPayment) {
     this.type = type;
     this.methodPayment = methodPayment;
   }
@@ -82,10 +83,10 @@ public class TransactionEntity {
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
-  public MethodPaymentSellEnum getMethodPayment() {
+  public MethodPaymentTransactionEnum getMethodPayment() {
     return methodPayment;
   }
-  public void setMethodPayment(MethodPaymentSellEnum methodPayment) {
+  public void setMethodPayment(MethodPaymentTransactionEnum methodPayment) {
     this.methodPayment = methodPayment;
   }
 }

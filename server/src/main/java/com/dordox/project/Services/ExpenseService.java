@@ -32,7 +32,7 @@ public class ExpenseService {
   public ExpenseEntity createWithSupplier(ExpenseWithSupplierRequest dto) {
     Optional<SupplierEntity> isSupplier = repoSupplier.findById(dto.getSupplierId());
     if (isSupplier.isPresent()) {
-      ExpenseEntity expense = new ExpenseEntity(isSupplier.get(), CategoryTransactionEnum.COMPRA_FORNECEDOR, dto.getMethodPayment());
+      ExpenseEntity expense = new ExpenseEntity(isSupplier.get(), CategoryTransactionEnum.COMPRA_PRODUTOS, dto.getMethodPayment());
       expense.setTotalValue(dto.getTotalValue());
       repo.save(expense);
       return expense;
