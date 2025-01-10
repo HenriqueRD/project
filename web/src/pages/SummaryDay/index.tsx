@@ -104,7 +104,6 @@ export default function SummaryDay() {
                 <table className='table'>
                   <thead>
                     <tr>
-                      <th scope="col" className='thId'>#</th>
                       <th scope="col">Tipo</th>
                       <th scope="col">Descrição</th>
                       <th scope="col">Pagamento</th>
@@ -117,7 +116,6 @@ export default function SummaryDay() {
                       transactions.map(x => {
                         return (
                           <tr key={x.id}>
-                            <th scope="row" className='thId'>{x.id}</th>
                             <td scope="row"><Tag  text={x.type}/></td>
                             <td scope="row" className={style.categoryTable}>{x.category}</td>
                             <td scope="row" className={style.categoryTable}>{x.methodPayment}</td>

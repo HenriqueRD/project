@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import style from './styles.module.css'
 import { api } from '../../api'
-import { MethodPaymentPros, OrderProps } from '../../types'
+import { MethodPaymentSellProps, OrderProps } from '../../types'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Bank, CreditCard, CurrencyDollar, PixLogo } from '@phosphor-icons/react'
 import CardItem from '../../components/CardItem'
@@ -17,7 +17,7 @@ export default function OrderCheckout() {
   const { id } = useParams()
   const [ isLoading, setIsLoading ] = useState(false)
   const nav = useNavigate()
-  const [ selectMethodPay, setSelectMethodPay ] = useState<MethodPaymentPros>("DINHEIRO")
+  const [ selectMethodPay, setSelectMethodPay ] = useState<MethodPaymentSellProps>("DINHEIRO")
   const [ discount, setdDiscount ] = useState(0)
 
   async function getOrder(idOrder : string) {
@@ -114,7 +114,7 @@ export default function OrderCheckout() {
                   </div>
                   <div className={style.discount}>
                     <label>Desconto</label>
-                    <input type="number" value={discount} min={0} onChange={x => { x.target.value === "" ? setdDiscount(0) : setdDiscount(parseInt(x.target.value))}} />
+                    <input type="number" placeholder='digite o desconto' value={discount === 0 ? "" : discount} min={0} onChange={x => { x.target.value === "" ? setdDiscount(0) : setdDiscount(parseInt(x.target.value))}} />
                   </div>
                   <div className={style.totalOrder}>
                     <h3>Resumo do Pagamento</h3>

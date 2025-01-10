@@ -45,6 +45,14 @@ export default function CreateExpense() {
 
   async function handleSupplierOrder(event : FormEvent) {
     event.preventDefault()
+    if (totalValue < 1) {
+      toast.error("O valor tem que ser maior que R$ 1,00")
+      return
+    }
+    else if (!selectMethodPay) {
+      toast.error("Selecione um método de pagamento")
+      return
+    }
     await api.post("expenses/", { 
       totalValue,
       methodPayment: selectMethodPay,
@@ -69,8 +77,8 @@ export default function CreateExpense() {
                 <form onSubmit={handleSupplierOrder} className={style.formExpense}>
                   <div className={style.formExpenseHeader}>
                     <div >
-                      <h3>Novo Pedido</h3>
-                      <Link to="/"><ArrowLeft size={18} /> Voltar aos pedidos</Link>
+                      <h3>Nova Despesa</h3>
+                      <Link to="/"><ArrowLeft size={18} /> Voltar a transações</Link>
                     </div>
                     <Button title='Adicionar despesa' type="submit" text='Adicionar despesa' variant='success'/>
                   </div>

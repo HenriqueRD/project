@@ -1,4 +1,4 @@
-import { Check, ClipboardText, NotePencil } from '@phosphor-icons/react'
+import { Check, ClipboardText, MagnifyingGlass, NotePencil } from '@phosphor-icons/react'
 import { format, formatDistance, subDays } from 'date-fns'
 import qs from 'qs'
 import { ptBR } from 'date-fns/locale'
@@ -58,7 +58,7 @@ export default function OrdersList() {
               <div className={style.headerTable}>
                 <div className={style.orderLengthSearch}>
                   <div className={style.orderLength}>
-                    <h3>Pedidos </h3>
+                    <h3>Pedidos</h3>
                     <Tag text={orders.length.toString()} type='normal' />
                   </div>
                   <Link to="/pedido/criar">
@@ -77,7 +77,9 @@ export default function OrdersList() {
                           <option value="ALL">Todos</option>
                         </select>
                         <input type="date" value={format(date, 'yyyy-MM-dd')} onChange={x => setDate(new Date(x.target.value+ "T00:00:00"))}/>
-                        <Button type='submit' text='Procurar' />
+                        <Button type='submit' icon>
+                          <MagnifyingGlass size={20} />
+                        </Button>
                       </div>
                     </form>
                   </div>
@@ -87,7 +89,6 @@ export default function OrdersList() {
                 <table className='table'>
                   <thead>
                     <tr>
-                      <th scope="col" className='thId'>#</th>
                       <th scope="col">Status</th>
                       <th scope="col">Cliente</th>
                       <th scope="col" className='thItems'>Itens</th>
@@ -102,7 +103,6 @@ export default function OrdersList() {
                         orders.map(x => {
                           return (
                             <tr key={x.id} onClick={() => handleClickOrder(x.id)}>
-                              <th scope="row" className='thId'>{x.id}</th>
                               <td><Tag text={x.statusOrder}/></td>
                               <td>{x.client}</td>
                               <td className='tdItems'>{x.items.length}</td>
