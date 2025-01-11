@@ -57,6 +57,13 @@ export default function SummaryDay() {
       <main id={style.summaryDay}>
         <div className="container">
           <div className="content">
+            <div className="flex gap-4" >
+            <Tag text="EM_PREPARACAO" />
+            <Tag text="EM_ABERTO"/>
+            <Tag text="CONCLUIDO" />
+            <Tag text="FINALIZADO"/>
+            </div>
+            
             <div className={style.summaryTransactionInfo}>
               <div className={style.summaryTransactionInfoHeader}>
                 <h3>Resumo do dia</h3>
@@ -97,7 +104,7 @@ export default function SummaryDay() {
                     <option value="SAIDA">Saídas</option>
                     <option value="ENTRADA">Entradas</option>
                   </select>
-                  <Button type="submit" icon><MagnifyingGlass size={20}/></Button>
+                  <Button type="submit" variant="primary" icon><MagnifyingGlass size={20}/></Button>
                 </form>
               </div>
               <div className={style.containerTable}>
