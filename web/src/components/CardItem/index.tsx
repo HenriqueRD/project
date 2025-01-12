@@ -5,17 +5,17 @@ import Tag from '../Tag'
 
 type CardItemProps = {
   data: ItemProps
-  id: number
+  index: number
   readOnly?: boolean
   handleOnClick?: () => void
 }
 
-export default function CardItem({ data: { amount, description, product, }, id, readOnly = false, handleOnClick } : CardItemProps) {
+export default function CardItem({ data: { amount, description, product, }, index, readOnly = false, handleOnClick } : CardItemProps) {
   return (
     <div className='flex border-y border-gray-300 rounded p-2 flex-col gap-4'>
       <div className="flex items-center justify-between">
         <div>
-          <span>({id}) - </span>
+          <span>({index}) - </span>
           <span className="uppercase">{product.name}</span>
           <span> x <Tag text={amount.toString()} type='alert'/></span>
         </div>
@@ -23,8 +23,6 @@ export default function CardItem({ data: { amount, description, product, }, id, 
       </div>
       <div className="flex items-center justify-between">
         <p><strong>obs:</strong> {description}</p>
-        {id}
-
         {
           !readOnly && (
             <Button title='Remover Item' icon variant='danger' onClick={handleOnClick}>

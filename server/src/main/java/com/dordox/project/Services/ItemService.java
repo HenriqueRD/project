@@ -23,14 +23,14 @@ public class ItemService {
   //check order paid
 
   @Transactional
-  public void create(Long orderId, ItemEntity obj) {
+  public ItemEntity create(Long orderId, ItemEntity obj) {
     Optional<OrderEntity> isOrder = repoOrder.findById(orderId);
     if (isOrder.isPresent()) {
       OrderEntity order = isOrder.get();
       obj.setOrder(order);
       order.setUpdatedAt();
       repoOrder.save(order);
-      repo.save(obj);
+      return repo.save(obj);
     } 
     else {
       throw new RecordNotFoundException("pedido", orderId);

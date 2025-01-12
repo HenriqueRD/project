@@ -49,7 +49,7 @@ export type SupplierProps = {
   type: TypeSupplierExpenseProps
 }
 
-export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO' | "ALL"
+export type StatusOrderProps = 'EM_PREPARACAO' | 'CONCLUIDO' | 'FINALIZADO' 
 
 export type StatusPaymentProps = 'EM_ABERTO' | 'PAGO'
 

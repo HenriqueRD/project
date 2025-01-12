@@ -24,9 +24,9 @@ export default {
         }
       },
       screens: {
-        'sm': { max: '639px' }, 
-        'md': { max: '767px' }, 
-        'lg': { max: '1023px' }, 
+        'sm': { max: '640px' }, 
+        'md': { max: '760px' }, 
+        'lg': { max: '1020px' }, 
       },
     }
   },

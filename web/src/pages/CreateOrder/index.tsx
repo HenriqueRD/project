@@ -102,7 +102,7 @@ export default function CreateOrder() {
       <Header />
       <main className="mt-8">
         <div className="container">
-          <div className='bg-neutral-50 p-6 rounded border border-slate-200'>
+          <div className='bg-neutral-50 p-6 rounded border border-slate-200 md:p-4'>
             <div className="flex gap-8 lg:flex-col">
               <div className="flex flex-col w-3/5 gap-4 lg:w-full">
                 <form onSubmit={handleCreateOrder} className="flex flex-col gap-4">
@@ -166,7 +166,7 @@ export default function CreateOrder() {
                             itemsSelected.map((x, i) => {
                               return (
                                 <li key={i}>
-                                  <CardItem data={x} id={i+1} handleOnClick={() => handleRemoveItem(i)}/>
+                                  <CardItem data={x} index={i+1} handleOnClick={() => handleRemoveItem(i)}/>
                                 </li>
                               )
                             })

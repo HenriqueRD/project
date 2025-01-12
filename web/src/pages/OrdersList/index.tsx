@@ -15,7 +15,7 @@ export default function OrdersList() {
   const nav = useNavigate()
   const [ orders, setOrders ] = useState<OrderProps[]>([])
   const [ date, setDate ] = useState(new Date())
-  const [ status, setStatus ] = useState<StatusOrderProps>("EM_PREPARACAO")
+  const [ status, setStatus ] = useState<StatusOrderProps | "ALL">("EM_PREPARACAO")
 
   async function getOrders() { 
     await api.get("orders/", { params: {
@@ -50,9 +50,9 @@ export default function OrdersList() {
   return (
     <>
       <Header />
-      <main className='mt-16'>
+      <main className='mt-16 lg:mt-8'>
         <div className="container">
-          <div className='bg-neutral-50 p-6 rounded border border-neutral-200'>
+          <div className='bg-neutral-50 p-6 rounded border border-neutral-200 md:p-4'>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-6">
                 <div className="flex items-center justify-between">
@@ -80,7 +80,7 @@ export default function OrdersList() {
                   </form>
                 </div>
               </div>
-              <div className="h-[32rem] border border-slate-300 rounded bg-slate-50">
+              <div className="h-[32rem] border border-slate-300 rounded bg-white">
                 <table className='table'>
                   <thead>
                     <tr>

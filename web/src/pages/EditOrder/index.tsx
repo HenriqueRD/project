@@ -12,6 +12,7 @@ import { ProductContext } from '../../contexts/ProductContext'
 import { TailSpin } from 'react-loader-spinner'
 import TableEmptyMessage from '../../components/TableEmptyMessage'
 import LinkGotoBack from '../../components/LinkGotoBack'
+import RecordCreateUpdate from '../../components/RecordCreateUpdate'
 
 export default function EditOrder() {
 
@@ -23,6 +24,7 @@ export default function EditOrder() {
   const { products } = useContext(ProductContext)
   const [ productsListCurrent, setProductsListCurrent ] = useState<ProductProps[]>(products)
   const [ isLoadingOrder, setIsLoadingOrder ] = useState(true)
+  const [ isLoadingItem, setIsLoadingItem ] = useState(false)
   const [ itemsSelected, setItemsSelected ] = useState<ItemProps[]>([])
 
   const [ amount, setAmount ] = useState(0)
@@ -78,13 +80,10 @@ export default function EditOrder() {
       console.error(x.response.data.message)
     })
   }
-
-  function handleSearchItem(event : FormEvent) {
-    event.preventDefault()
-  }
-
+  
   async function handleAddItem(event : FormEvent) {
     event.preventDefault()
+    setIsLoadingItem(true)
     if (!productCurrent.name || amount === 0) {
       toast.error("Selecione um Item!")
       return
@@ -95,8 +94,9 @@ export default function EditOrder() {
       product: {
         id: productCurrent.id
       }
-    }).then(() => {
+    }).then(({data}) => {
       setItemsSelected([...itemsSelected, {
+        id: data.id,
         amount,
         description,
         product: productCurrent
@@ -110,10 +110,12 @@ export default function EditOrder() {
       setAmount(0)
       setDescription("")
       setProductCurrent({} as any)
+      setIsLoadingItem(false)
     })
   }
 
-  async function handleRemoveItem(id? : number) {
+  async function handleRemoveItem(id?: number) {
+    setIsLoadingItem(true)
     await api.delete(`items/${id}/order/${order.id}`).then(() => {
       toast.success("Item removido")
       const newArray = itemsSelected.filter((x) => x.id !== id)
@@ -121,6 +123,8 @@ export default function EditOrder() {
     }).catch(x => {
       toast.error("Falha ao remover o item")
       console.error(x.response.data.message)
+    }).finally(() => {
+      setIsLoadingItem(false)
     })
   }
 
@@ -139,10 +143,10 @@ export default function EditOrder() {
       <Header />
       <main className='mt-8'>
         <div className="container">
-          <div className="bg-neutral-50 p-6 rounded border border-slate-200">
+          <div className="bg-neutral-50 p-6 rounded border border-slate-300 md:p-4">
             {
               isLoadingOrder ? (
-                <div className='contentEmpty'>
+                <div className='w-full h-[35rem] flex items-center justify-center'>
                   <TailSpin
                     visible={true}
                     height="66"
@@ -156,11 +160,14 @@ export default function EditOrder() {
                   <div className="flex flex-col w-3/5 gap-4 lg:w-full">
                     <form onSubmit={handleUpdateInfoOrder} className="flex flex-col gap-4">
                       <div className="flex items-start justify-between">
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-4">
                           <h3 className="text-lg">Editar pedido #{order.id}</h3>
                           <LinkGotoBack to={`/pedido/${order.id}`} text='Voltar ao pedido'/>
                         </div>
-                        <Button title='Realizar Pedido' type="submit" text='Atualizar Pedido' variant='success'/>
+                        <div className="flex flex-col gap-2 items-end">
+                          <Button title='Realizar Pedido' type="submit" text='Atualizar Pedido' variant='alert'/>                          
+                          <RecordCreateUpdate createdAt={order.createdAt} updatedAt={order.updatedAt} />
+                        </div>
                       </div>
                       <div className="flex gap-8 border-b border-slate-300 pb-4">
                         <div className="flex flex-col gap-2 w-full">
@@ -207,26 +214,38 @@ export default function EditOrder() {
                       </div>
                       <div className="bg-white p-4 rounded border border-slate-200 w-full h-80 overflow-auto">
                         {
-                          itemsSelected.length === 0 ? (
-                            <TableEmptyMessage text='nem um item selecionado' />
+                          isLoadingItem ? (
+                            <div className='w-full h-full flex items-center justify-center'>
+                              <TailSpin
+                                visible={true}
+                                height="66"
+                                width="66"
+                                color="#0a58ca"
+                                ariaLabel="tail-spin-loading"
+                              />
+                            </div>
                           ) : (
-                            <ul className='flex flex-col gap-2'>
-                              {
-                                itemsSelected.map((x, i) => {
-                                  return (
-                                    <li key={i}>
-                                      <CardItem data={x} id={x.id} handleOnClick={() => handleRemoveItem(x.id)}/>
-                                    </li>
-                                  )
-                                })
-                              }
-                            </ul>
+                            itemsSelected.length === 0 ? (
+                              <TableEmptyMessage text='nem um item selecionado' />
+                            ) : (
+                              <ul className='flex flex-col gap-2'>
+                                {
+                                  itemsSelected.map((x, i) => {
+                                    return (
+                                      <li key={i}>
+                                        <CardItem data={x} index={i + 1} handleOnClick={() => handleRemoveItem(x.id)}/>
+                                      </li>
+                                    )
+                                  })
+                                }
+                              </ul>
+                            )
                           )
                         }
                       </div>
                     </div>
                   </div>
-                  <form onSubmit={handleSearchItem} className="w-2/5 flex flex-col gap-4 lg:w-full">
+                  <form className="w-2/5 flex flex-col gap-4 lg:w-full">
                     <div className='flex flex-col gap-4'>
                       <h3 className='text-lg'>Produtos</h3>
                       <div className="flex items-center justify-between">

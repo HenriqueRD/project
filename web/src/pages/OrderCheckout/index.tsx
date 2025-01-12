@@ -168,7 +168,7 @@ export default function OrderCheckout() {
                           order.items.map((x, i) => {
                             return (
                               <li key={i}>
-                                <CardItem data={x} id={i+1} readOnly/>
+                                <CardItem data={x} index={i+1} readOnly/>
                               </li>
                             )
                           })

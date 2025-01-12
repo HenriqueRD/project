@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.dordox.project.Dto.ItemDto.ItemRequest;
+import com.dordox.project.Dto.ItemDto.ItemResponse;
 import com.dordox.project.Entities.ItemEntity;
+import com.dordox.project.Mapper.ItemMapper;
 import com.dordox.project.Services.ItemService;
 
 import jakarta.validation.Valid;
@@ -24,11 +26,13 @@ public class ItemController {
 
   @Autowired
   private ItemService service;
+  @Autowired
+  private ItemMapper mapper;
 
   @PostMapping("/order/{orderId}")
-  public ResponseEntity<Void> create(@PathVariable Long orderId, @Valid @RequestBody ItemRequest obj) {
-    service.create(orderId, new ItemEntity(obj));
-    return new ResponseEntity<>(null, HttpStatus.CREATED);	
+  public ResponseEntity<ItemResponse> create(@PathVariable Long orderId, @Valid @RequestBody ItemRequest obj) {
+    ItemResponse item = mapper.toResponse(service.create(orderId, new ItemEntity(obj)));
+    return new ResponseEntity<>(item, HttpStatus.CREATED);	
   }
   
   @DeleteMapping("/{id}/order/{orderId}")
