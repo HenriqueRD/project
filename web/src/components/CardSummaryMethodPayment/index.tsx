@@ -17,7 +17,7 @@ export default function CardSummaryMethodPayment({ type, valueCurrent = 0 }: Car
   const { label, icon, value } = typeConfig[type];
 
   return (
-    <div className="max-w-32 w-full bg-green-100 rounded border border-green-700 p-2 flex flex-col justify-between gap-2">
+    <div className="max-w-32 w-full bg-green-neon rounded border border-green-800 p-2 flex flex-col justify-between gap-2">
       <div className="flex items-center justify-between text-green-800">
         <span className="text-gray-800">{label}</span>
         {icon}

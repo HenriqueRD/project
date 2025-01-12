@@ -1,16 +1,17 @@
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import Header from '../../components/Header'
-import style from './styles.module.css'
 import CardItem from '../../components/CardItem'
 import Button from '../../components/Button'
-import { ArrowLeft, Check, Minus, Plus } from '@phosphor-icons/react'
+import { Check, Minus, Plus } from '@phosphor-icons/react'
 import { ItemProps, OrderProps, ProductProps } from '../../types'
 import Tag from '../../components/Tag'
 import toast from 'react-hot-toast'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../../api'
 import { ProductContext } from '../../contexts/ProductContext'
 import { TailSpin } from 'react-loader-spinner'
+import TableEmptyMessage from '../../components/TableEmptyMessage'
+import LinkGotoBack from '../../components/LinkGotoBack'
 
 export default function EditOrder() {
 
@@ -136,9 +137,9 @@ export default function EditOrder() {
   return (
     <>
       <Header />
-      <main id={style.createOrder}>
+      <main className='mt-8'>
         <div className="container">
-          <div className="content">
+          <div className="bg-neutral-50 p-6 rounded border border-slate-200">
             {
               isLoadingOrder ? (
                 <div className='contentEmpty'>
@@ -151,144 +152,118 @@ export default function EditOrder() {
                   />
                 </div>
               ) : (
-                <div className={style.contentForm}>
-                  <div className={style.twoForms}>
-                    <form onSubmit={handleUpdateInfoOrder} className={style.formRequest}>
-                      <div className={style.formRequestHeader}>
-                        <div >
-                          <h3>Editar pedido #{order.id}</h3>
-                          <Link to={`/pedido/${order.id}`}><ArrowLeft size={18} /> Voltar ao pedido</Link>
+                <div className="flex gap-8 lg:flex-col">
+                  <div className="flex flex-col w-3/5 gap-4 lg:w-full">
+                    <form onSubmit={handleUpdateInfoOrder} className="flex flex-col gap-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex flex-col gap-2">
+                          <h3 className="text-lg">Editar pedido #{order.id}</h3>
+                          <LinkGotoBack to={`/pedido/${order.id}`} text='Voltar ao pedido'/>
                         </div>
-                        <Button title='Editar pedido' type="submit" text='Atualizar dados' variant='alert'/>
+                        <Button title='Realizar Pedido' type="submit" text='Atualizar Pedido' variant='success'/>
                       </div>
-                      <div className={style.twoInput}>
-                        <div className={style.box}>
+                      <div className="flex gap-8 border-b border-slate-300 pb-4">
+                        <div className="flex flex-col gap-2 w-full">
                           <label htmlFor="client">Cliente</label>
-                          <input id='client' type="text" placeholder='nome do cliente' value={client} onChange={x => setClient(x.target.value)}/>
+                          <input className='w-full' id='client' type="text" placeholder='nome do cliente' value={client} onChange={x => setClient(x.target.value)}/>
                         </div>
-                        <div className={style.box}>
+                        <div className="flex flex-col gap-2 w-full">
                           <label htmlFor="service">Serviço*</label>
-                          <select id='service' value={service} onChange={x => setService(x.target.value)}>
-                            <option value="">Escolha o tipo</option>
+                          <select id='service' className='w-full' value={service} onChange={x => setService(x.target.value)}>
                             <option value="LOCAL">Local</option>
                             <option value="LEVAR">Levar</option>
                           </select>
                         </div>
                       </div>
                     </form>
-                    <form onSubmit={handleAddItem} className={style.formItem}>
-                      <div className={style.formItemHeader}>
-                        <h3>Item selecionado</h3>
+                    <form onSubmit={handleAddItem} className="flex flex-col gap-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className='text-lg'>Item selecionado</h3>
                         <Button type='submit' text='Adicionar Item' />
                       </div>
-                      <div className={style.twoInput}>
-                        <div className={style.box}>
-                          <label htmlFor="">Nome do Produto</label>
-                          <input type="text" placeholder='Escolher Produto' value={productNameCurrent} readOnly disabled/>
+                      <div className="flex items-center gap-8 w-full">
+                        <div className="flex flex-col gap-2 w-full">
+                          <label>Produto*</label>
+                          <input className='w-full' type="text" placeholder='Escolher Produto' value={productNameCurrent} readOnly disabled/>
                         </div>
-                        <div className={style.mobInput}>
-                          <div className={style.box}>
-                            <label htmlFor="amount">Quantidade*</label>
-                            <div className={style.addAmount}>
-                              <Button onClick={handleRemoveAmount} type='button' icon variant='danger' ><Minus size={20} weight='bold' /></Button>
-                              <input type="number" id='amount' value={amount} readOnly disabled />
-                              <Button onClick={handleAddAmount} type='button' icon variant='success'><Plus size={20} weight='bold' /></Button>
-                            </div>
+                        <div className="flex flex-col gap-2 w-full">
+                          <label htmlFor="amount">Quantidade*</label>
+                          <div className="flex items-center gap-2">
+                            <Button onClick={handleRemoveAmount} type='button' icon variant='danger' ><Minus size={20} weight='bold' /></Button>
+                            <input className="w-10 p-3 text-center" type="number" id='amount' value={amount} readOnly disabled />
+                            <Button onClick={handleAddAmount} type='button' icon variant='success'><Plus size={20} weight='bold' /></Button>
                           </div>
                         </div>
                       </div>
-                      <div className={style.twoInput}>
-                        <div className={style.box}>
-                          <label className={style.desc} htmlFor="desc">Descrição</label>
-                          <input type="text" id="desc" placeholder='Observações sobre o produto' value={description} onChange={x => setDescription(x.target.value)} />
-                        </div>
+                      <div className="flex flex-col gap-2 w-full">
+                        <label htmlFor="desc">Descrição</label>
+                        <input type="text" id="desc" placeholder='observações sobre o produto' value={description} onChange={x => setDescription(x.target.value)} />
                       </div>
                     </form>
-                    <div className={style.listItems}>
-                      <div className={style.listItemsHeader}>
-                        <h3>Itens</h3>
+                    <div className="flex flex-col gap-2 border-t pt-4 border-slate-300">
+                      <div className="flex gap-4 items-center">
+                        <h3 className='text-lg'>Itens</h3>
                         <Tag type="normal" text={itemsSelected.length.toString()} />
                       </div>
-                      <div className={style.contentItems}>
-                        <div className={style.containerListItems}>
-                          {
-                            isLoadingOrder ? (
-                              <div className='contentEmpty'>
-                                <TailSpin
-                                  visible={true}
-                                  height="66"
-                                  width="66"
-                                  color="#0a58ca"
-                                  ariaLabel="tail-spin-loading"
-                                />
-                              </div>
-                            ): (
-                              itemsSelected.length === 0 ? (
-                                <div className={style.empty}>
-                                  <span>Nem um item selecionado</span>
-                                </div>
-                              ) : (
-                                <ul>
-                                  {
-                                    itemsSelected.map((x, i) => {
-                                      return (
-                                        <li key={i}>
-                                          <CardItem data={x} id={i+1} handleOnClick={() => handleRemoveItem(x?.id)}/>
-                                        </li>
-                                      )
-                                    })
-                                  }
-                                </ul>
-                              )
-                            )
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <form onSubmit={handleSearchItem} className={style.formSearchItem}>
-                    <h3>Produtos</h3>
-                    <div className={style.headerTable}>
-                      <div className={style.box}>
-                        <label htmlFor="id">Procurar por nome</label>
-                        <div className={style.inputsSearch}>
-                          <input id='name' placeholder='nome do produto' onChange={(x) => handleSearchProducts(x.target.value)} />
-                        </div>
-                      </div>
-                      <Button type='reset' text='Resetar' onClick={handleFormSearchProductReset}/>
-                    </div>
-                    <div className={style.containerTable}>
-                      
-                      {
-                        productsListCurrent.length === 0 ? (
-                          <div className={style.empty}>
-                            <span>Nem um produto foi encontrado</span>
-                          </div>
-                        ) : (
-                          <table className='table'>
-                            <thead>
-                              <tr>
-                                <th scope="col" className='thId'>#</th>
-                                <th scope="col">Produto</th>
-                                <th scope="col">Preço</th>
-                                <th scope="col" className='thButtons'>Ação</th>
-                              </tr>
-                            </thead>
-                            <tbody>
+                      <div className="bg-white p-4 rounded border border-slate-200 w-full h-80 overflow-auto">
+                        {
+                          itemsSelected.length === 0 ? (
+                            <TableEmptyMessage text='nem um item selecionado' />
+                          ) : (
+                            <ul className='flex flex-col gap-2'>
                               {
-                                productsListCurrent.map(x => {
+                                itemsSelected.map((x, i) => {
                                   return (
-                                    <tr key={x.id} title='Selecionar' onClick={() => { setProductCurrent(x); setAmount(1); setProductNameCurrent(x.name)}}>
-                                      <th scope="row" className='thId'>{x.id}</th>
-                                      <td>{x.name}</td>
-                                      <td>{x.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
-                                      <td className="buttons">
-                                        <Button icon type='button' title='Selecionar' variant='success'><Check weight='bold' size={20} /></Button>
-                                      </td>
-                                    </tr>
+                                    <li key={i}>
+                                      <CardItem data={x} id={x.id} handleOnClick={() => handleRemoveItem(x.id)}/>
+                                    </li>
                                   )
                                 })
                               }
+                            </ul>
+                          )
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <form onSubmit={handleSearchItem} className="w-2/5 flex flex-col gap-4 lg:w-full">
+                    <div className='flex flex-col gap-4'>
+                      <h3 className='text-lg'>Produtos</h3>
+                      <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-2">
+                          <label htmlFor="id">Procurar por nome</label>
+                          <input id='name' placeholder='nome do produto' onChange={(x) => handleSearchProducts(x.target.value)} />
+                        </div>
+                        <Button type='reset' text='Resetar' onClick={handleFormSearchProductReset}/>
+                      </div>
+                    </div>
+                    <div className="bg-white rounded border border-slate-200 w-full h-[26rem] overflow-auto">
+                      {
+                        productsListCurrent.length === 0 ? (
+                          <TableEmptyMessage text='nem um produto encontrado' />
+                        ) : (
+                          <table className='table table-fixed w-full'>
+                            <thead>
+                              <tr>
+                                <th scope="col">Produto</th>
+                                <th scope="col">Preço</th>
+                                <th scope="col" className='w-16'>Ação</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                {
+                                  productsListCurrent.map(x => {
+                                    return (
+                                      <tr key={x.id} title='Selecionar' onClick={() => { setProductCurrent(x); setAmount(1); setProductNameCurrent(x.name)}}>
+                                        <td>{x.name}</td>
+                                        <td>{x.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
+                                        <td className="flex items-center justify-center">
+                                          <Button icon type='button' title='Selecionar' variant='success'><Check weight='bold' size={20} /></Button>
+                                        </td>
+                                      </tr>
+                                    )
+                                  })
+                                }
                             </tbody>
                           </table>
                         )

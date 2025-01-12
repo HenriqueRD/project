@@ -1,10 +1,26 @@
 import { ArrowCircleDown, ArrowCircleUp, ArrowsDownUp, CurrencyCircleDollar } from '@phosphor-icons/react'
-import style from './styles.module.css'
+import { tv } from 'tailwind-variants'
+
+const card = tv({
+  base: 'p-4 rounded flex gap-4 flex-col max-w-48 w-full',
+  variants: {
+    type: {
+      input: 'bg-green-neon border border-green-700 text-green-900',
+      output: 'bg-red-neon border border-red-700 text-red-900',
+      total: 'bg-gray-neon border border-gray-700 text-gray-900',
+      transactions: 'bg-blue-neon border border-blue-700 text-blue-900',
+    },
+  },
+  defaultVariants: {
+    type: 'transactions',
+    isActive: true,
+    icon: false
+  }
+})
 
 type CardSummaryTransactionProps = {
   type: "input" | "output" | "total" | "transactions"
   valueCurrent?: number
-  //valueBack?: number
 }
 
 export default function CardSummaryTransaction({ type, valueCurrent = 0 }: CardSummaryTransactionProps) {
@@ -17,24 +33,14 @@ export default function CardSummaryTransaction({ type, valueCurrent = 0 }: CardS
   };
 
   const { label, icon, value } = typeConfig[type];
-  //const comparation = (((valueCurrent - valueBack) / valueBack) * 100).toFixed(0)
 
   return (
-    <div id={style.cardSummaryTransaction} className={style[type]}>
-      <div className={style.isInput}>
-        <span>{label}</span>
+    <div className={card({ type })}>
+      <div className="flex items-center justify-between">
+        <span className="text-gray-800 font-medium">{label}</span>
         {icon}
       </div>
-      <div className={style.contentTotal}>
-        <span className={style.total}>{value}</span>
-        {
-          /*
-          type !== "total" && (
-            <span className={style.comparation}>{comparation}% em relação a ontem</span>
-          )
-          */
-        }
-      </div>
+      <span className="font-medium text-2xl">{value}</span>
     </div>
   )
 }

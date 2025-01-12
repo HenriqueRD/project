@@ -23,6 +23,8 @@ export default function CardItem({ data: { amount, description, product, }, id, 
       </div>
       <div className="flex items-center justify-between">
         <p><strong>obs:</strong> {description}</p>
+        {id}
+
         {
           !readOnly && (
             <Button title='Remover Item' icon variant='danger' onClick={handleOnClick}>

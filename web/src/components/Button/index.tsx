@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react'
 import { tv } from 'tailwind-variants'
 
 const button = tv({
-  base: 'h-8 text-gray-50 px-4 rounded flex items-center justify-between gap-2 font-medium cursor-pointer',
+  base: 'h-8 text-white px-4 rounded flex items-center justify-between gap-2 font-medium cursor-pointer',
   variants: {
     variant: {
       primary: 'bg-blue-600 hover:bg-blue-500',

@@ -73,10 +73,6 @@ html, body {
   height: 100vh;
   width: 100%;
 }
-body {
-  background-color: var(--white);
-  color: var(--gray-900);
-}
 body,
 input,
 button,
@@ -84,17 +80,10 @@ textarea, a, select, label, p  {
   font: 400 1rem system-ui;
 }
 a {
-  text-decoration: none;
   cursor: pointer !important;
-  color: var(--gray-900);
 }
 button {
-  background-color: transparent;
-  border: none;
-  font-weight: 500;
-  transition: background-color 200ms;
-  border: none;
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .container {
   max-width: 1080px;

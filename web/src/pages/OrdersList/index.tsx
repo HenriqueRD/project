@@ -3,7 +3,6 @@ import { format, formatDistance, subDays } from 'date-fns'
 import qs from 'qs'
 import { ptBR } from 'date-fns/locale'
 import Header from '../../components/Header'
-import style from './styles.module.css'
 import Tag from '../../components/Tag'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../components/Button'
@@ -51,41 +50,37 @@ export default function OrdersList() {
   return (
     <>
       <Header />
-      <main id={style.orders}>
+      <main className='mt-16'>
         <div className="container">
-          <div className='content'>
-            <div className={style.orders}>
-              <div className={style.headerTable}>
-                <div className={style.orderLengthSearch}>
-                  <div className={style.orderLength}>
-                    <h3>Pedidos</h3>
+          <div className='bg-neutral-50 p-6 rounded border border-neutral-200'>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <h3 className="text-lg">Pedidos</h3>
                     <Tag text={orders.length.toString()} type='normal' />
                   </div>
                   <Link to="/pedido/criar">
                     <Button text="Novo Pedido" title='Realizar Pedido' />
                   </Link>
                 </div>
-                <div className={style.search}>
+                <div className="flex justify-between">
                   <p>Filtrar pedidos por Data e Categoria</p>
-                  <div className={style.form}>
-                    <form onSubmit={handleSearchOrders}>
-                      <div className={style.inputs}>
-                        <select value={status} onChange={x => setStatus(x.target.value as StatusOrderProps)}>
-                          <option value="EM_PREPARACAO">Em preparação</option>
-                          <option value="CONCLUIDO">Concluído</option>
-                          <option value="FINALIZADO">Finalizado</option>
-                          <option value="ALL">Todos</option>
-                        </select>
-                        <input type="date" value={format(date, 'yyyy-MM-dd')} onChange={x => setDate(new Date(x.target.value+ "T00:00:00"))}/>
-                        <Button type='submit' icon>
-                          <MagnifyingGlass size={20} />
-                        </Button>
-                      </div>
-                    </form>
-                  </div>
+                  <form onSubmit={handleSearchOrders} className="flex gap-2">
+                    <select value={status} onChange={x => setStatus(x.target.value as StatusOrderProps)}>
+                      <option value="EM_PREPARACAO">Em preparação</option>
+                      <option value="CONCLUIDO">Concluído</option>
+                      <option value="FINALIZADO">Finalizado</option>
+                      <option value="ALL">Todos</option>
+                    </select>
+                    <input type="date" value={format(date, 'yyyy-MM-dd')} onChange={x => setDate(new Date(x.target.value+ "T00:00:00"))}/>
+                    <Button type='submit' icon>
+                      <MagnifyingGlass size={20} />
+                    </Button>
+                  </form>
                 </div>
               </div>
-              <div className={style.containerTable}>
+              <div className="h-[32rem] border border-slate-300 rounded bg-slate-50">
                 <table className='table'>
                   <thead>
                     <tr>
@@ -108,7 +103,7 @@ export default function OrdersList() {
                             <td className='tdItems'>{x.items.length}</td>
                             <td><time title={format(x.createdAt, 'dd/MM/yyyy')} dateTime={x.createdAt.toString()}>{formatDistance(subDays(x.createdAt, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
                             <td><Tag text={x.service}/></td>
-                            <td className={`${style.total} tdTotal`}><Tag text={x.totalValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.statusPayment === "PAGO" ? "success" : "alert"} /></td>
+                            <td className={`tdTotal`}><Tag text={x.totalValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.statusPayment === "PAGO" ? "success" : "alert"} /></td>
                             <td className="buttons">
                               <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
                               {
@@ -128,8 +123,8 @@ export default function OrdersList() {
                 </table>
                 {
                   orders.length === 0 && (
-                    <div className='contentEmpty'>
-                      <span>Nem um pedido encontado</span>
+                    <div className='flex items-center justify-center w-full h-full'>
+                      <span className='text-lg font-medium'>Nem um pedido encontado</span>
                     </div>
                   )
                 }
