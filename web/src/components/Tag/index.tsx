@@ -1,14 +1,14 @@
 import { tv } from 'tailwind-variants'
 
 const tag = tv({
-  base: 'py-1 px-2 text-sm font-medium rounded border',
+  base: 'py-1 px-2 text-sm font-medium rounded border uppercase',
   variants: {
     type: {
       primary: 'bg-blue-400 text-blue-900 border-blue-800',
       success: 'bg-green-400 text-green-900 border-green-800',
       alert: 'bg-yellow-400 text-yellow-900 border-yellow-800',
       danger: 'bg-red-400 text-red-900 border-red-800',
-      normal: 'bg-gray-400 text-gray-900 border-gray-800',
+      normal: 'bg-gray-300 text-gray-700 border-gray-600',
     }
   },
   defaultVariants: {
@@ -25,7 +25,7 @@ type TagProps = {
 export default function Tag({ text, type } : TagProps) {
   
   return (
-    <span className={tag({ type: parseTagType(text) })}>
+    <span className={tag({ type: !type ? parseTagType(text) : type })}>
       {parseText(text)}
     </span>
   )

@@ -98,33 +98,33 @@ export default function OrdersList() {
                       <th scope="col" className='thButtons'>Ação</th>
                     </tr>
                   </thead>
-                    <tbody>
-                      {
-                        orders.map(x => {
-                          return (
-                            <tr key={x.id} onClick={() => handleClickOrder(x.id)}>
-                              <td><Tag text={x.statusOrder}/></td>
-                              <td>{x.client}</td>
-                              <td className='tdItems'>{x.items.length}</td>
-                              <td><time title={format(x.createdAt, 'dd/MM/yyyy')} dateTime={x.createdAt.toString()}>{formatDistance(subDays(x.createdAt, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
-                              <td><Tag text={x.service}/></td>
-                              <td className={`${style.total} tdTotal`}><Tag text={x.totalValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.statusPayment === "PAGO" ? "success" : "alert"} /></td>
-                              <td className="buttons">
-                                <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
-                                {
-                                  x.statusPayment !== "PAGO" && (
-                                    <>
-                                      <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/editar/${x.id}`)}} icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>
-                                      <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/pagar/${x.id}`)}} icon title='Finalizar Pedido' variant='success'><Check weight='bold' size={20} /></Button>
-                                    </>
-                                  )
-                                }
-                              </td>
-                            </tr>
-                          )
-                        })
-                      }
-                    </tbody>
+                  <tbody>
+                    {
+                      orders.map(x => {
+                        return (
+                          <tr key={x.id} onClick={() => handleClickOrder(x.id)}>
+                            <td><Tag text={x.statusOrder}/></td>
+                            <td>{x.client}</td>
+                            <td className='tdItems'>{x.items.length}</td>
+                            <td><time title={format(x.createdAt, 'dd/MM/yyyy')} dateTime={x.createdAt.toString()}>{formatDistance(subDays(x.createdAt, 0), new Date(), {addSuffix: false, locale: ptBR})}</time></td>
+                            <td><Tag text={x.service}/></td>
+                            <td className={`${style.total} tdTotal`}><Tag text={x.totalValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type={x.statusPayment === "PAGO" ? "success" : "alert"} /></td>
+                            <td className="buttons">
+                              <Button icon title='Visualizar Pedido'><ClipboardText size={22} /></Button>
+                              {
+                                x.statusPayment !== "PAGO" && (
+                                  <>
+                                    <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/editar/${x.id}`)}} icon title='Editar Pedido' variant='alert'><NotePencil size={22} /></Button>
+                                    <Button onClick={(e) => { e.stopPropagation(); nav(`/pedido/pagar/${x.id}`)}} icon title='Finalizar Pedido' variant='success'><Check weight='bold' size={20} /></Button>
+                                  </>
+                                )
+                              }
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
                 </table>
                 {
                   orders.length === 0 && (

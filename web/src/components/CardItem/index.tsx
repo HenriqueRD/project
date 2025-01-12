@@ -1,7 +1,6 @@
 import { X } from '@phosphor-icons/react'
 import { ItemProps } from '../../types'
 import Button from '../Button'
-import style from './styles.module.css'
 import Tag from '../Tag'
 
 type CardItemProps = {
@@ -13,16 +12,16 @@ type CardItemProps = {
 
 export default function CardItem({ data: { amount, description, product, }, id, readOnly = false, handleOnClick } : CardItemProps) {
   return (
-    <div id={style.cardItem}>
-      <div className={style.infoItem}>
+    <div className='flex border-y border-gray-300 rounded p-2 flex-col gap-4'>
+      <div className="flex items-center justify-between">
         <div>
           <span>({id}) - </span>
-          <span className={style.product}>{product.name}</span>
-          <span className={style.amount}> x <Tag text={amount.toString()} type='alert'/></span>
+          <span className="uppercase">{product.name}</span>
+          <span> x <Tag text={amount.toString()} type='alert'/></span>
         </div>
         <span><Tag text={(amount * product.price).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} type='success'/></span>
       </div>
-      <div className={style.descButton}>
+      <div className="flex items-center justify-between">
         <p><strong>obs:</strong> {description}</p>
         {
           !readOnly && (

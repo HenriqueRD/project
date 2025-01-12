@@ -71,7 +71,7 @@ export default function EditOrder() {
       service
     }).then(() => {
       toast.success("Pedido criado")
-      nav("/")
+      nav("/pedidos")
     }).catch((x) => {
       toast.error("Falha ao atualizar o pedido")
       console.error(x.response.data.message)

@@ -7,7 +7,7 @@ const button = tv({
     variant: {
       primary: 'bg-blue-600 hover:bg-blue-500',
       success: 'bg-green-600 hover:bg-green-500',
-      alert: 'bg-yellow-500 hover:bg-yellow-400',
+      alert: 'bg-yellow-400 hover:bg-yellow-300',
       danger: 'bg-red-600 hover:bg-red-500',
       normal: 'bg-gray-600 hover:bg-gray-500',
     },

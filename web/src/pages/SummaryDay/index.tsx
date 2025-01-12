@@ -57,13 +57,6 @@ export default function SummaryDay() {
       <main id={style.summaryDay}>
         <div className="container">
           <div className="content">
-            <div className="flex gap-4" >
-            <Tag text="EM_PREPARACAO" />
-            <Tag text="EM_ABERTO"/>
-            <Tag text="CONCLUIDO" />
-            <Tag text="FINALIZADO"/>
-            </div>
-            
             <div className={style.summaryTransactionInfo}>
               <div className={style.summaryTransactionInfoHeader}>
                 <h3>Resumo do dia</h3>
