@@ -7,6 +7,7 @@ import { ProductProvider } from "./contexts/ProductContext";
 import EditOrder from "./pages/EditOrder";
 import SummaryDay from "./pages/SummaryDay";
 import CreateExpense from "./pages/CreateExpense";
+import ManageExpenses from "./pages/ManageExpenses";
 
 export default function Router() {
 
@@ -15,6 +16,7 @@ export default function Router() {
       <ProductProvider>
         <Routes>
           <Route path="/" Component={SummaryDay} />
+          <Route path="/despesas/pagamentos-pendentes" Component={ManageExpenses} />
           <Route path="/despesa/criar" Component={CreateExpense} />
           <Route path="/pedidos" Component={OrdersList} />
           <Route path="/pedido/criar" Component={CreateOrder} />

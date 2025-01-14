@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom'
 
-export default function Header() {
+type HeaderProps = {
+  title?: string
+}
+
+export default function Header({ title } : HeaderProps) {
 
   return (
     <header className='bg-blue-700 p-3'>
       <div className='container'>
         <div className="flex items-center justify-between">
-          <Link to="/">
-          </Link>
+          <h3 className='text-lg text-white'>{title}</h3>
           <nav className="flex gap-4">
             <Link className="text-gray-100 border-b border-transparent hover:border-b hover:border-gray-100" to="/">Transações</Link>
             <Link className="text-gray-100 border-b border-transparent hover:border-b hover:border-gray-100" to="/pedidos">Pedidos</Link>

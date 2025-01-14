@@ -23,10 +23,18 @@ export default function Sidebar() {
           </div>
         </div>
         <div className="flex flex-col border-b border-slate-400 pb-2">
+          <span className="font-medium font-mono uppercase text-xs text-slate-300">despesa</span>
+          <div className="flex flex-col items-stretch">
+            <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/despesa/criar">Painel de despesas</Link> 
+            <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/despesas/pagamentos-pendentes">Pagamentos pendentes</Link>  
+            <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/despesa/criar">Adicionar despesa</Link>  
+          </div>
+        </div>
+        <div className="flex flex-col border-b border-slate-400 pb-2">
           <span className="font-medium font-mono uppercase text-xs text-slate-300">cadastro</span>
           <div className="flex flex-col items-stretch">
-            <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/despesa/criar">Cadastrar despesa</Link>  
             <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/">Cadastrar produto</Link>  
+            <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/">Cadastrar cliente</Link>  
           </div>
         </div>
       </nav>

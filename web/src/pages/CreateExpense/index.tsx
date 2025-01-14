@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../../api'
 import { TailSpin } from 'react-loader-spinner'
+import Sidebar from '../../components/Sidebar'
 
 export default function CreateExpense() {
 
@@ -67,125 +68,128 @@ export default function CreateExpense() {
   }
 
   return (
-    <>
-      <Header />
-      <main id={style.createExpense}>
-        <div className="container">
-          <div className="content">
-            <div className={style.contentForm}>
-              <div className={style.twoForms}>
-                <form onSubmit={handleSupplierOrder} className={style.formExpense}>
-                  <div className={style.formExpenseHeader}>
-                    <div >
-                      <h3>Nova Despesa</h3>
-                      <Link to="/"><ArrowLeft size={18} /> Voltar a transações</Link>
+    <div className="flex w-full">
+      <Sidebar />
+      <div className='flex flex-col w-full'>
+        <Header />
+        <main id={style.createExpense}>
+          <div className="container">
+            <div className="content">
+              <div className={style.contentForm}>
+                <div className={style.twoForms}>
+                  <form onSubmit={handleSupplierOrder} className={style.formExpense}>
+                    <div className={style.formExpenseHeader}>
+                      <div >
+                        <h3>Nova Despesa</h3>
+                        <Link to="/"><ArrowLeft size={18} /> Voltar a transações</Link>
+                      </div>
+                      <Button title='Adicionar despesa' type="submit" text='Adicionar despesa' variant='success'/>
                     </div>
-                    <Button title='Adicionar despesa' type="submit" text='Adicionar despesa' variant='success'/>
+                    <div className={style.twoInput}>
+                      <div className={style.box}>
+                        <label htmlFor="">Valor total</label>
+                        <input type="number" placeholder='valor da compra' value={totalValue === 0 ? "" : totalValue} onChange={(x) => setTotalValue(parseInt(x.target.value))}/>
+                      </div>
+                      <div className={style.box}>
+                        <label htmlFor="">Observações</label>
+                        <input type="text" placeholder='observação sobre a compra' />
+                      </div>
+                    </div>
+                    <div className={style.methodPays}>
+                      <span>Método de pagamento</span>
+                      <div className={style.buttons}>
+                        <Button type='button' onClick={() => setSelectMethodPay("DINHEIRO")} text='Dinheiro' title='Pagar com dinheiro' isActive={selectMethodPay === "DINHEIRO"}>
+                          <CurrencyDollar size={20} />
+                        </Button>
+                        <Button type='button' onClick={() => setSelectMethodPay("PIX")} text='Pix' title='Pagar com pix' isActive={selectMethodPay === "PIX"}>
+                          <PixLogo size={20} />
+                        </Button>
+                        <Button type='button' onClick={() => setSelectMethodPay("BOLETO")} text='Boleto' title='Pagar com Boleto' isActive={selectMethodPay === "BOLETO"}>
+                          <Barcode size={20} />
+                        </Button>
+                      </div>
+                    </div>
+                  </form>
+                  <div className={style.supplier}>
+                    <h3>Fornecedor selecionado</h3>
+                    <div className={style.twoInput}>
+                      <div className={style.box}>
+                        <label htmlFor="">Nome</label>
+                        <input type="text" placeholder='Escolher Fornecedor' value={supplierCurrent.name} readOnly disabled/>
+                      </div>
+                      <div className={style.box}>
+                        <label htmlFor="">Tipo</label>
+                        <input type="text" placeholder='Escolher Fornecedor' value={supplierCurrent.type} readOnly disabled/>
+                      </div>
+                    </div>
                   </div>
-                  <div className={style.twoInput}>
+                </div>
+                <form className={style.formSearchSupplier}>
+                  <h3>Fornecedores</h3>
+                  <div className={style.headerTable}>
                     <div className={style.box}>
-                      <label htmlFor="">Valor total</label>
-                      <input type="number" placeholder='valor da compra' value={totalValue === 0 ? "" : totalValue} onChange={(x) => setTotalValue(parseInt(x.target.value))}/>
+                      <label htmlFor="names">Procurar por nome</label>
+                      <div className={style.inputsSearch}>
+                        <input id='names' placeholder='nome da empresa' onChange={(x) => handleSearchSuppliers(x.target.value)} />
+                      </div>
                     </div>
-                    <div className={style.box}>
-                      <label htmlFor="">Observações</label>
-                      <input type="text" placeholder='observação sobre a compra' />
-                    </div>
+                    <Button type='reset' text='Resetar' onClick={handleFormSearchSupplierReset}/>
                   </div>
-                  <div className={style.methodPays}>
-                    <span>Método de pagamento</span>
-                    <div className={style.buttons}>
-                      <Button type='button' onClick={() => setSelectMethodPay("DINHEIRO")} text='Dinheiro' title='Pagar com dinheiro' isActive={selectMethodPay === "DINHEIRO"}>
-                        <CurrencyDollar size={20} />
-                      </Button>
-                      <Button type='button' onClick={() => setSelectMethodPay("PIX")} text='Pix' title='Pagar com pix' isActive={selectMethodPay === "PIX"}>
-                        <PixLogo size={20} />
-                      </Button>
-                      <Button type='button' onClick={() => setSelectMethodPay("BOLETO")} text='Boleto' title='Pagar com Boleto' isActive={selectMethodPay === "BOLETO"}>
-                        <Barcode size={20} />
-                      </Button>
-                    </div>
+                  <div className={style.containerTable}>
+                    {
+                      isLoading ? (
+                        <div className="contentEmpty">
+                          <TailSpin
+                            visible={true}
+                            height="60"
+                            width="60"
+                            color="#0a58ca"
+                            ariaLabel="tail-spin-loading" 
+                          />
+                        </div>
+                      ) : (
+                        <table className='table'>
+                          <thead>
+                            <tr>
+                              <th scope="col" className='thId'>#</th>
+                              <th scope="col">Empresa</th>
+                              <th scope="col">Tipo</th>
+                              <th scope="col" className='thButtons'>Ação</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {
+                              suppliersListCurrent.map(x => {
+                                return (
+                                  <tr key={x.id} title='Selecionar' onClick={() => { setSupplierCurrent(x) }}>
+                                    <th scope="row" className='thId'>{x.id}</th>
+                                    <td>{x.name}</td>
+                                    <td>{x.type}</td>
+                                    <td className="buttons">
+                                      <Button icon type='button' title='Selecionar' variant='success'><Check weight='bold' size={20} /></Button>
+                                    </td>
+                                  </tr>
+                                )
+                              })
+                            }
+                          </tbody>
+                        </table>
+                      )
+                    }
+                    {
+                      suppliersListCurrent.length === 0 && (
+                        <div className='contentEmpty'>
+                          <span>nem uma empresa encontrada</span>
+                        </div>
+                      )
+                    }
                   </div>
                 </form>
-                <div className={style.supplier}>
-                  <h3>Fornecedor selecionado</h3>
-                  <div className={style.twoInput}>
-                    <div className={style.box}>
-                      <label htmlFor="">Nome</label>
-                      <input type="text" placeholder='Escolher Fornecedor' value={supplierCurrent.name} readOnly disabled/>
-                    </div>
-                    <div className={style.box}>
-                      <label htmlFor="">Tipo</label>
-                      <input type="text" placeholder='Escolher Fornecedor' value={supplierCurrent.type} readOnly disabled/>
-                    </div>
-                  </div>
-                </div>
               </div>
-              <form className={style.formSearchSupplier}>
-                <h3>Fornecedores</h3>
-                <div className={style.headerTable}>
-                  <div className={style.box}>
-                    <label htmlFor="names">Procurar por nome</label>
-                    <div className={style.inputsSearch}>
-                      <input id='names' placeholder='nome da empresa' onChange={(x) => handleSearchSuppliers(x.target.value)} />
-                    </div>
-                  </div>
-                  <Button type='reset' text='Resetar' onClick={handleFormSearchSupplierReset}/>
-                </div>
-                <div className={style.containerTable}>
-                  {
-                    isLoading ? (
-                      <div className="contentEmpty">
-                        <TailSpin
-                          visible={true}
-                          height="60"
-                          width="60"
-                          color="#0a58ca"
-                          ariaLabel="tail-spin-loading" 
-                        />
-                      </div>
-                    ) : (
-                      <table className='table'>
-                        <thead>
-                          <tr>
-                            <th scope="col" className='thId'>#</th>
-                            <th scope="col">Empresa</th>
-                            <th scope="col">Tipo</th>
-                            <th scope="col" className='thButtons'>Ação</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {
-                            suppliersListCurrent.map(x => {
-                              return (
-                                <tr key={x.id} title='Selecionar' onClick={() => { setSupplierCurrent(x) }}>
-                                  <th scope="row" className='thId'>{x.id}</th>
-                                  <td>{x.name}</td>
-                                  <td>{x.type}</td>
-                                  <td className="buttons">
-                                    <Button icon type='button' title='Selecionar' variant='success'><Check weight='bold' size={20} /></Button>
-                                  </td>
-                                </tr>
-                              )
-                            })
-                          }
-                        </tbody>
-                      </table>
-                    )
-                  }
-                  {
-                    suppliersListCurrent.length === 0 && (
-                      <div className='contentEmpty'>
-                        <span>nem uma empresa encontrada</span>
-                      </div>
-                    )
-                  }
-                </div>
-              </form>
             </div>
           </div>
-        </div>
-      </main>
-    </>
+        </main>
+      </div>
+    </div>
   )
 }
