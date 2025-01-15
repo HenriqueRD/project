@@ -56,7 +56,7 @@ export default function SummaryDay() {
     <div className="flex w-full">
       <Sidebar />
       <div className="w-full">
-        <Header />
+        <Header title="Resumo do dia" />
         <main id={style.summaryDay}>
           <div className="container">
             <div className="content">

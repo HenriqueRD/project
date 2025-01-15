@@ -14,7 +14,7 @@ export default function Header({ title } : HeaderProps) {
           <nav className="flex gap-4">
             <Link className="text-gray-100 border-b border-transparent hover:border-b hover:border-gray-100" to="/">Transações</Link>
             <Link className="text-gray-100 border-b border-transparent hover:border-b hover:border-gray-100" to="/pedidos">Pedidos</Link>
-            <Link className="text-gray-100 border-b border-transparent hover:border-b hover:border-gray-100" to="/despesa/criar">Nova despesa</Link>
+            <Link className="text-gray-100 border-b border-transparent hover:border-b hover:border-gray-100" to="/despesa/adicionar">Nova despesa</Link>
             <Link className="text-gray-100 border-b border-transparent hover:border-b hover:border-gray-100" to="/pedido/criar">Novo pedido</Link>
           </nav>
         </div>

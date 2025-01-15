@@ -2,13 +2,13 @@ import { Check, ClipboardText, MagnifyingGlass, NotePencil } from '@phosphor-ico
 import { format, formatDistance, subDays } from 'date-fns'
 import qs from 'qs'
 import { ptBR } from 'date-fns/locale'
-import Header from '../../components/Header'
-import Tag from '../../components/Tag'
+import Header from '../../../components/Header'
+import Tag from '../../../components/Tag'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../../components/Button'
-import { OrderProps, StatusOrderProps } from '../../types'
+import Button from '../../../components/Button'
+import { OrderProps, StatusOrderProps } from '../../../types'
 import { FormEvent, useEffect, useState } from 'react'
-import { api } from '../../api'
+import { api } from '../../../api'
 
 export default function OrdersList() {
 

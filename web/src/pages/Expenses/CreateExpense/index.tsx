@@ -1,14 +1,14 @@
 import { FormEvent, useEffect, useState } from 'react'
-import Header from '../../components/Header'
-import style from './styles.module.css'
-import Button from '../../components/Button'
-import { ArrowLeft, Barcode, Check, CurrencyDollar, PixLogo } from '@phosphor-icons/react'
-import { MethodPaymentExpenseProps, SupplierProps } from '../../types'
+import Header from '../../../components/Header'
+import Button from '../../../components/Button'
+import { Barcode, Check, CurrencyDollar, PixLogo } from '@phosphor-icons/react'
+import { MethodPaymentExpenseProps, SupplierProps } from '../../../types'
 import toast from 'react-hot-toast'
-import { Link, useNavigate } from 'react-router-dom'
-import { api } from '../../api'
+import { useNavigate } from 'react-router-dom'
+import { api } from '../../../api'
 import { TailSpin } from 'react-loader-spinner'
-import Sidebar from '../../components/Sidebar'
+import Sidebar from '../../../components/Sidebar'
+import LinkGotoBack from '../../../components/LinkGotoBack'
 
 export default function CreateExpense() {
 
@@ -71,71 +71,80 @@ export default function CreateExpense() {
     <div className="flex w-full">
       <Sidebar />
       <div className='flex flex-col w-full'>
-        <Header />
-        <main id={style.createExpense}>
+        <Header title='Adicionar despesa' />
+        <main className='mt-8'>
           <div className="container">
-            <div className="content">
-              <div className={style.contentForm}>
-                <div className={style.twoForms}>
-                  <form onSubmit={handleSupplierOrder} className={style.formExpense}>
-                    <div className={style.formExpenseHeader}>
-                      <div >
-                        <h3>Nova Despesa</h3>
-                        <Link to="/"><ArrowLeft size={18} /> Voltar a transações</Link>
+            <div className="bg-neutral-50 p-6 rounded border border-slate-200 md:p-4">
+              <div className="flex gap-8 lg:flex-col">
+                <div className="flex flex-col w-3/5 gap-4 lg:w-full">
+                  <form onSubmit={handleSupplierOrder} className="flex flex-col gap-4 w-full">
+                    <div className="flex justify-between items-start">
+                      <div className='flex flex-col gap-4 items-start'>
+                        <h3 className='text-lg'>Nova Despesa</h3>
+                        <LinkGotoBack to="/" text=' Voltar a despesas'></LinkGotoBack>
                       </div>
-                      <Button title='Adicionar despesa' type="submit" text='Adicionar despesa' variant='success'/>
-                    </div>
-                    <div className={style.twoInput}>
-                      <div className={style.box}>
-                        <label htmlFor="">Valor total</label>
-                        <input type="number" placeholder='valor da compra' value={totalValue === 0 ? "" : totalValue} onChange={(x) => setTotalValue(parseInt(x.target.value))}/>
-                      </div>
-                      <div className={style.box}>
-                        <label htmlFor="">Observações</label>
-                        <input type="text" placeholder='observação sobre a compra' />
+                      <div className='flex gap-4 items-center'>
+                        <Button title='Adicionar despesa' type="submit" text='Agendar despesa' variant='alert'/>
+                        <Button title='Adicionar despesa' type="submit" text='Adicionar despesa' variant='success'/>
                       </div>
                     </div>
-                    <div className={style.methodPays}>
-                      <span>Método de pagamento</span>
-                      <div className={style.buttons}>
-                        <Button type='button' onClick={() => setSelectMethodPay("DINHEIRO")} text='Dinheiro' title='Pagar com dinheiro' isActive={selectMethodPay === "DINHEIRO"}>
-                          <CurrencyDollar size={20} />
-                        </Button>
-                        <Button type='button' onClick={() => setSelectMethodPay("PIX")} text='Pix' title='Pagar com pix' isActive={selectMethodPay === "PIX"}>
-                          <PixLogo size={20} />
-                        </Button>
-                        <Button type='button' onClick={() => setSelectMethodPay("BOLETO")} text='Boleto' title='Pagar com Boleto' isActive={selectMethodPay === "BOLETO"}>
-                          <Barcode size={20} />
-                        </Button>
+                    <div className="flex items-center w-full gap-8 border-b border-slate-300 pb-4">
+                      <div className="flex flex-col gap-2 w-full">
+                        <label htmlFor="total">Valor total</label>
+                        <input id="total" type="number" placeholder='valor da compra' value={totalValue === 0 ? "" : totalValue} onChange={(x) => setTotalValue(parseInt(x.target.value))}/>
+                      </div>
+                      <div className="flex flex-col gap-2 w-full">
+                        <label htmlFor="obs">Observações</label>
+                        <input id="obs" type="text" placeholder='observação sobre a compra' />
+                      </div>
+                    </div>
+                    <div className="flex gap-4 justify-between border-b border-slate-300 pb-4">
+                      <div className='flex flex-col gap-2'>
+                        <span>Método de pagamento</span>
+                        <div className="flex items-center gap-6">
+                          <Button type='button' onClick={() => setSelectMethodPay("DINHEIRO")} text='Dinheiro' title='Pagar com dinheiro' isActive={selectMethodPay === "DINHEIRO"}>
+                            <CurrencyDollar size={20} />
+                          </Button>
+                          <Button type='button' onClick={() => setSelectMethodPay("PIX")} text='Pix' title='Pagar com pix' isActive={selectMethodPay === "PIX"}>
+                            <PixLogo size={20} />
+                          </Button>
+                          <Button type='button' onClick={() => setSelectMethodPay("BOLETO")} text='Boleto' title='Pagar com Boleto' isActive={selectMethodPay === "BOLETO"}>
+                            <Barcode size={20} />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label htmlFor="">Data vencimento</label>
+                        <input type="date" />
                       </div>
                     </div>
                   </form>
-                  <div className={style.supplier}>
-                    <h3>Fornecedor selecionado</h3>
-                    <div className={style.twoInput}>
-                      <div className={style.box}>
-                        <label htmlFor="">Nome</label>
+                  <div className="flex flex-col gap-2">
+                    <h3 className='text-lg'>Fornecedor selecionado</h3>
+                    <div className="flex items-center w-full gap-8">
+                      <div className="flex flex-col gap-2 w-full">
+                        <label>Nome</label>
                         <input type="text" placeholder='Escolher Fornecedor' value={supplierCurrent.name} readOnly disabled/>
                       </div>
-                      <div className={style.box}>
-                        <label htmlFor="">Tipo</label>
+                      <div className="flex flex-col gap-2 w-full">
+                        <label>Tipo</label>
                         <input type="text" placeholder='Escolher Fornecedor' value={supplierCurrent.type} readOnly disabled/>
                       </div>
                     </div>
                   </div>
                 </div>
-                <form className={style.formSearchSupplier}>
-                  <h3>Fornecedores</h3>
-                  <div className={style.headerTable}>
-                    <div className={style.box}>
-                      <label htmlFor="names">Procurar por nome</label>
-                      <div className={style.inputsSearch}>
-                        <input id='names' placeholder='nome da empresa' onChange={(x) => handleSearchSuppliers(x.target.value)} />
+                <form className="w-2/5 flex flex-col gap-4 lg:w-full">
+                  <div className='flex flex-col gap-4'>
+                    <h3 className='text-lg'>Fornecedores</h3>
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col gap-2">
+                        <label htmlFor="id">Procurar por empresa</label>
+                        <input id='name' placeholder='nome da empresa' onChange={(x) => handleSearchSuppliers(x.target.value)} />
                       </div>
+                      <Button type='reset' text='Resetar' onClick={handleFormSearchSupplierReset}/>
                     </div>
-                    <Button type='reset' text='Resetar' onClick={handleFormSearchSupplierReset}/>
                   </div>
-                  <div className={style.containerTable}>
+                  <div className="bg-white rounded border border-slate-200 w-full h-[26rem] overflow-auto">
                     {
                       isLoading ? (
                         <div className="contentEmpty">
@@ -151,7 +160,6 @@ export default function CreateExpense() {
                         <table className='table'>
                           <thead>
                             <tr>
-                              <th scope="col" className='thId'>#</th>
                               <th scope="col">Empresa</th>
                               <th scope="col">Tipo</th>
                               <th scope="col" className='thButtons'>Ação</th>
@@ -162,7 +170,6 @@ export default function CreateExpense() {
                               suppliersListCurrent.map(x => {
                                 return (
                                   <tr key={x.id} title='Selecionar' onClick={() => { setSupplierCurrent(x) }}>
-                                    <th scope="row" className='thId'>{x.id}</th>
                                     <td>{x.name}</td>
                                     <td>{x.type}</td>
                                     <td className="buttons">
@@ -179,7 +186,7 @@ export default function CreateExpense() {
                     {
                       suppliersListCurrent.length === 0 && (
                         <div className='contentEmpty'>
-                          <span>nem uma empresa encontrada</span>
+                          <span>nenhuma empresa encontrada</span>
                         </div>
                       )
                     }
