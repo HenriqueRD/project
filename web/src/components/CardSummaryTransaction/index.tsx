@@ -20,16 +20,17 @@ const card = tv({
 
 type CardSummaryTransactionProps = {
   type: "input" | "output" | "total" | "transactions"
+  title?: string
   valueCurrent?: number
 }
 
-export default function CardSummaryTransaction({ type, valueCurrent = 0 }: CardSummaryTransactionProps) {
+export default function CardSummaryTransaction({ type, title, valueCurrent = 0 }: CardSummaryTransactionProps) {
 
   const typeConfig = {
     input: { label: "Entradas", icon: <ArrowCircleUp size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})},
-    output: { label: "Saídas", icon: <ArrowCircleDown size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) },
-    total: { label: "Total", icon: <CurrencyCircleDollar size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) },
-    transactions: { label: "Transações", icon: <ArrowsDownUp size={30} />, value: valueCurrent },
+    output: { label: title ? title : "Saídas", icon: <ArrowCircleDown size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) },
+    total: { label: title ? title : "Total", icon: <CurrencyCircleDollar size={32} />, value: valueCurrent.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) },
+    transactions: { label: title ? title : "Transações", icon: <ArrowsDownUp size={30} />, value: valueCurrent },
   };
 
   const { label, icon, value } = typeConfig[type];

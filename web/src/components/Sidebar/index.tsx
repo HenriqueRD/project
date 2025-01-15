@@ -33,6 +33,7 @@ export default function Sidebar() {
         <div className="flex flex-col border-b border-slate-400 pb-2">
           <span className="font-medium font-mono uppercase text-xs text-slate-300">cadastro</span>
           <div className="flex flex-col items-stretch">
+            <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/">Cadastrar fornecedor</Link>  
             <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/">Cadastrar produto</Link>  
             <Link className="text-slate-50 px-3 py-1 rounded hover:bg-blue-neon" to="/">Cadastrar cliente</Link>  
           </div>
